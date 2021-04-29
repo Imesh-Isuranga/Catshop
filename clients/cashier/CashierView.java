@@ -5,8 +5,12 @@ import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
 
-import javax.swing.*;
-import java.awt.*;
+import javafx.collections.*;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,13 +28,12 @@ public class CashierView implements Observer
   private static final String BUY    = "Buy";
   private static final String BOUGHT = "Bought";
 
-  private final JLabel      theAction  = new JLabel();
-  private final JTextField  theInput   = new JTextField();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtCheck = new JButton( CHECK );
-  private final JButton     theBtBuy   = new JButton( BUY );
-  private final JButton     theBtBought= new JButton( BOUGHT );
+  private final Label      theAction  = new Label();
+  private final TextField  theInput   = new TextField();
+  private final TextArea   theOutput  = new TextArea();
+  private final Button     theBtCheck = new Button( CHECK );
+  private final Button     theBtBuy   = new Button( BUY );
+  private final Button     theBtBought= new Button( BOUGHT );
 
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
@@ -38,13 +41,13 @@ public class CashierView implements Observer
   
   /**
    * Construct the view
-   * @param rpc   Window in which to construct
+   * @param stage   Window in which to construct
    * @param mf    Factor to deliver order and stock objects
    * @param x     x-coordinate of position of window on screen 
    * @param y     y-coordinate of position of window on screen  
    */
           
-  public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  )
+  public CashierView(  Stage stage,  MiddleFactory mf, int x, int y  )
   {
     try                                           // 
     {      
@@ -54,43 +57,63 @@ public class CashierView implements Observer
     {
       System.out.println("Exception: " + e.getMessage() );
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
+    stage.setWidth( W ); // Set Window Size
+    stage.setHeight( H );
+    stage.setX( x );  // Set Window Position
+    stage.setY( y );
 
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+//    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button
-    theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
-    cp.add( theBtCheck );                           //  Add to canvas
+    theBtCheck.setPrefSize(  80, 40 );    // Check Button
+    theBtCheck.setOnAction( event->cont.doCheck( theInput.getText() ) ); // Call back code
 
-    theBtBuy.setBounds( 16, 25+60*1, 80, 40 );      // Buy button 
-    theBtBuy.addActionListener(                     // Call back code
-      e -> cont.doBuy() );
-    cp.add( theBtBuy );                             //  Add to canvas
+    theBtBuy.setPrefSize(  80, 40 );      // Buy button
+    theBtBuy.setOnAction( event -> cont.doBuy() );
 
-    theBtBought.setBounds( 16, 25+60*3, 80, 40 );   // Clear Button
-    theBtBought.addActionListener(                  // Call back code
-      e -> cont.doBought() );
-    cp.add( theBtBought );                          //  Add to canvas
+    theBtBought.setPrefSize(  80, 40 );   // Clear Button
+    theBtBought.setOnAction(                  // Call back code
+            event -> cont.doBought() );
 
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        // Blank
-    cp.add( theAction );                            //  Add to canvas
+    theAction.setPrefSize( 270, 20 );       // Message area
+    theAction.setText( "Welcome" );                        // Blank
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Input Area
+    theInput.setPrefSize( 270, 40 );         // Input Area
     theInput.setText("");                           // Blank
-    cp.add( theInput );                             //  Add to canvas
 
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
+    theOutput.setPrefSize( 270, 160 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-    rootWindow.setVisible( true );                  // Make visible
+//    theOutput.setFont( f );                         //  Uses font
+
+    GridPane buttonPane = new GridPane(); // button Pane
+    buttonPane.addColumn(0, theBtCheck, theBtBuy, theBtBought);
+    buttonPane.setVgap(10); // Vertical Spacing
+
+    GridPane infoPane = new GridPane();
+    infoPane.addColumn(0, theAction, theInput, theOutput);
+    infoPane.setVgap(10);
+
+    HBox root = new HBox();
+    root.setSpacing(10);   //Setting the space between the nodes of a root pane
+
+    ObservableList rootList = root.getChildren(); // retrieving the observable list of the root pane
+    rootList.addAll(buttonPane, infoPane); // Adding all the nodes to the observable list
+
+
+    // Set the Size of the GridPane
+    root.setMinSize(700, 500);
+    // Set style
+    String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 5;" +
+            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
+    String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+
+    root.setStyle(rootStyle);
+    theBtCheck.setStyle(buttonStyle);
+    theBtBuy.setStyle(buttonStyle);
+    theBtBought.setStyle(buttonStyle);
+
+    Scene scene = new Scene(root);  // Create the Scene
+    stage.setScene(scene); // Add the scene to the Stage
+
     theInput.requestFocus();                        // Focus is here
   }
 

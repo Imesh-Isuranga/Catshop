@@ -1,11 +1,15 @@
 package clients.cashier;
 
 import catalogue.*;
+import clients.backDoor.BackDoorController;
+import clients.backDoor.BackDoorModel;
+import clients.backDoor.BackDoorView;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
 
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * The standalone Cashier Client.
@@ -14,8 +18,9 @@ import javax.swing.*;
  */
 
 
-public class CashierClient
+public class CashierClient extends Application
 {
+   public static RemoteMiddleFactory mrf;
    public static void main (String args[])
    {
      String stockURL = args.length < 1     // URL of stock RW
@@ -25,27 +30,24 @@ public class CashierClient
                      ? Names.ORDER         //  default  location
                      : args[1];            //  supplied location
      
-    RemoteMiddleFactory mrf = new RemoteMiddleFactory();
-    mrf.setStockRWInfo( stockURL );
-    mrf.setOrderInfo  ( orderURL );        //
-    displayGUI(mrf);                       // Create GUI
+     mrf = new RemoteMiddleFactory();
+     mrf.setStockRWInfo( stockURL );
+     mrf.setOrderInfo  ( orderURL );        //
+
+     launch(args);
   }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Cashier Client (MVC RMI)");
 
-  private static void displayGUI(MiddleFactory mf)
-  {     
-    JFrame  window = new JFrame();
-     
-    window.setTitle( "Cashier Client (MVC RMI)");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    
-    CashierModel      model = new CashierModel(mf);
-    CashierView       view  = new CashierView( window, mf, 0, 0 );
-    CashierController cont  = new CashierController( model, view );
-    view.setController( cont );
+        CashierModel      model = new CashierModel(mrf);
+        CashierView       view  = new CashierView( primaryStage, mrf, 0, 0 );
+        CashierController cont  = new CashierController( model, view );
+        view.setController( cont );
 
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Display Screen
-    model.askForUpdate();
-  }
+        model.addObserver( view );       // Add observer to the model
+        primaryStage.show();         // Display Screen
+        model.askForUpdate();
+    }
 }

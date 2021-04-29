@@ -2,12 +2,18 @@ package clients.customer;
 
 import catalogue.Basket;
 import catalogue.BetterBasket;
-import clients.Picture;
+import javafx.collections.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import middle.MiddleFactory;
 import middle.StockReader;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -28,26 +34,26 @@ public class CustomerView implements Observer
   private static final int H = 300;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
 
-  private final JLabel      theAction  = new JLabel();
-  private final JTextField  theInput   = new JTextField();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtCheck = new JButton( Name.CHECK );
-  private final JButton     theBtClear = new JButton( Name.CLEAR );
+  private final Label theAction  = new Label();
+  private final TextField  theInput   = new TextField();
+  private final TextArea   theOutput  = new TextArea();
+  private final Button     theBtCheck = new Button( Name.CHECK );
+  private final Button     theBtClear = new Button( Name.CLEAR );
 
-  private Picture thePicture = new Picture(80,80);
+  private ImageView thePicture = new ImageView();
+
   private StockReader theStock   = null;
   private CustomerController cont= null;
 
   /**
    * Construct the view
-   * @param rpc   Window in which to construct
+   * @param stage   Window in which to construct
    * @param mf    Factor to deliver order and stock objects
    * @param x     x-cordinate of position of window on screen 
    * @param y     y-cordinate of position of window on screen  
    */
   
-  public CustomerView( RootPaneContainer rpc, MiddleFactory mf, int x, int y )
+  public CustomerView(Stage stage, MiddleFactory mf, int x, int y )
   {
     try                                             // 
     {      
@@ -56,44 +62,60 @@ public class CustomerView implements Observer
     {
       System.out.println("Exception: " + e.getMessage() );
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
 
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    stage.setWidth( W ); // Set Window Size
+    stage.setHeight( H );
+    stage.setX( x );  // Set Window Position
+    stage.setY( y );
 
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
-    theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
-    cp.add( theBtCheck );                           //  Add to canvas
+    theBtCheck.setPrefSize( 80, 40 ); // Check Button Size
+    theBtCheck.setOnAction(event -> cont.doCheck(theInput.getText()));
 
-    theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
-    theBtClear.addActionListener(                   // Call back code
-      e -> cont.doClear() );
-    cp.add( theBtClear );                           //  Add to canvas
+    theBtClear.setPrefSize( 80, 40 ); // Clear Button Size
+    theBtClear.setOnAction(event -> cont.doClear());
 
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        //  Blank
-    cp.add( theAction );                            //  Add to canvas
+    thePicture.setFitWidth( 80 );   // Picture area
+    thePicture.setFitHeight( 80 );
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Product no area
+    theAction.setPrefSize( 270, 20 );
+    theAction.setText( "Welcome!" );                        //  Blank
+
+    theInput.setPrefSize( 270, 40 );
     theInput.setText("");                           // Blank
-    cp.add( theInput );                             //  Add to canvas
-    
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
-    theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
 
-    thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
-    cp.add( thePicture );                           //  Add to canvas
-    thePicture.clear();
-    
-    rootWindow.setVisible( true );                  // Make visible);
-    theInput.requestFocus();                        // Focus is here
+    theOutput.setPrefSize( 270, 160 );
+    theOutput.setText( "" );                        //  Blank
+
+    GridPane buttonBar = new GridPane();
+    buttonBar.addColumn(0, theBtCheck, theBtClear, thePicture);
+    buttonBar.setVgap(10); // Set the horizontal spacing to 10px
+
+    GridPane infoBar = new GridPane();
+    infoBar.addColumn(0, theAction, theInput, theOutput);
+    infoBar.setVgap(10);
+
+    HBox root = new HBox();
+    root.setSpacing(10);   //Setting the space between the nodes of a root pane
+
+    ObservableList rootList = root.getChildren(); //retrieving the observable list of the root pane
+    rootList.addAll(buttonBar, infoBar); //Adding all the nodes to the observable list
+
+
+    // Set the Size of the GridPane
+    root.setMinSize(700, 500);
+
+    String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 5;" +
+            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
+    String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+
+    root.setStyle(rootStyle);
+    theBtClear.setStyle(buttonStyle);
+    theBtCheck.setStyle(buttonStyle);
+
+    Scene scene = new Scene(root);  // Create the Scene
+    stage.setScene(scene); // Add the scene to the Stage
+
+    theInput.requestFocus();  // Focus is here
   }
 
    /**
@@ -117,13 +139,13 @@ public class CustomerView implements Observer
     CustomerModel model  = (CustomerModel) modelC;
     String        message = (String) arg;
     theAction.setText( message );
-    ImageIcon image = model.getPicture();  // Image of product
-    if ( image == null )
-    {
-      thePicture.clear();                  // Clear picture
-    } else {
-      thePicture.set( image );             // Display picture
-    }
+//    ImageIcon image = model.getPicture();  // Image of product
+//    if ( image == null )
+//    {
+//      thePicture.clear();                  // Clear picture
+//    } else {
+//      thePicture.set( image );             // Display picture
+//    }
     theOutput.setText( model.getBasket().getDetails() );
     theInput.requestFocus();               // Focus is here
   }

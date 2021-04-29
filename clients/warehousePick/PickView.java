@@ -1,11 +1,16 @@
 package clients.warehousePick;
 
 import catalogue.Basket;
+import javafx.application.Platform;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 
-import javax.swing.*;
-import java.awt.*;
+import javafx.collections.*;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,10 +27,9 @@ public class PickView implements Observer
   private static final int H = 300;       // Height of window pixels
   private static final int W = 400;       // Width  of window pixels
 
-  private final JLabel      theAction  = new JLabel();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtPicked= new JButton( PICKED );
+  private final Label      theAction  = new Label();
+  private final TextArea   theOutput  = new TextArea();
+  private final Button     theBtPicked= new Button( PICKED );
  
   private OrderProcessing theOrder     = null;
   
@@ -33,12 +37,12 @@ public class PickView implements Observer
 
   /**
    * Construct the view
-   * @param rpc   Window in which to construct
+   * @param stage   Window in which to construct
    * @param mf    Factor to deliver order and stock objects
    * @param x     x-cordinate of position of window on screen 
    * @param y     y-cordinate of position of window on screen  
    */
-  public PickView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
+  public PickView(  Stage stage, MiddleFactory mf, int x, int y )
   {
     try                                           // 
     {      
@@ -47,29 +51,51 @@ public class PickView implements Observer
     {
       System.out.println("Exception: " + e.getMessage() );
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
-    
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+    stage.setWidth( W ); // Set Window Size
+    stage.setHeight( H );
+    stage.setX( x );  // Set Window Position
+    stage.setY( y );
 
-    theBtPicked.setBounds( 16, 25+60*0, 80, 40 );   // Check Button
-    theBtPicked.addActionListener(                   // Call back code
-      e -> cont.doPick() );
-    cp.add( theBtPicked );                          //  Add to canvas
+//    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        // Blank
-    cp.add( theAction );                            //  Add to canvas
+    theBtPicked.setPrefSize( 80, 40 );   // Check Button
+    theBtPicked.setOnAction(                   // Call back code
+      event -> cont.doPick() );
 
-    theSP.setBounds( 110, 55, 270, 205 );           // Scrolling pane
+    theAction.setPrefSize( 270, 20 );       // Message area
+    theAction.setText( "Welcome!" );                        // Blank
+
+    theOutput.setPrefSize( 270, 205 );           // In TextArea
     theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-    rootWindow.setVisible( true );                  // Make visible
+//    theOutput.setFont( f );                         //  Uses font
+
+    GridPane buttonPane = new GridPane(); // button Pane
+    buttonPane.addColumn(0, theBtPicked);
+    buttonPane.setVgap(10); // Vertical Spacing
+
+    GridPane infoPane = new GridPane();
+    infoPane.addColumn(0, theAction, theOutput);
+    infoPane.setVgap(10);
+
+    HBox root = new HBox();
+    root.setSpacing(10);   //Setting the space between the nodes of a root pane
+
+    ObservableList rootList = root.getChildren(); // retrieving the observable list of the root pane
+    rootList.addAll(buttonPane, infoPane); // Adding all the nodes to the observable list
+
+
+    // Set the Size of the GridPane
+    root.setMinSize(700, 500);
+    // Set style
+    String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 5;" +
+            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
+    String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+
+    root.setStyle(rootStyle);
+    theBtPicked.setStyle(buttonStyle);
+
+    Scene scene = new Scene(root);  // Create the Scene
+    stage.setScene(scene); // Add the scene to the Stage
   }
   
   public void setController( PickController c )
@@ -87,14 +113,14 @@ public class PickView implements Observer
   {
     PickModel model  = (PickModel) modelC;
     String        message = (String) arg;
-    theAction.setText( message );
-    
+    Platform.runLater(()->theAction.setText(message));
+
     Basket basket =  model.getBasket();
     if ( basket != null )
     {
-      theOutput.setText( basket.getDetails() );
+      Platform.runLater(()->theAction.setText( basket.getDetails() ) );
     } else {
-      theOutput.setText("");
+      Platform.runLater(()->theAction.setText(""));
     }
   }
 

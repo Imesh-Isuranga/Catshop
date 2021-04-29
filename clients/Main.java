@@ -17,6 +17,9 @@ import clients.shopDisplay.DisplayView;
 import clients.warehousePick.PickController;
 import clients.warehousePick.PickModel;
 import clients.warehousePick.PickView;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 
@@ -30,7 +33,7 @@ import java.awt.*;
  * @author  Mike Smith University of Brighton
  * @version 2.0
  */
-class Main
+public class Main extends Application
 {
   // Change to false to reduce the number of duplicated clients
 
@@ -38,46 +41,24 @@ class Main
 
   public static void main (String args[])
   {
-    new Main().begin();
+    launch(args);
   }
 
-  /**
-   * Starts test system (Non distributed)
-   */
-  public void begin()
-  {
-    //DEBUG.set(true); /* Lots of debug info */
-    MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
- 
-    startCustomerGUI_MVC( mlf );
-    if ( many ) 
-     startCustomerGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf );
-    startBackDoorGUI_MVC( mlf );
-    if ( many ) 
-      startPickGUI_MVC( mlf );
-    startPickGUI_MVC( mlf );
-    startDisplayGUI_MVC( mlf );
-    if ( many ) 
-      startDisplayGUI_MVC( mlf );
-    startCollectionGUI_MVC( mlf );
-  }
-  
   public void startCustomerGUI_MVC(MiddleFactory mlf )
   {
-    JFrame  window = new JFrame();
-    window.setTitle( "Customer Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Stage stage = new Stage();
+    stage.setTitle("Customer Client MVC");
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
-    
+
     CustomerModel model      = new CustomerModel(mlf);
-    CustomerView view        = new CustomerView( window, mlf, pos.width, pos.height );
+    CustomerView view        = new CustomerView( stage, mlf, pos.width, pos.height );
     CustomerController cont  = new CustomerController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // start Screen
+    stage.show();
   }
 
   /**
@@ -86,56 +67,55 @@ class Main
    */
   public void startCashierGUI_MVC(MiddleFactory mlf )
   {
-    JFrame  window = new JFrame();
-    window.setTitle( "Cashier Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Stage stage = new Stage();
+    stage.setTitle( "Cashier Client MVC" );
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
-    
+
     CashierModel model      = new CashierModel(mlf);
-    CashierView view        = new CashierView( window, mlf, pos.width, pos.height );
+    CashierView view        = new CashierView( stage, mlf, pos.width, pos.height );
     CashierController cont  = new CashierController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
-    model.askForUpdate();            // Initial display
+    stage.show();
   }
 
   public void startBackDoorGUI_MVC(MiddleFactory mlf )
   {
-    JFrame  window = new JFrame();
-
-    window.setTitle( "BackDoor Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Stage stage = new Stage();
+    stage.setTitle( "BackDoor Client MVC" );
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
-    
+
     BackDoorModel model      = new BackDoorModel(mlf);
-    BackDoorView view        = new BackDoorView( window, mlf, pos.width, pos.height );
+    BackDoorView view        = new BackDoorView( stage, mlf, pos.width, pos.height );
     BackDoorController cont  = new BackDoorController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
+    stage.show();
   }
-  
 
   public void startPickGUI_MVC(MiddleFactory mlf )
   {
-    JFrame  window = new JFrame();
-
-    window.setTitle( "Pick Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Stage stage = new Stage();
+    stage.setTitle( "Pick Client MVC" );
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
-    
+
     PickModel model      = new PickModel(mlf);
-    PickView view        = new PickView( window, mlf, pos.width, pos.height );
+    PickView view        = new PickView( stage, mlf, pos.width, pos.height );
     PickController cont  = new PickController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
+    stage.show();
   }
-  
+
   public void startDisplayGUI_MVC(MiddleFactory mlf )
   {
     JFrame  window = new JFrame();
@@ -143,7 +123,7 @@ class Main
     window.setTitle( "Display Client MVC");
     window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     Dimension pos = PosOnScrn.getPos();
-    
+
     DisplayModel model      = new DisplayModel(mlf);
     DisplayView view        = new DisplayView( window, mlf, pos.width, pos.height );
     DisplayController cont  = new DisplayController( model, view );
@@ -156,19 +136,41 @@ class Main
 
   public void startCollectionGUI_MVC(MiddleFactory mlf )
   {
-    JFrame  window = new JFrame();
-
-    window.setTitle( "Collect Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Stage stage = new Stage();
+    stage.setTitle( "Collect Client MVC" );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     Dimension pos = PosOnScrn.getPos();
-    
+
     CollectModel model      = new CollectModel(mlf);
-    CollectView view        = new CollectView( window, mlf, pos.width, pos.height );
+    CollectView view        = new CollectView( stage, mlf, pos.width, pos.height );
     CollectController cont  = new CollectController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
+    stage.show();
   }
 
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
+
+    startCustomerGUI_MVC( mlf );
+    if ( many )
+     startCustomerGUI_MVC( mlf );
+    startCashierGUI_MVC( mlf );
+    startBackDoorGUI_MVC( mlf );
+    if ( many )
+      startPickGUI_MVC( mlf );
+    startPickGUI_MVC( mlf );
+//    startDisplayGUI_MVC( mlf );
+//    if ( many )
+//      startDisplayGUI_MVC( mlf );
+    startCollectionGUI_MVC( mlf );
+  }
+
+  @Override
+  public void stop(){
+    Platform.exit();
+  }
 }

@@ -3,6 +3,8 @@ package clients.customer;
 import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -14,31 +16,32 @@ import javax.swing.*;
  * @author  Mike Smith University of Brighton
  * @version 2.0
  */
-public class CustomerClient
+public class CustomerClient extends Application
 {
+  public static RemoteMiddleFactory mrf;
+
   public static void main (String args[])
   {
     String stockURL = args.length < 1         // URL of stock R
                     ? Names.STOCK_R           //  default  location
                     : args[0];                //  supplied location
     
-    RemoteMiddleFactory mrf = new RemoteMiddleFactory();
+    mrf = new RemoteMiddleFactory();
     mrf.setStockRInfo( stockURL );
-    displayGUI(mrf);                          // Create GUI
+
+    launch(args);
   }
-   
-  private static void displayGUI(MiddleFactory mf)
-  {
-    JFrame  window = new JFrame();     
-    window.setTitle( "Customer Client (MVC RMI)" );
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    
-    CustomerModel model = new CustomerModel(mf);
-    CustomerView  view  = new CustomerView( window, mf, 0, 0 );
+
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    primaryStage.setTitle("Customer Client (MVC RMI)");
+
+    CustomerModel model = new CustomerModel(mrf);
+    CustomerView  view  = new CustomerView( primaryStage, mrf, 0, 0 );
     CustomerController cont  = new CustomerController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Display Scree
+    primaryStage.show();
   }
 }

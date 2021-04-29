@@ -1,10 +1,15 @@
 package clients.collection;
 
+import clients.cashier.CashierController;
+import clients.cashier.CashierModel;
+import clients.cashier.CashierView;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
 
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 
 /**
  * The standalone Collection Client.
@@ -13,8 +18,10 @@ import javax.swing.*;
  */
 
 
-public class CollectClient
+public class CollectClient extends Application
 {
+    public static RemoteMiddleFactory mrf;
+
    public static void main (String args[])
    {
      String stockURL = args.length < 1     // URL of stock RW
@@ -24,25 +31,22 @@ public class CollectClient
                      ? Names.ORDER         //  default  location
                      : args[1];            //  supplied location
      
-    RemoteMiddleFactory mrf = new RemoteMiddleFactory();
+    mrf = new RemoteMiddleFactory();
     mrf.setStockRWInfo( stockURL );
     mrf.setOrderInfo  ( orderURL );        //
-    displayGUI(mrf);                       // Create GUI
-  }
-  
-  private static void displayGUI(MiddleFactory mf)
-  {     
-    JFrame  window = new JFrame();
-		     
-    window.setTitle( "Collection Client (MVC RMI)");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		    
-	CollectModel      model = new CollectModel(mf);
-	CollectView       view  = new CollectView( window, mf, 0, 0 );
-	CollectController cont  = new CollectController( model, view );
-	view.setController( cont );
 
-	model.addObserver( view );       // Add observer to the model
-	window.setVisible(true);         // Display Screen
+    launch(args);
   }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Collection Client (MVC RMI)");
+
+        CollectModel      model = new CollectModel(mrf);
+        CollectView       view  = new CollectView( primaryStage, mrf, 0, 0 );
+        CollectController cont  = new CollectController( model, view );
+        view.setController( cont );
+
+        model.addObserver( view );       // Add observer to the model
+    }
 }

@@ -1,10 +1,11 @@
 package clients.backDoor;
 
-import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
 
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 
 /**
  * The standalone BackDoor Client
@@ -13,8 +14,10 @@ import javax.swing.*;
  */
 
 
-public class BackDoorClient
+public class BackDoorClient extends Application
 {
+   public static RemoteMiddleFactory mrf;
+
    public static void main (String args[])
    {
      String stockURL = args.length < 1     // URL of stock RW
@@ -24,25 +27,23 @@ public class BackDoorClient
                      ? Names.ORDER         //  default  location
                      : args[1];            //  supplied location
      
-    RemoteMiddleFactory mrf = new RemoteMiddleFactory();
-    mrf.setStockRWInfo( stockURL );
-    mrf.setOrderInfo  ( orderURL );        //
-    displayGUI(mrf);                       // Create GUI
+     mrf = new RemoteMiddleFactory();
+     mrf.setStockRWInfo( stockURL );
+     mrf.setOrderInfo  ( orderURL );        //
+     launch(args);
   }
-  
-  private static void displayGUI(MiddleFactory mf)
-  {     
-    JFrame  window = new JFrame();
-     
-    window.setTitle( "BackDoor Client (MVC RMI)");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    
-    BackDoorModel      model = new BackDoorModel(mf);
-    BackDoorView       view  = new BackDoorView( window, mf, 0, 0 );
-    BackDoorController cont  = new BackDoorController( model, view );
-    view.setController( cont );
 
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Display Screen
-  }
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("BackDoor Client (MVC RMI)");
+
+        BackDoorModel      model = new BackDoorModel(mrf);
+        BackDoorView       view  = new BackDoorView( primaryStage, mrf, 0, 0 );
+        BackDoorController cont  = new BackDoorController( model, view );
+        view.setController( cont );
+
+        model.addObserver( view );       // Add observer to the model
+        primaryStage.show();
+   }
 }

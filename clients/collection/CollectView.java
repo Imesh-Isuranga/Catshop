@@ -3,8 +3,12 @@ package clients.collection;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 
-import javax.swing.*;
-import java.awt.*;
+import javafx.collections.*;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,85 +20,107 @@ import java.util.Observer;
 
 public class CollectView implements Observer
 {
- private static final String COLLECT = "Collect";
-  
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+    private static final String COLLECT = "Collect";
 
-  private final JLabel      theAction  = new JLabel();
-  private final JTextField  theInput   = new JTextField();
-  private final JTextArea   theOutput  = new JTextArea();
-  private final JScrollPane theSP      = new JScrollPane();
-  private final JButton     theBtCollect= new JButton( COLLECT );
- 
-  private OrderProcessing   theOrder = null;
-  private CollectController cont     = null;
+    private static final int H = 300;       // Height of window pixels
+    private static final int W = 400;       // Width  of window pixels
 
-  /**
-   * Construct the view
-   * @param rpc   Window in which to construct
-   * @param mf    Factor to deliver order and stock objects
-   * @param x     x-cordinate of position of window on screen 
-   * @param y     y-cordinate of position of window on screen  
-   */
-  public CollectView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-  {
-    try                                           // 
-    {      
-      theOrder = mf.makeOrderProcessing();        // Process order
-    } catch ( Exception e )
+    private final Label      theAction  = new Label();
+    private final TextField  theInput   = new TextField();
+    private final TextArea   theOutput  = new TextArea();
+    private final Button     theBtCollect= new Button( COLLECT );
+
+    private OrderProcessing   theOrder = null;
+    private CollectController cont     = null;
+
+    /**
+    * Construct the view
+    * @param stage   Window in which to construct
+    * @param mf    Factor to deliver order and stock objects
+    * @param x     x-cordinate of position of window on screen
+    * @param y     y-cordinate of position of window on screen
+    */
+    public CollectView(  Stage stage, MiddleFactory mf, int x, int y )
     {
-      System.out.println("Exception: " + e.getMessage() );
+        try                                           //
+        {
+            theOrder = mf.makeOrderProcessing();        // Process order
+        } catch ( Exception e )
+        {
+            System.out.println("Exception: " + e.getMessage() );
+        }
+
+        stage.setWidth( W ); // Set Window Size
+        stage.setHeight( H );
+        stage.setX( x );  // Set Window Position
+        stage.setY( y );
+
+        //    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+
+        theBtCollect.setPrefSize( 80, 40 );  // Check Button
+        theBtCollect.setOnAction(                 // Call back code
+            event -> cont.doCollect( theInput.getText()) );
+
+        theAction.setPrefSize( 270, 20 );       // Message area
+        theAction.setText( "Welcome!" );                        // Blank
+
+        theInput.setPrefSize( 270, 40 );         // Input Area
+        theInput.setText("");                           // Blank
+
+        theOutput.setPrefSize( 270, 160 );          // In TextArea
+        theOutput.setText( "" );                        //  Blank
+//        theOutput.setFont( f );                         //  Uses font
+
+        GridPane buttonPane = new GridPane(); // button Pane
+        buttonPane.addColumn(0, theBtCollect );
+        buttonPane.setVgap(10); // Vertical Spacing
+
+        GridPane infoPane = new GridPane();
+        infoPane.addColumn(0, theAction, theInput, theOutput);
+        infoPane.setVgap(10);
+
+        HBox root = new HBox();
+        root.setSpacing(10);   //Setting the space between the nodes of a root pane
+
+        ObservableList rootList = root.getChildren(); // retrieving the observable list of the root pane
+        rootList.addAll(buttonPane, infoPane); // Adding all the nodes to the observable list
+
+
+        // Set the Size of the GridPane
+        root.setMinSize(700, 500);
+        // Set style
+        String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 5;" +
+                "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
+        String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+
+        root.setStyle(rootStyle);
+        theBtCollect.setStyle(buttonStyle);
+
+        Scene scene = new Scene(root);  // Create the Scene
+        stage.setScene(scene); // Add the scene to the Stage
+
+        theInput.requestFocus();                        // Focus is here
     }
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout(null);                             // No layout manager
-    rootWindow.setSize( W, H );                     // Size of Window
-    rootWindow.setLocation( x, y );
 
-    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
-
-    theBtCollect.setBounds( 16, 25+60*0, 80, 40 );  // Check Button
-    theBtCollect.addActionListener(                 // Call back code
-      e -> cont.doCollect( theInput.getText()) );
-    cp.add( theBtCollect );                         //  Add to canvas
-
-    theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( "" );                        // Blank
-    cp.add( theAction );                            //  Add to canvas
-
-    theInput.setBounds( 110, 50, 270, 40 );         // Input Area
-    theInput.setText("");                           // Blank
-    cp.add( theInput );                             //  Add to canvas
-
-    theSP.setBounds( 110, 100, 270, 160 );          // Scrolling pane
-    theOutput.setText( "" );                        //  Blank
-    theOutput.setFont( f );                         //  Uses font  
-    cp.add( theSP );                                //  Add to canvas
-    theSP.getViewport().add( theOutput );           //  In TextArea
-    rootWindow.setVisible( true );                  // Make visible
-    theInput.requestFocus();                        // Focus is here
-  }  
-  
-  public void setController( CollectController c )
-  {
+    public void setController( CollectController c )
+    {
     cont = c;
-  }
+    }
 
-  /**
-   * Update the view
-   * @param modelC   The observed model
-   * @param arg      Specific args 
-   */
-  @Override 
-  public void update( Observable modelC, Object arg )
-  {
-    CollectModel model  = (CollectModel) modelC;
-    String        message = (String) arg;
-    theAction.setText( message );
-    
-    theOutput.setText( model.getResponce() );
-    theInput.requestFocus();               // Focus is here
-  }
+    /**
+    * Update the view
+    * @param modelC   The observed model
+    * @param arg      Specific args
+    */
+    @Override
+    public void update( Observable modelC, Object arg )
+    {
+        CollectModel model  = (CollectModel) modelC;
+        String        message = (String) arg;
+        theAction.setText( message );
+
+        theOutput.setText( model.getResponce() );
+        theInput.requestFocus();               // Focus is here
+    }
 
 }
