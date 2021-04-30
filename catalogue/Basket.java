@@ -18,7 +18,7 @@ public class Basket extends ArrayList<Product> implements Serializable
 {
   private static final long serialVersionUID = 1;
   private int    theOrderNum = 0;          // Order number
-  
+  private double  theTotalCost = 0.0; // total cost
   /**
    * Constructor for a basket which is
    *  used to represent a customer order/ wish list
@@ -58,7 +58,13 @@ public class Basket extends ArrayList<Product> implements Serializable
   @Override
   public boolean add( Product pr )
   {                              
-    return super.add( pr );     // Call add in ArrayList
+    if(super.add( pr ) == true)     // Call add in ArrayList
+    {
+      theTotalCost += pr.getPrice(); // increase total cost
+      return true;
+    }
+    else
+      return false;
   }
 
   /**
@@ -69,7 +75,9 @@ public class Basket extends ArrayList<Product> implements Serializable
   public Product remove()
   {
     int idx = super.size() - 1;
-    return super.remove(idx);     // Call remove in ArrayList
+    Product pr = super.remove(idx);     // Call remove in ArrayList
+    theTotalCost -= pr.getPrice(); // decrease total cost
+    return pr;
   }
 
   /**
@@ -104,5 +112,13 @@ public class Basket extends ArrayList<Product> implements Serializable
       fr.close();
     }
     return sb.toString();
+  }
+  /**
+   * Returns total cost of products in basket
+   * @return total cost of products in basket
+   */
+  public double getTotalCost()
+  {
+    return theTotalCost;
   }
 }
