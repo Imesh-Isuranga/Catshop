@@ -27,29 +27,32 @@ class Setup
       "productNo      Char(4)," +
       "description    Varchar(40)," +
       "picture        Varchar(80)," +
-      "price          Float)",
+      "price          Float," +
+      "sales          int(11)," +
+      "PRIMARY KEY (productNo))",
 
   "insert into ProductTable values " +
-     "('0001', '40 inch LED HD TV', 'images/pic0001.jpg', 269.00)",
+     "('0001', '40 inch LED HD TV', 'images/pic0001.jpg', 269.00, 10)",
   "insert into ProductTable values " +
-     "('0002', 'DAB Radio',         'images/pic0002.jpg', 29.99)",
+     "('0002', 'DAB Radio',         'images/pic0002.jpg', 29.99, 23)",
   "insert into ProductTable values " +
-     "('0003', 'Toaster',           'images/pic0003.jpg', 19.99)",
+     "('0003', 'Toaster',           'images/pic0003.jpg', 19.99, 99)",
   "insert into ProductTable values " +
-     "('0004', 'Watch',             'images/pic0004.jpg', 29.99)",
+     "('0004', 'Watch',             'images/pic0004.jpg', 29.99, 20)",
   "insert into ProductTable values " +
-     "('0005', 'Digital Camera',    'images/pic0005.jpg', 89.99)",
+     "('0005', 'Digital Camera',    'images/pic0005.jpg', 89.99, 12)",
   "insert into ProductTable values " +
-     "('0006', 'MP3 player',        'images/pic0006.jpg', 7.99)",
+     "('0006', 'MP3 player',        'images/pic0006.jpg', 7.99, 9)",
   "insert into ProductTable values " +
-     "('0007', '32Gb USB2 drive',   'images/pic0007.jpg', 6.99)",
+     "('0007', '32Gb USB2 drive',   'images/pic0007.jpg', 6.99, 20)",
 //  "select * from ProductTable",
 
 
   "drop table StockTable",
   "create table StockTable ("+
       "productNo      Char(4)," +
-      "stockLevel     Integer)",
+      "stockLevel     Integer," +
+      "PRIMARY KEY (productNo))",
 
   "insert into StockTable values ( '0001',  90 )",
   "insert into StockTable values ( '0002',  20 )",

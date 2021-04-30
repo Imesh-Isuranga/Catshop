@@ -62,6 +62,17 @@ public class Basket extends ArrayList<Product> implements Serializable
   }
 
   /**
+   * Remove a last product from the Basket.
+   * @return Removed product
+   */
+  // Will be in the Java doc for Basket
+  public Product remove()
+  {
+    int idx = super.size() - 1;
+    return super.remove(idx);     // Call remove in ArrayList
+  }
+
+  /**
    * Returns a description of the products in the basket suitable for printing.
    * @return a string description of the basket products
    */

@@ -108,9 +108,9 @@ public class CashierModel extends Observable
         theAction = "Check if OK with customer first";
       } else {
         boolean stockBought =                   // Buy
-          theStock.buyStock(                    //  however
-            theProduct.getProductNum(),         //  may fail              
-            theProduct.getQuantity() );         //
+                theStock.buyStock(                    //  however
+                        theProduct.getProductNum(),         //  may fail
+                        theProduct.getQuantity() );         //
         if ( stockBought )                      // Stock bought
         {                                       // T
           makeBasketIfReq();                    //  new Basket ?
@@ -123,14 +123,41 @@ public class CashierModel extends Observable
       }
     } catch( StockException e )
     {
-      DEBUG.error( "%s\n%s", 
-            "CashierModel.doBuy", e.getMessage() );
+      DEBUG.error( "%s\n%s",
+              "CashierModel.doBuy", e.getMessage() );
       theAction = e.getMessage();
     }
     theState = State.process;                   // All Done
     setChanged(); notifyObservers(theAction);
   }
-  
+
+  /**
+   * Remove the product
+   */
+  public void doRemove()
+  {
+    String theAction = "";
+    try
+    {
+      if ( theBasket.isEmpty() )          // check basket
+      {                                         //  with customer
+        theAction = "No product in basket";
+      } else {
+        Product pr =  theBasket.remove();                 // remove from basket
+        theStock.addStock( pr.getProductNum(), 1); // add stock
+        theAction = "Removed " +            //    details
+                pr.getDescription();  //
+      }
+    } catch( StockException e )
+    {
+      DEBUG.error( "%s\n%s",
+              "CashierModel.doBuy", e.getMessage() );
+      theAction = e.getMessage();
+    }
+    theState = State.process;                   // All Done
+    setChanged(); notifyObservers(theAction);
+  }
+
   /**
    * Customer pays for the contents of the basket
    */
