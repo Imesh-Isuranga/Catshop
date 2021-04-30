@@ -17,6 +17,7 @@ import remote.RemoteStockR_I;
 import javax.swing.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,8 +90,22 @@ public class F_StockR implements StockReader
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
-  
-  
+
+  public synchronized ArrayList<Product> findProducts(String pName) throws StockException {
+    DEBUG.trace("F_StockR:findProducts()" );
+    try
+    {
+      if ( aR_StockR == null ) connect();
+      return aR_StockR.findProducts(pName);
+    }
+    catch ( RemoteException e )
+    {
+      aR_StockR = null;
+      throw new StockException( "Net: " + e.getMessage() );
+    }
+  }
+
+
   public synchronized Image getImage(String number )
          throws StockException
   {

@@ -8,6 +8,9 @@ import clients.backDoor.BackDoorView;
 import clients.cashier.CashierController;
 import clients.cashier.CashierModel;
 import clients.cashier.CashierView;
+import clients.catalogueDisplay.CatalogueController;
+import clients.catalogueDisplay.CatalogueModel;
+import clients.catalogueDisplay.CatalogueView;
 import clients.collection.CollectController;
 import clients.collection.CollectModel;
 import clients.collection.CollectView;
@@ -60,7 +63,24 @@ public class Main extends Application
     CustomerController cont  = new CustomerController( model, view );
     view.setController( cont );
 
-	model.addObserver( view );       // Add observer to the model
+    model.addObserver( view );       // Add observer to the model
+    stage.show();
+  }
+
+  public void startCatalogueGUI_MVC(MiddleFactory mlf )
+  {
+    Stage stage = new Stage();
+    stage.setTitle("Catalogue Client MVC");
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
+    Dimension pos = PosOnScrn.getPos();
+
+    CatalogueModel model      = new CatalogueModel(mlf);
+    CatalogueView view        = new CatalogueView( stage, mlf, pos.width, pos.height );
+    CatalogueController cont  = new CatalogueController( model, view );
+    view.setController( cont );
+
+    model.addObserver( view );       // Add observer to the model
     stage.show();
   }
 
@@ -178,6 +198,7 @@ public class Main extends Application
     startCustomerGUI_MVC( mlf );
     if ( many )
      startCustomerGUI_MVC( mlf );
+    startCatalogueGUI_MVC( mlf );
     startCashierGUI_MVC( mlf );
     startBackDoorGUI_MVC( mlf );
     if ( many )

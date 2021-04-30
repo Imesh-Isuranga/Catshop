@@ -1,9 +1,11 @@
 package middle;
 
+import catalogue.Basket;
 import catalogue.Product;
 import javafx.scene.image.Image;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,15 +24,24 @@ public interface StockReader
    * @throws StockException if issue
    */
   boolean exists(String pNum) throws StockException;
-         
-  /**
-   * Returns details about the product in the stock list
-   * @param pNum Product nymber
-   * @return StockNumber, Description, Price, Quantity
-   * @throws StockException if issue
-   */
-  
-  Product getDetails(String pNum) throws StockException;
+
+ /**
+  * Returns details about the product in the stock list
+  * @param pNum Product nymber
+  * @return StockNumber, Description, Price, Quantity
+  * @throws StockException if issue
+  */
+
+ Product getDetails(String pNum) throws StockException;
+
+ /**
+  * Returns products found using name
+  * @param pName Product name
+  * @return list of products
+  * @throws StockException if issue
+  */
+
+ ArrayList<Product> findProducts(String pName) throws StockException;
 
 
  /**

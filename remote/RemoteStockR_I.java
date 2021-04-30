@@ -7,6 +7,7 @@ import middle.StockException;
 import javax.swing.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,5 +27,7 @@ public interface RemoteStockR_I
             throws RemoteException, StockException;
   List<String> getTopProducts(int count)
             throws RemoteException, StockException;
+
+   ArrayList<Product> findProducts(String pName) throws RemoteException, StockException;
 }
 

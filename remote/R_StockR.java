@@ -7,6 +7,7 @@ import middle.StockException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
@@ -76,6 +77,18 @@ public class      R_StockR
           throws RemoteException, StockException
   {
     return aStockR.getTopProducts(count);
+  }
+
+  /**
+   * Returns products found using name
+   * @param pName Product name
+   * @return list of products
+   * @throws StockException if issue
+   */
+  public synchronized ArrayList<Product> findProducts(String pName)
+          throws RemoteException, StockException
+  {
+    return aStockR.findProducts(pName);
   }
 
 }

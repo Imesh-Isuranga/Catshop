@@ -7,6 +7,7 @@ package dbAccess;
  * @version 2.0
  */
 
+import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
 import javafx.scene.image.Image;
@@ -138,6 +139,42 @@ public class StockR implements StockReader
       }
       rs.close();
       return dt;
+    } catch ( SQLException e )
+    {
+      throw new StockException( "SQL getDetails: " + e.getMessage() );
+    }
+  }
+
+  /**
+   * Returns products found using name
+   * @param pName Product name
+   * @return list of products
+   * @throws StockException if issue
+   */
+  public synchronized ArrayList<Product> findProducts(String pName) throws StockException {
+    ArrayList<Product> productList = new ArrayList<>();
+    try
+    {
+      ResultSet rs = getStatementObject().executeQuery(
+              "select ProductTable.productNo as productNo, description, price, stockLevel " +
+                      "  from ProductTable inner join StockTable " +
+                      "  on  ProductTable.productNo = StockTable.productNo " +
+                      "  where ProductTable.description  like '%" + pName + "%'"
+      );
+      boolean res = rs.next();
+      while( res )
+      {
+        Product   dt = new Product( "0", "", 0.00, 0 );
+        dt.setProductNum(rs.getString( "productNo" ) );
+        dt.setDescription(rs.getString( "description" ) );
+        dt.setPrice( rs.getDouble( "price" ) );
+        dt.setQuantity( rs.getInt( "stockLevel" ) );
+
+        productList.add(dt);
+        res = rs.next();
+      }
+      rs.close();
+      return productList;
     } catch ( SQLException e )
     {
       throw new StockException( "SQL getDetails: " + e.getMessage() );
