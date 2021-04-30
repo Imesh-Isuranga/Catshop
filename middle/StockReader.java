@@ -1,8 +1,10 @@
 package middle;
 
 import catalogue.Product;
+import javafx.scene.image.Image;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
   * Interface for read access to the stock list.
@@ -29,14 +31,23 @@ public interface StockReader
    */
   
   Product getDetails(String pNum) throws StockException;
-  
-  
-  /**
-   * Returns an image of the product in the stock list
-   * @param pNum Product nymber
-   * @return Image
-   * @throws StockException if issue
-   */
-  
-  ImageIcon getImage(String pNum) throws StockException;
+
+
+ /**
+  * Returns an image of the product in the stock list
+  * @param pNum Product nymber
+  * @return Image
+  * @throws StockException if issue
+  */
+
+ Image getImage(String pNum) throws StockException;
+
+ /**
+  * Returns product numbers of the Top n products in the stock list
+  * @param count Count of Top Seller Products
+  * @return List<String>
+  * @throws StockException if issue
+  */
+
+ List<String> getTopProducts(int count) throws StockException;
 }

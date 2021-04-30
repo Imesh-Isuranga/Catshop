@@ -11,11 +11,13 @@ package middle;
 
 import catalogue.Product;
 import debug.DEBUG;
+import javafx.scene.image.Image;
 import remote.RemoteStockR_I;
 
 import javax.swing.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * Setup connection to the middle tier
@@ -89,7 +91,7 @@ public class F_StockR implements StockReader
   }
   
   
-  public synchronized ImageIcon getImage( String number )
+  public synchronized Image getImage(String number )
          throws StockException
   {
     DEBUG.trace("F_StockR:getImage()" );
@@ -97,6 +99,20 @@ public class F_StockR implements StockReader
     {
       if ( aR_StockR == null ) connect();
       return aR_StockR.getImage( number );
+    }
+    catch ( RemoteException e )
+    {
+      aR_StockR = null;
+      throw new StockException( "Net: " + e.getMessage() );
+    }
+  }
+
+  public synchronized List<String> getTopProducts(int count) throws StockException {
+    DEBUG.trace("F_StockR:getTopProducts()" );
+    try
+    {
+      if ( aR_StockR == null ) connect();
+      return aR_StockR.getTopProducts( count );
     }
     catch ( RemoteException e )
     {

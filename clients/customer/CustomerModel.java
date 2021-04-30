@@ -3,6 +3,7 @@ package clients.customer;
 import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
+import javafx.scene.image.Image;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockException;
@@ -25,7 +26,7 @@ public class CustomerModel extends Observable
 
   private StockReader     theStock     = null;
   private OrderProcessing theOrder     = null;
-  private ImageIcon       thePic       = null;
+  private Image           thePic       = null;
 
   /*
    * Construct the model of the Customer
@@ -33,7 +34,7 @@ public class CustomerModel extends Observable
    */
   public CustomerModel(MiddleFactory mf)
   {
-    try                                          // 
+    try                                          //
     {  
       theStock = mf.makeStockReader();           // Database access
     } catch ( Exception e )
@@ -42,6 +43,7 @@ public class CustomerModel extends Observable
                   "Database not created?\n%s\n", e.getMessage() );
     }
     theBasket = makeBasket();                    // Initial Basket
+
   }
   
   /**
@@ -111,7 +113,7 @@ public class CustomerModel extends Observable
    * Return a picture of the product
    * @return An instance of an ImageIcon
    */ 
-  public ImageIcon getPicture()
+  public Image getPicture()
   {
     return thePic;
   }
@@ -132,5 +134,6 @@ public class CustomerModel extends Observable
   {
     return new Basket();
   }
+
 }
 

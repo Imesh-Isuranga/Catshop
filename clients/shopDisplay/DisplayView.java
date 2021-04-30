@@ -128,18 +128,21 @@ public class DisplayView extends Canvas implements Observer
  
   public void drawActualScreen( Graphics2D g )  // Re draw contents 
   {
-    g.setPaint( Color.white );            // Paint Colour 
+    g.setPaint( new Color(180, 252, 180) );            // Paint Colour
     W = getWidth(); H = getHeight();      // Current size
     
     g.setFont( font );
     g.fill( new Rectangle2D.Double( 0, 0, W, H ) );
+
+    g.setPaint(Color.blue);
+    g.drawRoundRect(5, 5, W-10, H-10, 5, 5);
 
     // Draw state of system on display
     String lines[] = textToDisplay.split("\n");
     g.setPaint( Color.black );
     for ( int i=0; i<lines.length; i++ )
     {
-      g.drawString( lines[i], 0, 50 + 50*i );
+      g.drawString( lines[i], 10, 50 + 50*i );
     }
     
   }

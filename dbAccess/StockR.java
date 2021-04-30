@@ -9,11 +9,14 @@ package dbAccess;
 
 import catalogue.Product;
 import debug.DEBUG;
+import javafx.scene.image.Image;
 import middle.StockException;
 import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -147,10 +150,10 @@ public class StockR implements StockReader
    *  Assumed to exist in database.
    * @return ImageIcon representing the image
    */
-  public synchronized ImageIcon getImage( String pNum )
+  public synchronized Image getImage(String pNum )
          throws StockException
   {
-    String filename = "default.jpg";  
+    String filename = "default.jpg";
     try
     {
       ResultSet rs   = getStatementObject().executeQuery(
@@ -169,7 +172,42 @@ public class StockR implements StockReader
     }
     
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
-    return new ImageIcon( filename );
+    return new Image( filename );
   }
 
+  /**
+   * Returns product numbers of the Top Seller Products
+   * @param count The products count
+   * @return List of Product numbers of Top Seller Products
+   */
+  public synchronized List<String> getTopProducts(int count )
+          throws StockException
+  {
+    List<String> topProducts = new ArrayList<>();
+    String productNo;
+    try
+    {
+      ResultSet rs   = getStatementObject().executeQuery(
+              "select productNo from ProductTable " +
+                      "  order by sales limit " + count
+      );
+
+      boolean res = rs.next();
+      while( res )
+      {
+        productNo = rs.getString("productNo");
+        if(!productNo.isEmpty())
+          topProducts.add(productNo);
+        res = rs.next();
+      }
+      rs.close();
+    } catch ( SQLException e )
+    {
+      DEBUG.error( "getTopProducts()\n%s\n", e.getMessage() );
+      throw new StockException( "SQL getTopProducts: " + e.getMessage() );
+    }
+
+    //DEBUG.trace( "DB StockR: getTopProducts -> %s", filename );
+    return topProducts;
+  }
 }

@@ -87,7 +87,7 @@ public class PickView implements Observer
     // Set the Size of the GridPane
     root.setMinSize(700, 500);
     // Set style
-    String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 5;" +
+    String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
             "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
     String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
 

@@ -2,10 +2,12 @@ package remote;
 
 import catalogue.Product;
 import dbAccess.StockR;
+import javafx.scene.image.Image;
 import middle.StockException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -51,7 +53,7 @@ public class      R_StockR
   {
     return aStockR.getDetails( pNum );
   }
-  
+
   /**
    * Returns an image of the product
    * BUG However this will not work for distributed version
@@ -59,10 +61,21 @@ public class      R_StockR
    * @param pNum The product number
    * @return Image
    */
-  public synchronized ImageIcon getImage( String pNum )
-         throws RemoteException, StockException
+  public synchronized Image getImage(String pNum )
+          throws RemoteException, StockException
   {
     return aStockR.getImage( pNum );
+  }
+
+  /**
+   * Returns an Product numbers of the Top seller products
+   * @param count products count
+   * @return List of Product numbers
+   */
+  public synchronized  List<String> getTopProducts(int count)
+          throws RemoteException, StockException
+  {
+    return aStockR.getTopProducts(count);
   }
 
 }

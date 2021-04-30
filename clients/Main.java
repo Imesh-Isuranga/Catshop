@@ -1,4 +1,7 @@
 package clients;
+import clients.adDisplay.AdvertsController;
+import clients.adDisplay.AdvertsModel;
+import clients.adDisplay.AdvertsView;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
@@ -57,7 +60,7 @@ public class Main extends Application
     CustomerController cont  = new CustomerController( model, view );
     view.setController( cont );
 
-    model.addObserver( view );       // Add observer to the model
+	model.addObserver( view );       // Add observer to the model
     stage.show();
   }
 
@@ -151,6 +154,23 @@ public class Main extends Application
     stage.show();
   }
 
+  public void startAdvertiseGUI_MVC(MiddleFactory mlf )
+  {
+    Stage stage = new Stage();
+    stage.setTitle( "Advertise Client MVC" );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Dimension pos = PosOnScrn.getPos();
+
+    AdvertsModel model      = new AdvertsModel(mlf);
+    AdvertsView view        = new AdvertsView( stage, mlf, pos.width, pos.height );
+    AdvertsController cont  = new AdvertsController( model, view );
+    view.setController( cont );
+
+    model.addObserver( view );       // Add observer to the model
+    stage.show();
+  }
+
   @Override
   public void start(Stage primaryStage) throws Exception {
     MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
@@ -163,10 +183,11 @@ public class Main extends Application
     if ( many )
       startPickGUI_MVC( mlf );
     startPickGUI_MVC( mlf );
-//    startDisplayGUI_MVC( mlf );
-//    if ( many )
-//      startDisplayGUI_MVC( mlf );
+    startDisplayGUI_MVC( mlf );
+    if ( many )
+      startDisplayGUI_MVC( mlf );
     startCollectionGUI_MVC( mlf );
+    startAdvertiseGUI_MVC(mlf);
   }
 
   @Override
