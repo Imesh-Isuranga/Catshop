@@ -5,7 +5,6 @@ import dbAccess.StockRW;
 import javafx.scene.image.Image;
 import middle.StockException;
 
-import javax.swing.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,8 @@
 package middle;
 
-import catalogue.Basket;
 import catalogue.Product;
 import javafx.scene.image.Image;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 

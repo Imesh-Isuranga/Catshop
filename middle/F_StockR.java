@@ -14,7 +14,6 @@ import debug.DEBUG;
 import javafx.scene.image.Image;
 import remote.RemoteStockR_I;
 
-import javax.swing.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

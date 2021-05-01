@@ -7,14 +7,12 @@ package dbAccess;
  * @version 2.0
  */
 
-import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
 import javafx.scene.image.Image;
 import middle.StockException;
 import middle.StockReader;
 
-import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

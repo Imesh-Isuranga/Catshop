@@ -4,7 +4,6 @@ import catalogue.Product;
 import javafx.scene.image.Image;
 import middle.StockException;
 
-import javax.swing.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
