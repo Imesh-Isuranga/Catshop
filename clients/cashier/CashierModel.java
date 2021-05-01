@@ -187,6 +187,23 @@ public class CashierModel extends Observable
   }
 
   /**
+   * Set Discount rate
+   */
+  public void doDiscount(double discountRate)
+  {
+	  String theAction = "";
+	  if(theBasket != null) {
+		  theBasket.setDiscountRate(discountRate);
+		  theAction = "Discount Rate : " + theBasket.getDiscountRate();
+	  }
+	  else {
+		  theAction = "Cannot discount on empty basket!";
+	  }
+	  
+	  setChanged(); notifyObservers(theAction); // Notify
+  }
+  
+  /**
    * ask for update of view callled at start of day
    * or after system reset
    */

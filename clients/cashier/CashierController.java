@@ -40,6 +40,15 @@ public class CashierController
   }
 
   /**
+   * Discount products in the basket
+   */
+  public void doDiscount( String rateString)
+  {
+	  double rate = Double.parseDouble(rateString);
+	  model.doDiscount(rate);
+  }
+
+  /**
    * remove interaction from view
    */
   public void doRemove()

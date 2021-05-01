@@ -1,6 +1,7 @@
 package catalogue;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Used to hold the following information about
@@ -10,13 +11,13 @@ import java.io.Serializable;
  * @version 2.0
  */
 
-public class Product implements Serializable
+public class Product implements Serializable, Comparator
 {
   private static final long serialVersionUID = 20092506;
   private String theProductNum;       // Product number
   private String theDescription;      // Description of product
   private double thePrice;            // Price of product
-  private int    theQuantity;         // Quantity involved
+  private int    theQuantityInStock;  // Quantity involved
 
   /**
    * Construct a product details
@@ -31,13 +32,13 @@ public class Product implements Serializable
     theProductNum  = aProductNum;     // Product number
     theDescription = aDescription;    // Description of product
     thePrice       = aPrice;          // Price of product
-    theQuantity    = aQuantity;       // Quantity involved
+    theQuantityInStock    = aQuantity;       // Quantity involved
   }
   
   public String getProductNum()  { return theProductNum; }
   public String getDescription() { return theDescription; }
   public double getPrice()       { return thePrice; }
-  public int    getQuantity()    { return theQuantity; }
+  public int    getQuantity()    { return theQuantityInStock; }
   
   public void setProductNum( String aProductNum )
   { 
@@ -56,7 +57,30 @@ public class Product implements Serializable
   
   public void setQuantity( int aQuantity )
   { 
-    theQuantity = aQuantity;
+    theQuantityInStock = aQuantity;
+  }
+
+  // check if the product is equal to the other
+  public boolean equals(Product other)
+  {
+	  if(theProductNum != other.getProductNum())
+		  return false;
+	  else
+		  return true;
+  }
+  
+  /**
+   *  compare two product's product number
+   *  return 0 : numbers are equal, 
+   *  		1: arg0's product number is greater than arg1's
+   *  		-1: arg0's product number is less than arg1
+   */
+  @Override
+  public int compare(Object arg0, Object arg1) {
+	Product pr1 = (Product)arg0;
+	Product pr2 = (Product)arg1;
+		
+	return pr1.getProductNum().compareTo(pr2.getProductNum());
   }
 
 }
