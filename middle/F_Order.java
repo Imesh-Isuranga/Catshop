@@ -61,21 +61,27 @@ public class F_Order implements OrderProcessing
     }
   }
 
-  public int uniqueNumber()
+  /**
+   * Returns an order to need attention from orders
+   * if no order then returns null.
+   * @return An order to need attention
+   */
+
+  public synchronized Basket getOrderToNeedAttention()
          throws OrderException
   {
-    DEBUG.trace("F_Order:uniqueNumber()" );
+    DEBUG.trace("F_Order:getOrderToNeedAttention()" );
     try
     {
       if ( aR_Order == null ) connect();
-      return aR_Order.uniqueNumber();
+      return aR_Order.getOrderToNeedAttention();
     } catch ( Exception e )
     {
       aR_Order = null;
       throw new OrderException( "Net: " + e.getMessage() );
     }
   }
-
+  
   /**
    * Returns an order to pick from the warehouse
    * if no order then returns null.
@@ -155,5 +161,25 @@ public class F_Order implements OrderProcessing
       aR_Order = null;
       throw new OrderException( "Net: " + e.getMessage() );
     }
+  }
+
+  /**
+   * Informs the order processing system that the order has been
+   * needed attention by the customer
+   */
+  public synchronized boolean informNeedAttention(int orderNum) 
+		throws OrderException 
+  {
+	DEBUG.trace("F_Order:informNeedAttention()" );
+	try
+	{
+	  if ( aR_Order == null ) connect();
+	    return aR_Order.informNeedAttention(orderNum);
+	} 
+	catch ( Exception e )
+	{
+	  aR_Order = null;
+	  throw new OrderException( "Net: " + e.getMessage() );
+	}
   }
 }

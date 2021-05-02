@@ -4,7 +4,7 @@ import catalogue.Basket;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
-
+import javafx.application.Platform;
 import javafx.collections.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -154,14 +154,14 @@ public class CashierView implements Observer
   {
     CashierModel model  = (CashierModel) modelC;
     String      message = (String) arg;
-    theAction.setText( message );
+    Platform.runLater(()->theAction.setText(message));
     Basket basket = model.getBasket();
     if ( basket == null )
-      theOutput.setText( "Customers order" );
+    	Platform.runLater(()->theOutput.setText( "Customers order" ));
     else
-      theOutput.setText( basket.getDetails() );
+    	Platform.runLater(()->theOutput.setText( basket.getDetails()));
     
-    theInput.requestFocus();               // Focus is here
+    Platform.runLater(()->theInput.requestFocus());               // Focus is here
   }
 
 }

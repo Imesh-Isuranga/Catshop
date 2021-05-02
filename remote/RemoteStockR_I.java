@@ -27,6 +27,9 @@ public interface RemoteStockR_I
   List<String> getTopProducts(int count)
             throws RemoteException, StockException;
 
-   ArrayList<Product> findProducts(String pName) throws RemoteException, StockException;
+  ArrayList<Product> findProducts(String pName) 
+		  throws RemoteException, StockException;
+  boolean available(String pNum, int amount) 
+		  throws RemoteException, StockException;
 }
 

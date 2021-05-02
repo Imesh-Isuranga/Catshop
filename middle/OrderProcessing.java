@@ -17,15 +17,18 @@ public interface OrderProcessing
   public void newOrder(Basket bought)              // Cashier
          throws OrderException;
 
-  public int  uniqueNumber()                       // Cashier
-         throws OrderException;
-   
   public Basket getOrderToPick()                   // Picker
          throws OrderException;
- 
+  
+  public Basket getOrderToNeedAttention()	// cashier
+  		 throws OrderException;
+  
   public boolean informOrderPicked(int orderNum)   // Picker 
          throws OrderException;
-         
+  
+  public boolean informNeedAttention(int orderNum)
+  		 throws OrderException;
+  
   public boolean informOrderCollected(int orderNum) // Collection
          throws OrderException;
          

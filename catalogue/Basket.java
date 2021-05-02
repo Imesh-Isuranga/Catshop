@@ -6,6 +6,8 @@ import java.util.Currency;
 import java.util.Formatter;
 import java.util.Locale;
 
+import middle.OrderException;
+
 /**
  * A collection of products from the CatShop.
  *  used to record the products that are to be/
@@ -19,71 +21,25 @@ public class Basket extends ArrayList<Product> implements Serializable
   private static final long serialVersionUID = 1;
   private int    theOrderNum = 0;          // Order number
   private double theDiscountRate = 10.0; // discount rate
-  
-  /**
-   * A Product with quantity.
-   */
-  private class ProductOrder
-  {
-	  private Product theProduct; // product
-	  private int theQuantity;	// quantity
-	  
-	  public ProductOrder(Product product, int quantity)
-	  {
-		  theProduct = product;
-		  theQuantity = quantity;
-	  }
-	  
-	  // get product
-	  public Product getProduct()
-	  {
-		  return theProduct;
-	  }
-	  // get quantity
-	  public int getQuantity()
-	  {
-		  return theQuantity;
-	  }
-	  
-	  // set quantity
-	  public void setQuantity(int quantity)
-	  {
-		  theQuantity = quantity;
-	  }
-	  
-	  // increase quantity
-	  public void increaseQuantity()
-	  {
-		  theQuantity += 1;
-	  }
-	  
-	  // decrease quantity
-	  public boolean decreaseQuantity()
-	  {
-		  if(theQuantity == 0)
-			  return false;
-		  theQuantity -= 1;
-		  return false;
-	  }
-  }; 
-  
+ 
+  private static int theNextNumber = 1;          // Start at order 1
+
   /**
    * Constructor for a basket which is
    *  used to represent a customer order/ wish list
    */
   public Basket()
   {
-    theOrderNum  = 0;
+    theOrderNum  = theNextNumber;
   }
   
   /**
    * Set the customers unique order number
-   * Valid order Numbers 1 .. N
-   * @param anOrderNum A unique order number
    */
-  public void setOrderNum( int anOrderNum )
+  public synchronized void setUniqueOrderNum( )
   {
-    theOrderNum = anOrderNum;
+    theOrderNum = theNextNumber;
+    theNextNumber += 1;
   }
 
   /**
@@ -145,7 +101,7 @@ public class Basket extends ArrayList<Product> implements Serializable
   // Will be in the Java doc for Basket
   @Override
   public boolean add( Product pr )
-  {                              
+  {          
     return super.add( pr );     // Call add in ArrayList
   }
 
@@ -153,7 +109,6 @@ public class Basket extends ArrayList<Product> implements Serializable
    * Remove a last product from the Basket.
    * @return Removed product
    */
-  // Will be in the Java doc for Basket
   public Product remove()
   {
     int idx = super.size() - 1;

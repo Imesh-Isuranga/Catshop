@@ -41,7 +41,7 @@ public class CashierClient extends Application
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Cashier Client (MVC RMI)");
 
-        CashierModel      model = new CashierModel(mrf);
+        CashierModel      model = new CashierBetterBasketModel(mrf);
         CashierView       view  = new CashierView( primaryStage, mrf, 0, 0 );
         CashierController cont  = new CashierController( model, view );
         view.setController( cont );

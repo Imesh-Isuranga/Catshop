@@ -36,10 +36,10 @@ public class      R_Order
     
   }
 
-  public int uniqueNumber()
+  public Basket getOrderToNeedAttention()
          throws RemoteException, OrderException
   {
-    return aOrder.uniqueNumber();
+      return aOrder.getOrderToNeedAttention();
   }
   
   public Basket getOrderToPick()
@@ -66,5 +66,12 @@ public class      R_Order
   {
     return aOrder.getOrderState();
   }
+
+@Override
+	public boolean informNeedAttention(int orderNum) 
+			throws RemoteException, OrderException 
+	{
+		return aOrder.informNeedAttention(orderNum);
+	}
 
 }

@@ -22,6 +22,15 @@ public interface StockReader
    * @throws StockException if issue
    */
   boolean exists(String pNum) throws StockException;
+  
+  /**
+   * Checks if the product amount available in the stock
+   * @param pNum Product number
+   * @param amount Product amount
+   * @return true if available otherwise false
+   * @throws StockException if issue
+   */
+  boolean available(String pNum, int amount) throws StockException;
 
  /**
   * Returns details about the product in the stock list

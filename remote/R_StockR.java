@@ -90,4 +90,10 @@ public class      R_StockR
     return aStockR.findProducts(pName);
   }
 
+	public synchronized boolean available(String pNum, int amount) 
+		 throws RemoteException, StockException
+	{
+		return aStockR.available(pNum, amount);
+	}
+
 }

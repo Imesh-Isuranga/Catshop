@@ -121,7 +121,9 @@ public class F_StockR implements StockReader
     }
   }
 
-  public synchronized List<String> getTopProducts(int count) throws StockException {
+  public synchronized List<String> getTopProducts(int count) 
+		  throws StockException 
+  {
     DEBUG.trace("F_StockR:getTopProducts()" );
     try
     {
@@ -134,5 +136,20 @@ public class F_StockR implements StockReader
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+
+	public synchronized boolean available(String pNum, int amount) 
+			throws StockException 
+	{
+	    DEBUG.trace("F_StockR:available()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.available(pNum, amount);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
 
 }

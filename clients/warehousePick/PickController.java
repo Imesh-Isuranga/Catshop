@@ -1,5 +1,7 @@
 package clients.warehousePick;
 
+import middle.StockException;
+
 
 /**
  * The BackDoor Controller
@@ -23,6 +25,7 @@ public class PickController
 
   /**
    * Picked interaction from view
+ * @throws StockException 
    */
   public void doPick()
   {

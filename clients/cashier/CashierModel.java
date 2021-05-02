@@ -19,12 +19,13 @@ public class CashierModel extends Observable
   private State       theState   = State.process;   // Current state
   private Product     theProduct = null;            // Current product
   private Basket      theBasket  = null;            // Bought items
-
   private String      pn = "";                      // Product being processed
 
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
-
+  private StateOf         worker   = new StateOf();
+  private String          theAction  = "";
+ 
   /**
    * Construct the model of the Cashier
    * @param mf The factory to create the connection objects
@@ -41,6 +42,35 @@ public class CashierModel extends Observable
       DEBUG.error("CashierModel.constructor\n%s", e.getMessage() );
     }
     theState   = State.process;                  // Current state
+    // Start a background check to see when a new order can be picked
+    new Thread( () -> checkForNeedAttention() ).start();
+  }
+ 
+  /**
+   * Semaphore used to get need attention order
+   */
+  class StateOf
+  {
+    private boolean held = false;
+    
+    /**
+     * Claim exclusive access
+     * @return true if claimed else false
+     */
+    public synchronized boolean claim()   // Semaphore
+    {
+      return held ? false : (held = true);
+    }
+    
+    /**
+     * Free the lock
+     */
+    public synchronized void free()     //
+    {
+      assert held;
+      held = false;
+    }
+
   }
   
   /**
@@ -53,12 +83,42 @@ public class CashierModel extends Observable
   }
 
   /**
+   * Method run in a separate thread to check if there
+   * is a need attention order
+   */
+  private void checkForNeedAttention()
+  {
+    while ( true )
+    {
+      try
+      {
+        //boolean isFree = worker.claim();     // Are we free
+        if ( /*isFree &&*/ theBasket == null && theState == State.process)                        // T
+        {                                    //
+        	theBasket = theOrder.getOrderToNeedAttention(); // need attention
+        	if(theBasket != null)
+        		theAction = "Need Attention Order #" + theBasket.getOrderNum();  
+        	else
+        		theAction = "Next customer";            // New Customer
+        	setChanged(); notifyObservers(theAction);
+        }                                    // 
+        Thread.sleep(2000);                  // idle
+        //worker.free();
+      } catch ( Exception e )
+      {
+        DEBUG.error("%s\n%s",                // Eek!
+           "BackGroundCheck.run()\n%s",
+           e.getMessage() );
+      }
+    }
+  }
+
+  /**
    * Check if the product is in Stock
    * @param productNum The product number
    */
   public void doCheck(String productNum )
   {
-    String theAction = "";
     theState  = State.process;                  // State process
     pn  = productNum.trim();                    // Product no.
     int    amount  = 1;                         //  & quantity
@@ -99,7 +159,6 @@ public class CashierModel extends Observable
    */
   public void doBuy()
   {
-    String theAction = "";
     int    amount  = 1;                         //  & quantity
     try
     {
@@ -136,7 +195,6 @@ public class CashierModel extends Observable
    */
   public void doRemove()
   {
-    String theAction = "";
     try
     {
       if ( theBasket.isEmpty() )          // check basket
@@ -163,8 +221,6 @@ public class CashierModel extends Observable
    */
   public void doBought()
   {
-    String theAction = "";
-    int    amount  = 1;                       //  & quantity
     try
     {
       if ( theBasket != null &&
@@ -172,17 +228,17 @@ public class CashierModel extends Observable
       {                                       // T
         theOrder.newOrder( theBasket );       //  Process order
         theBasket = null;                     //  reset
-      }                                       //
+      }
+      theBasket = null;
       theAction = "Next customer";            // New Customer
       theState = State.process;               // All Done
-      theBasket = null;
     } catch( OrderException e )
     {
       DEBUG.error( "%s\n%s", 
             "CashierModel.doCancel", e.getMessage() );
       theAction = e.getMessage();
+      theBasket = null;
     }
-    theBasket = null;
     setChanged(); notifyObservers(theAction); // Notify
   }
 
@@ -191,7 +247,6 @@ public class CashierModel extends Observable
    */
   public void doDiscount(double discountRate)
   {
-	  String theAction = "";
 	  if(theBasket != null) {
 		  theBasket.setDiscountRate(discountRate);
 		  theAction = "Discount Rate : " + theBasket.getDiscountRate();
@@ -204,7 +259,7 @@ public class CashierModel extends Observable
   }
   
   /**
-   * ask for update of view callled at start of day
+   * ask for update of view called at start of day
    * or after system reset
    */
   public void askForUpdate()
@@ -217,18 +272,9 @@ public class CashierModel extends Observable
    */
   private void makeBasketIfReq()
   {
-    if ( theBasket == null )
-    {
-      try
-      {
-        int uon   = theOrder.uniqueNumber();     // Unique order num.
+    if ( theBasket == null ) {
         theBasket = makeBasket();                //  basket list
-        theBasket.setOrderNum( uon );            // Add an order number
-      } catch ( OrderException e )
-      {
-        DEBUG.error( "Comms failure\n" +
-                     "CashierModel.makeBasket()\n%s", e.getMessage() );
-      }
+		theBasket.setUniqueOrderNum();
     }
   }
 

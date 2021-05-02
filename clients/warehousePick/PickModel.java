@@ -1,10 +1,12 @@
 package clients.warehousePick;
 
 import catalogue.Basket;
+import catalogue.Product;
 import debug.DEBUG;
 import middle.MiddleFactory;
 import middle.OrderException;
 import middle.OrderProcessing;
+import middle.StockException;
 import middle.StockReadWriter;
 
 import java.util.Observable;
@@ -120,8 +122,26 @@ public class PickModel extends Observable
     return theBasket.get();
   }
 
+  // check order is available
+  private boolean orderAvailable(Basket basket) 
+		  throws StockException
+  {
+	  try {
+		for(Product p : basket) {
+		  if(!theStock.available(p.getProductNum(), p.getQuantity()))
+			return false;
+		}
+		return true;
+	  } catch(Exception e) {
+        DEBUG.error("%s\n%s",                // Eek!
+                "orderAvailable()\n%s",
+                e.getMessage() ); 
+	    return true;
+	  }
+  }
   /**
    * Process a picked Order
+ * @throws StockException 
    */
   public void doPick()
   {
@@ -133,15 +153,23 @@ public class PickModel extends Observable
       {
         theBasket.set( null );                //  Picked
         int no = basket.getOrderNum();        //  Order no
-        theOrder.informOrderPicked( no );     //  Tell system
-        theAction = "";                       //  Inform picker
+        
+        // check order amount is available in stock
+        if(orderAvailable(basket)) {
+            theOrder.informOrderPicked( no );     //  Tell system
+            theAction = "Informed order picked for order #" + no;                       //  Inform picker        
+        }
+        else {
+            theOrder.informNeedAttention(no);
+            theAction = "Informed need attention for Order #" + no;
+        }
         worker.free();                        //  Can pick some more
       } else {                                // F 
         theAction = "No order to pick";       //   Not picked order
       }
       setChanged(); notifyObservers(theAction);
     }
-    catch ( OrderException e )                // Error
+    catch ( Exception e )                // Error
     {                                         //  Of course
       DEBUG.error( "PickModel.doPick()\n%s\n",//  should not
                             e.getMessage() ); //  happen

@@ -5,6 +5,7 @@ import clients.adDisplay.AdvertsView;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
+import clients.cashier.CashierBetterBasketModel;
 import clients.cashier.CashierController;
 import clients.cashier.CashierModel;
 import clients.cashier.CashierView;
@@ -30,7 +31,9 @@ import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 
 /**
@@ -96,7 +99,7 @@ public class Main extends Application
 //    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
-    CashierModel model      = new CashierModel(mlf);
+    CashierModel model      = new CashierBetterBasketModel(mlf);
     CashierView view        = new CashierView( stage, mlf, pos.width, pos.height );
     CashierController cont  = new CashierController( model, view );
     view.setController( cont );

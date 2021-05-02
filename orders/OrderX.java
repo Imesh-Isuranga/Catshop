@@ -35,6 +35,9 @@ public class OrderX implements OrderProcessing
   private static int theNextNumber = 1;          // Start at 1
   // Orders entered but waiting to be processed (picked)
   private ArrayList<Basket>  theWaitingTray = new ArrayList<Basket>();
+  
+  // Orders entered but need to attention
+  private ArrayList<Basket>  theNeddingAttentionTray = new ArrayList<Basket>();
 
   // Orders being processed (currently being picked)
   private ArrayList<Basket>  theBeingPickedTray = new ArrayList<Basket>();
@@ -107,6 +110,47 @@ public class OrderX implements OrderProcessing
      return null;
   }
 
+  /**
+   * Returns an order to need attention.
+   *  However if there is no order avilable then return null.
+   * @return An order to pick.
+   */
+
+  public synchronized Basket getOrderToNeedAttention()
+         throws OrderException
+  {
+    // You need to modify and fill in the correct code
+    DEBUG.trace( "DEBUG: Get order to need attention" );
+    if ( theNeddingAttentionTray.size() > 0 )
+    {
+      Basket process = theNeddingAttentionTray.remove(0);
+      return process;
+    }
+     return null;
+  }
+  
+  /**
+   * Informs the order processing system that the order has been
+   * needed attention and the order to be delivered to cashier
+   * @param  orderNum the order that has been needed attention
+   */
+  public synchronized boolean informNeedAttention(int orderNum) 
+		  throws OrderException 
+  {
+      // You need to modify and fill in the correct code
+      DEBUG.trace( "DEBUG: need attention [%d]", orderNum );
+      for ( int i=0; i<theWaitingTray.size(); i++)
+      {
+        if ( theWaitingTray.get(i).getOrderNum() == orderNum )
+        {
+          Basket needAttention = theWaitingTray.remove(i);
+          theNeddingAttentionTray.add( needAttention );
+          return true;
+        }
+      }
+      return false;
+  }
+  
   /**
    * Informs the order processing system that the order has been
    * picked and the products are now being delivered to the
@@ -188,5 +232,4 @@ public class OrderX implements OrderProcessing
     }
     return res;
   }
-
 }

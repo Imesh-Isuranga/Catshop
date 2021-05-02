@@ -245,4 +245,37 @@ public class StockR implements StockReader
     //DEBUG.trace( "DB StockR: getTopProducts -> %s", filename );
     return topProducts;
   }
+
+  /**
+   * Checks if the product amount available in the stock
+   * @param pNum Product number
+   * @param reqAmount required amount
+   * @return true if available otherwise false
+   * @throws StockException if issue
+   */
+  public boolean available(String pNum, int reqAmount) 
+		  throws StockException 
+  {
+    int availAmount = 0;
+    try
+    {
+      ResultSet rs   = getStatementObject().executeQuery(
+              "select stocklevel from stocktable" +
+                      "   where productNo = '" + pNum + "'"
+      );
+
+      if(rs.next()) {
+        availAmount = rs.getInt("stocklevel");
+      }
+      rs.close();
+    } catch ( SQLException e )
+    {
+      DEBUG.error( "available()\n%s\n", e.getMessage() );
+      throw new StockException( "SQL available : " + e.getMessage() );
+    }
+    if(availAmount > reqAmount)
+    	return true;
+    else
+    	return false;
+  }
 }

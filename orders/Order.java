@@ -24,7 +24,7 @@ import java.util.*;
  
 public class Order implements OrderProcessing
 {
-  private enum State {Waiting, BeingPicked, ToBeCollected };
+  private enum State {Waiting, BeingPicked, NeedAttention, ToBeCollected };
   /**
    * Wraps a Basket and it state into a folder
    */
@@ -48,7 +48,6 @@ public class Order implements OrderProcessing
   
   // Active orders in the Catshop system
   private final ArrayList<Folder>  folders = new ArrayList<>();
-  private static int theNextNumber = 1;          // Start at order 1
 
   /**  
    * Used to generate debug information
@@ -67,17 +66,6 @@ public class Order implements OrderProcessing
     fr.format( ")" );
     fr.close();
     return sb.toString();
-  }
-
-  /**
-   * Generates a unique order number
-   *   would be good to recycle numbers after 999
-   * @return A unique order number
-   */
-  public synchronized int uniqueNumber()
-         throws OrderException
-  {
-    return theNextNumber++;
   }
 
   /**
@@ -116,6 +104,27 @@ public class Order implements OrderProcessing
     return foundWaiting;
   }
 
+  /**
+   * Returns an order to need attention from the orders.
+   * @return An order to need attention or null if no order
+   */
+  public synchronized Basket getOrderToNeedAttention() 
+		throws OrderException 
+  {
+	    DEBUG.trace( "DEBUG: Get order to need attention" );
+	    Basket foundAttention = null;
+	    for ( Folder bws : folders )
+	    {
+	      if ( bws.getState() == State.NeedAttention )
+	      {
+	    	foundAttention = bws.getBasket();
+	        folders.remove(bws); // remove folder
+	        break;
+	      }
+	    }
+	    return foundAttention;
+  }
+  
   /**
    * Informs the order processing system that the order has been
    * picked and the products are now being delivered to the
@@ -159,7 +168,25 @@ public class Order implements OrderProcessing
     }
     return false;
   }
-
+  
+  /**
+   * Informs the order processing system that the order has been
+   * needed attention by the customer
+   * @return true If order is in the system, otherwise false
+   */
+  public synchronized boolean informNeedAttention(int orderNum) {
+	    DEBUG.trace( "DEBUG: Need Attention [%d]", orderNum );
+	    for ( int i=0; i < folders.size(); i++)
+	    {
+	      if ( folders.get(i).getBasket().getOrderNum() == orderNum &&
+	           folders.get(i).getState() == State.BeingPicked )
+	      {
+	          folders.get(i).newState( State.NeedAttention );
+	          return true;
+	      }
+	    }
+	    return false;
+	}
   /**
    * Returns information about all the orders (there order number) 
    * in the order processing system
@@ -216,4 +243,5 @@ public class Order implements OrderProcessing
             .map( folder -> folder.getBasket().getOrderNum() )
             .collect( Collectors.toList() );
   }
+
 }

@@ -17,7 +17,7 @@ public class Product implements Serializable, Comparator
   private String theProductNum;       // Product number
   private String theDescription;      // Description of product
   private double thePrice;            // Price of product
-  private int    theQuantityInStock;  // Quantity involved
+  private int    theQuantity;  // Quantity involved
 
   /**
    * Construct a product details
@@ -32,13 +32,13 @@ public class Product implements Serializable, Comparator
     theProductNum  = aProductNum;     // Product number
     theDescription = aDescription;    // Description of product
     thePrice       = aPrice;          // Price of product
-    theQuantityInStock    = aQuantity;       // Quantity involved
+    theQuantity    = aQuantity;       // Quantity involved
   }
   
   public String getProductNum()  { return theProductNum; }
   public String getDescription() { return theDescription; }
   public double getPrice()       { return thePrice; }
-  public int    getQuantity()    { return theQuantityInStock; }
+  public int    getQuantity()    { return theQuantity; }
   
   public void setProductNum( String aProductNum )
   { 
@@ -57,13 +57,28 @@ public class Product implements Serializable, Comparator
   
   public void setQuantity( int aQuantity )
   { 
-    theQuantityInStock = aQuantity;
+    theQuantity = aQuantity;
   }
-
-  // check if the product is equal to the other
-  public boolean equals(Product other)
+  
+  public void increaseQuantity( )
   {
-	  if(theProductNum != other.getProductNum())
+	theQuantity += 1;
+  }
+  
+  public boolean decreaseQuantity()
+  {
+	  theQuantity -= 1;
+	  if(theQuantity < 1)
+		  return false;
+	  else
+		  return true;
+  }
+  
+  // check if the product is equal to the other
+  @Override
+  public boolean equals(Object other)
+  {
+	  if(theProductNum.compareTo(((Product)other).getProductNum()) != 0)
 		  return false;
 	  else
 		  return true;
