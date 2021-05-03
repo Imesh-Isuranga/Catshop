@@ -5,6 +5,7 @@ import catalogue.BetterBasket;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.*;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,8 +32,8 @@ import java.util.Observer;
 
 public class AdvertsView implements Observer
 {
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 600;       // Height of window pixels
+  private static final int W = 800;       // Width  of window pixels
   private static final int UPDATEINTERVAL = 100; // Ads updating interval
   private static final int ADSCOUNT = 3; // Ads count
 
@@ -40,7 +41,8 @@ public class AdvertsView implements Observer
 
   private final Label theDescription  = new Label();
   private ImageView thePicture = new ImageView();
-
+  private BorderPane theBorderPane = new BorderPane();
+//  private AnchorPane theAngchorPan = new AnchorPane();
   private StockReader theStock   = null;
   private AdvertsController cont= null;
 
@@ -71,29 +73,38 @@ public class AdvertsView implements Observer
     stage.setHeight( H );
     stage.setX( x );  // Set Window Position
     stage.setY( y );
-
-    thePicture.setFitWidth( 350 );   // Picture area
-    thePicture.setFitHeight( 200 );
+    
+    thePicture.setStyle("-fx-background-color: WHITE");
+    thePicture.setFitWidth( 750 );   // Picture area
+    thePicture.setFitHeight( 480 );
     thePicture.setPreserveRatio(true);
-
-    theDescription.setPrefSize( 350, 20 );
+    thePicture.setSmooth(true);
+    thePicture.setCache(true);
+    theBorderPane.setStyle("-fx-background-color: WHITE");
+    theBorderPane.setCenter(thePicture);
+    
+    theDescription.setMaxWidth(Double.MAX_VALUE);
+    theDescription.setPrefSize( 750, 40 );
+    AnchorPane.setLeftAnchor(theDescription, 0.0);
+    AnchorPane.setRightAnchor(theDescription, 0.0);
+    theDescription.setAlignment(Pos.CENTER);
     theDescription.setText( "" );                        //  Blank
 
     VBox root = new VBox();
     root.setSpacing(10);   //Setting the space between the nodes of a root pane
 
     ObservableList rootList = root.getChildren(); //retrieving the observable list of the root pane
-    rootList.addAll(thePicture, theDescription); //Adding all the nodes to the observable list
+    rootList.addAll(theBorderPane, theDescription); //Adding all the nodes to the observable list
 
 
     // Set the Size of the GridPane
-    root.setMinSize(700, 500);
+    root.setMinSize(800, 600);
 
     String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
-            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
-
+            "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
+    String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 16px; -fx-font-weight: bolder;";
     root.setStyle(rootStyle);
-
+    theDescription.setStyle(labelStyle);
 
     Scene scene = new Scene(root);  // Create the Scene
     stage.setScene(scene); // Add the scene to the Stage
@@ -129,9 +140,34 @@ public class AdvertsView implements Observer
     Image image = cont.getPicture(adsIdx % ADSCOUNT);
 
     thePicture.setImage(image);
+//    centerImage();
     theDescription.setText(description);
 
     adsIdx++;
+  }
+  
+  private void centerImage() {
+      Image img = thePicture.getImage();
+      if (img != null) {
+          double w = 0;
+          double h = 0;
+
+          double ratioX = thePicture.getFitWidth() / img.getWidth();
+          double ratioY = thePicture.getFitHeight() / img.getHeight();
+
+          double reducCoeff = 0;
+          if(ratioX >= ratioY) {
+              reducCoeff = ratioY;
+          } else {
+              reducCoeff = ratioX;
+          }
+
+          w = img.getWidth() * reducCoeff;
+          h = img.getHeight() * reducCoeff;
+
+          thePicture.setX((thePicture.getFitWidth() - w) / 2);
+          thePicture.setY((thePicture.getFitHeight() - h) / 2);
+      }
   }
   /**
    * Update the view

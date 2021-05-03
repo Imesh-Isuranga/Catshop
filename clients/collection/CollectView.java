@@ -2,7 +2,6 @@ package clients.collection;
 
 import middle.MiddleFactory;
 import middle.OrderProcessing;
-
 import javafx.collections.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,8 +21,8 @@ public class CollectView implements Observer
 {
     private static final String COLLECT = "Collect";
 
-    private static final int H = 300;       // Height of window pixels
-    private static final int W = 400;       // Width  of window pixels
+    private static final int H = 600;       // Height of window pixels
+    private static final int W = 800;       // Width  of window pixels
 
     private final Label      theAction  = new Label();
     private final TextField  theInput   = new TextField();
@@ -57,23 +56,23 @@ public class CollectView implements Observer
 
         //    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
-        theBtCollect.setPrefSize( 80, 40 );  // Check Button
+        theBtCollect.setPrefSize( 100, 40 );  // Check Button
         theBtCollect.setOnAction(                 // Call back code
             event -> cont.doCollect( theInput.getText()) );
 
-        theAction.setPrefSize( 270, 20 );       // Message area
+        theAction.setPrefSize( 650, 20 );       // Message area
         theAction.setText( "Welcome!" );                        // Blank
 
-        theInput.setPrefSize( 270, 40 );         // Input Area
+        theInput.setPrefSize( 650, 40 );         // Input Area
         theInput.setText("");                           // Blank
 
-        theOutput.setPrefSize( 270, 160 );          // In TextArea
+        theOutput.setPrefSize( 650, 460 );          // In TextArea
         theOutput.setText( "" );                        //  Blank
 //        theOutput.setFont( f );                         //  Uses font
 
         GridPane buttonPane = new GridPane(); // button Pane
         buttonPane.addColumn(0, theBtCollect );
-        buttonPane.setVgap(10); // Vertical Spacing
+        buttonPane.setVgap(30); // Vertical Spacing
 
         GridPane infoPane = new GridPane();
         infoPane.addColumn(0, theAction, theInput, theOutput);
@@ -87,14 +86,24 @@ public class CollectView implements Observer
 
 
         // Set the Size of the GridPane
-        root.setMinSize(700, 500);
+        root.setMinSize(800, 600);
         // Set style
         String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
-                "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
-        String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+                "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
+        String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+        String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+        String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+        String pinkButtonStyle = "-fx-background-radius: 1em; -fx-background-color: pink; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+        String greyButtonStyle = "-fx-background-radius: 1em; -fx-background-color: grey; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+        String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+        String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+        String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
 
         root.setStyle(rootStyle);
-        theBtCollect.setStyle(buttonStyle);
+        theBtCollect.setStyle(blueButtonStyle);
+        theAction.setStyle(labelStyle);
+        theInput.setStyle(inputStyle);
+        theOutput.setStyle(richAreaStyle);
 
         Scene scene = new Scene(root);  // Create the Scene
         stage.setScene(scene); // Add the scene to the Stage

@@ -21,8 +21,8 @@ import java.util.Observer;
  */
 public class CashierView implements Observer
 {
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 600;       // Height of window pixels
+  private static final int W = 800;       // Width  of window pixels
   
   private static final String CHECK  = "Check";
   private static final String BUY    = "Buy";
@@ -69,39 +69,39 @@ public class CashierView implements Observer
 
 //    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
-    theBtCheck.setPrefSize(  80, 40 );    // Check Button
+    theBtCheck.setPrefSize(  100, 40 );    // Check Button
     theBtCheck.setOnAction( event->cont.doCheck( theInput.getText() ) ); // Call back code
     
-    theBtDiscount.setPrefSize(  80, 40 );    // Check Button
+    theBtDiscount.setPrefSize(  100, 40 );    // Check Button
     theBtDiscount.setOnAction( event->cont.doDiscount(theInputDiscount.getText())); // Call back code
 
-    theBtBuy.setPrefSize(  80, 40 );      // Buy button
+    theBtBuy.setPrefSize(  100, 40 );      // Buy button
     theBtBuy.setOnAction( event -> cont.doBuy() );
 
-    theBtBought.setPrefSize(  80, 40 );   // Clear Button
+    theBtBought.setPrefSize(  100, 40 );   // Clear Button
     theBtBought.setOnAction(                  // Call back code
             event -> cont.doBought() );
 
-    theBtRemove.setPrefSize(  80, 40 );   // Clear Button
+    theBtRemove.setPrefSize(  100, 40 );   // Clear Button
     theBtRemove.setOnAction(                  // Call back code
             event -> cont.doRemove() );
 
-    theAction.setPrefSize( 270, 20 );       // Message area
+    theAction.setPrefSize( 650, 20 );       // Message area
     theAction.setText( "Welcome" );                        // Blank
 
-    theInput.setPrefSize( 270, 40 );         // Input Area
+    theInput.setPrefSize( 650, 40 );         // Input Area
     theInput.setText("");                           // Blank
 
-    theInputDiscount.setPrefSize( 270, 40 );         // Input Area
+    theInputDiscount.setPrefSize( 650, 40 );         // Input Area
     theInputDiscount.setText("10.0");                           
 
-    theOutput.setPrefSize( 270, 160 );          // Scrolling pane
+    theOutput.setPrefSize( 650, 400 );          // Scrolling pane
     theOutput.setText( "" );                        //  Blank
 //    theOutput.setFont( f );                         //  Uses font
 
     GridPane buttonPane = new GridPane(); // button Pane
     buttonPane.addColumn(0, theBtCheck, theBtBuy, theBtRemove, theBtBought, theBtDiscount);
-    buttonPane.setVgap(10); // Vertical Spacing
+    buttonPane.setVgap(30); // Vertical Spacing
 
     GridPane infoPane = new GridPane();
     infoPane.addColumn(0, theAction, theInput, theOutput, theInputDiscount);
@@ -115,18 +115,29 @@ public class CashierView implements Observer
 
 
     // Set the Size of the GridPane
-    root.setMinSize(700, 500);
+    root.setMinSize(800, 600);
     // Set style
     String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
-            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
-    String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+            "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
+    String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String pinkButtonStyle = "-fx-background-radius: 1em; -fx-background-color: pink; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String greyButtonStyle = "-fx-background-radius: 1em; -fx-background-color: grey; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+    String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+    String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
 
     root.setStyle(rootStyle);
-    theBtCheck.setStyle(buttonStyle);
-    theBtBuy.setStyle(buttonStyle);
-    theBtBought.setStyle(buttonStyle);
-    theBtRemove.setStyle(buttonStyle);
-    theBtDiscount.setStyle(buttonStyle);
+    theBtCheck.setStyle(blueButtonStyle);
+    theBtBuy.setStyle(redButtonStyle);
+    theBtBought.setStyle(brownButtonStyle);
+    theBtRemove.setStyle(greyButtonStyle);
+    theBtDiscount.setStyle(pinkButtonStyle);
+    theInput.setStyle(inputStyle);
+    theInputDiscount.setStyle(inputStyle);
+    theOutput.setStyle(richAreaStyle);
+    theAction.setStyle(labelStyle);
 
     Scene scene = new Scene(root);  // Create the Scene
     stage.setScene(scene); // Add the scene to the Stage

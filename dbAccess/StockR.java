@@ -224,7 +224,7 @@ public class StockR implements StockReader
     {
       ResultSet rs   = getStatementObject().executeQuery(
               "select productNo from ProductTable " +
-                      "  order by sales limit " + count
+                      "  order by sales DESC limit " + count
       );
 
       boolean res = rs.next();

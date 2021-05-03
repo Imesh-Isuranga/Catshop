@@ -21,9 +21,9 @@ import java.util.Observer;
 public class DisplayView extends Canvas implements Observer
 {
   private static final long serialVersionUID = 1L;
-  private Font font = new Font("Monospaced",Font.BOLD,24);
-  private int H = 300;         // Height of window 
-  private int W = 400;         // Width  of window 
+  private Font font = new Font("Monospaced",Font.BOLD,36);
+  private int H = 600;         // Height of window 
+  private int W = 800;         // Width  of window 
   private String textToDisplay = "";
   private DisplayController cont= null;
   
@@ -128,13 +128,13 @@ public class DisplayView extends Canvas implements Observer
  
   public void drawActualScreen( Graphics2D g )  // Re draw contents 
   {
-    g.setPaint( new Color(180, 252, 180) );            // Paint Colour
+    g.setPaint( new Color(171, 156, 217) );            // Paint Colour
     W = getWidth(); H = getHeight();      // Current size
     
     g.setFont( font );
     g.fill( new Rectangle2D.Double( 0, 0, W, H ) );
 
-    g.setPaint(Color.blue);
+    g.setPaint(new Color(128, 0, 128));
     g.drawRoundRect(5, 5, W-10, H-10, 5, 5);
 
     // Draw state of system on display
@@ -142,7 +142,7 @@ public class DisplayView extends Canvas implements Observer
     g.setPaint( Color.black );
     for ( int i=0; i<lines.length; i++ )
     {
-      g.drawString( lines[i], 10, 50 + 50*i );
+      g.drawString( lines[i], 50, 100 + 120*i );
     }
     
   }

@@ -8,7 +8,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import middle.MiddleFactory;
 import middle.StockReadWriter;
 import middle.StockReader;
@@ -28,8 +27,8 @@ public class BackDoorView implements Observer
   private static final String CLEAR    = "Clear";
   private static final String QUERY    = "Query";
  
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 600;       // Height of window pixels
+  private static final int W = 800;       // Width  of window pixels
 
   private final Label      theAction  = new Label();
   private final TextField  theInput   = new TextField();
@@ -65,32 +64,32 @@ public class BackDoorView implements Observer
     
 //    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
-    theBtQuery.setPrefSize( 80, 40 ); // Buy button
+    theBtQuery.setPrefSize( 100, 40 ); // Buy button
     theBtQuery.setOnAction(event->cont.doQuery( theInput.getText() ) ); // Call back code
 
-    theBtRStock.setPrefSize( 80, 40 ); // Check Button
+    theBtRStock.setPrefSize( 100, 40 ); // Check Button
     theBtRStock.setOnAction(event->cont.doRStock( theInput.getText(),
             theInputNo.getText() ) ); // Call back code
 
-    theBtClear.setPrefSize( 80, 40 ); // Clear button
+    theBtClear.setPrefSize( 100, 40 ); // Clear button
     theBtClear.setOnAction(event->cont.doClear() ); // Call back code
 
 
-    theAction.setPrefSize( 270, 20 ); // Message area
+    theAction.setPrefSize( 650, 20 ); // Message area
     theAction.setText( "Welcome!" );                        // Blank
 
-    theInput.setPrefSize( 120, 40 ); // Input Area
+    theInput.setPrefSize( 315, 40 ); // Input Area
     theInput.setText("");                           // Blank
 
-    theInputNo.setPrefSize( 120, 40 ); // Input Area
+    theInputNo.setPrefSize( 315, 40 ); // Input Area
     theInputNo.setText("0");                        // 0
 
-    theOutput.setPrefSize( 270, 160 ); // Output text area
+    theOutput.setPrefSize( 650, 460 ); // Output text area
     theOutput.setText( "" );                        //  Blank
 
     GridPane buttonPane = new GridPane(); // button Pane
     buttonPane.addColumn(0, theBtQuery, theBtRStock, theBtClear);
-    buttonPane.setVgap(10); // Vertical Spacing
+    buttonPane.setVgap(30); // Vertical Spacing
 
     GridPane inputPane = new GridPane();
     inputPane.addRow(0, theInput, theInputNo);
@@ -108,17 +107,26 @@ public class BackDoorView implements Observer
 
 
     // Set the Size of the GridPane
-    root.setMinSize(700, 500);
+    root.setMinSize(800, 600);
     // Set style
     String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
-            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
-    String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+            "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
+    String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+    String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+    String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
 
     root.setStyle(rootStyle);
-    theBtQuery.setStyle(buttonStyle);
-    theBtRStock.setStyle(buttonStyle);
-    theBtClear.setStyle(buttonStyle);
-
+    theBtQuery.setStyle(redButtonStyle);
+    theBtRStock.setStyle(blueButtonStyle);
+    theBtClear.setStyle(brownButtonStyle);
+    theAction.setStyle(labelStyle);
+    theOutput.setStyle(richAreaStyle);
+    theInput.setStyle(inputStyle);
+    theInputNo.setStyle(inputStyle);
+    
     Scene scene = new Scene(root);  // Create the Scene
     stage.setScene(scene); // Add the scene to the Stage
 

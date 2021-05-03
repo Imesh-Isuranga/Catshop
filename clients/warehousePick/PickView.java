@@ -4,7 +4,6 @@ import catalogue.Basket;
 import javafx.application.Platform;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
-
 import javafx.collections.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,8 +23,8 @@ public class PickView implements Observer
 {
   private static final String PICKED = "Picked";
 
-  private static final int H = 300;       // Height of window pixels
-  private static final int W = 400;       // Width  of window pixels
+  private static final int H = 600;       // Height of window pixels
+  private static final int W = 800;       // Width  of window pixels
 
   private final Label      theAction  = new Label();
   private final TextArea   theOutput  = new TextArea();
@@ -58,20 +57,20 @@ public class PickView implements Observer
 
 //    Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
-    theBtPicked.setPrefSize( 80, 40 );   // Check Button
+    theBtPicked.setPrefSize( 100, 40 );   // Check Button
     theBtPicked.setOnAction(                   // Call back code
       event -> cont.doPick() );
 
-    theAction.setPrefSize( 270, 20 );       // Message area
+    theAction.setPrefSize( 650, 20 );       // Message area
     theAction.setText( "Welcome!" );                        // Blank
 
-    theOutput.setPrefSize( 270, 205 );           // In TextArea
+    theOutput.setPrefSize( 650, 505 );           // In TextArea
     theOutput.setText( "" );                        //  Blank
 //    theOutput.setFont( f );                         //  Uses font
 
     GridPane buttonPane = new GridPane(); // button Pane
     buttonPane.addColumn(0, theBtPicked);
-    buttonPane.setVgap(10); // Vertical Spacing
+    buttonPane.setVgap(30); // Vertical Spacing
 
     GridPane infoPane = new GridPane();
     infoPane.addColumn(0, theAction, theOutput);
@@ -85,14 +84,23 @@ public class PickView implements Observer
 
 
     // Set the Size of the GridPane
-    root.setMinSize(700, 500);
+    root.setMinSize(800, 600);
     // Set style
     String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
-            "-fx-border-radius: 5; -fx-border-color: blue; -fx-background-color: #b4fcb4;";
-    String buttonStyle = "-fx-background-color: #71fc48; -fx-text-fill: black;";
+            "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
+    String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String pinkButtonStyle = "-fx-background-radius: 1em; -fx-background-color: pink; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String greyButtonStyle = "-fx-background-radius: 1em; -fx-background-color: grey; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+    String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 14px";
+    String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
 
     root.setStyle(rootStyle);
-    theBtPicked.setStyle(buttonStyle);
+    theBtPicked.setStyle(blueButtonStyle);
+    theAction.setStyle(labelStyle);
+    theOutput.setStyle(richAreaStyle);
 
     Scene scene = new Scene(root);  // Create the Scene
     stage.setScene(scene); // Add the scene to the Stage

@@ -32,17 +32,17 @@ class Setup
       "PRIMARY KEY (productNo))",
 
   "insert into ProductTable values " +
-     "('0001', '40 inch LED HD TV', 'images/pic0001.jpg', 269.00, 10)",
+     "('0001', '13 inch Tablet PC', 'images/pic0001.jpg', 65.00, 60)",
   "insert into ProductTable values " +
-     "('0002', 'DAB Radio',         'images/pic0002.jpg', 29.99, 23)",
+     "('0002', 'Headphone',         'images/pic0002.jpg', 19.99, 23)",
   "insert into ProductTable values " +
-     "('0003', 'Toaster',           'images/pic0003.jpg', 19.99, 99)",
+     "('0003', 'Mouse',           'images/pic0003.jpg', 4.99, 99)",
   "insert into ProductTable values " +
      "('0004', 'Watch',             'images/pic0004.jpg', 29.99, 20)",
   "insert into ProductTable values " +
-     "('0005', 'Digital Camera',    'images/pic0005.jpg', 89.99, 12)",
+     "('0005', 'Glass',    'images/pic0005.jpg', 6.99, 12)",
   "insert into ProductTable values " +
-     "('0006', 'MP3 player',        'images/pic0006.jpg', 7.99, 9)",
+     "('0006', 'iPhone',        'images/pic0006.jpg', 130.99, 9)",
   "insert into ProductTable values " +
      "('0007', '32Gb USB2 drive',   'images/pic0007.jpg', 6.99, 20)",
 //  "select * from ProductTable",
