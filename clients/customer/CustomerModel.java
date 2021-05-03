@@ -116,7 +116,12 @@ public class CustomerModel extends Observable
 	    try
 	    {
 	        Product pr = theStock.getDetails( pn ); //  Product
-	        if ( pr.getQuantity() >= amount )       //  In stock?
+	        pr.setQuantity(amount);
+	        boolean stockBought =                   // Buy
+	                theStock.buyStock(                    //  however
+	                		pr.getProductNum(),         //  may fail
+	                		pr.getQuantity() );         // reserve one product at a time
+	        if ( stockBought )       //  success to buy
 	        { 
 	          theAction =                           //   Display 
 	            String.format( "Product #%s is reserved for you!", pn);
@@ -169,14 +174,49 @@ public class CustomerModel extends Observable
   }
 
   /**
+   * Remove last reserved product
+   */
+  public void doRemove()
+  {
+	  String theAction = "";
+	  if(theBasket.isEmpty()) {
+		  theAction = "No Product to remove!";
+	  }
+	  else {
+		  try {
+			  Product pr = theBasket.remove();
+			  theStock.addStock(pr.getProductNum(), pr.getQuantity());
+			  theAction = String.format("Product #%s has been removed.", pr.getProductNum());
+		  } catch (StockException e) {
+		      DEBUG.error("CustomerClient.doRemove()\n%s",
+		    	      e.getMessage() );
+		  }
+	  }
+	  theState = State.process;
+	  setChanged(); notifyObservers(theAction);
+  }
+  
+  /**
    * Clear the products from the basket
    */
   public void doClear()
   {
     String theAction = "";
-    theBasket.clear();                        // Clear s. list
-    theAction = "Enter Product Number";       // Set display
-    thePic = null;                            // No picture
+    try {
+        // restore reserved products
+        for(Product pr : theBasket) {
+        	theStock.addStock(pr.getProductNum(), pr.getQuantity());
+        	pr = theBasket.remove();
+        }
+        theBasket.clear();                        // Clear s. list
+        theAction = "Enter Product Number";       // Set display
+        thePic = null;                            // No picture
+    }  catch( StockException e )
+    {
+		DEBUG.error("CustomerClient.doClear()\n%s",
+	 	e.getMessage() );
+	}
+    theState = State.process;
     setChanged(); notifyObservers(theAction);
   }
   

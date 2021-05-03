@@ -40,6 +40,14 @@ public class CustomerController
   }
   
   /**
+   * remove last reserved product
+   */
+  public void doRemove()
+  {
+    model.doRemove();
+  }
+  
+  /**
    * submit reservation
    */
   public void doSubmitReservation()

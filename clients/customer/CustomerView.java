@@ -36,6 +36,7 @@ public class CustomerView implements Observer
     public static final String CLEAR  = "Clear";
     public static final String RESERVE  = "Reserve";
     public static final String SUBMIT  = "Submit";
+    public static final String REMOVE  = "Remove";
   }
 
   private static final int H = 600;       // Height of window pixels
@@ -51,6 +52,7 @@ public class CustomerView implements Observer
   private final Button     theBtClear = new Button( Name.CLEAR );
   private final Button     theBtReserve = new Button( Name.RESERVE );
   private final Button     theBtSubmit = new Button( Name.SUBMIT );
+  private final Button     theBtRemove = new Button( Name.REMOVE );
 
   private ImageView thePicture = new ImageView();
 
@@ -97,6 +99,9 @@ public class CustomerView implements Observer
     theBtSubmit.setPrefSize( 100, 40 ); // Submit Button Size
     theBtSubmit.setOnAction(event -> cont.doSubmitReservation());
 
+    theBtRemove.setPrefSize( 100, 40 ); // Submit Button Size
+    theBtRemove.setOnAction(event -> cont.doRemove());
+
     thePicture.setFitWidth( 100 );   // Picture area
     thePicture.setFitHeight( 100 );
 
@@ -113,7 +118,7 @@ public class CustomerView implements Observer
     theOutput.setText( "" );                        //  Blank
 
     GridPane buttonBar = new GridPane();
-    buttonBar.addColumn(0, theBtCheck, thePicture, theBtClear, theBtReserve, theBtSubmit);
+    buttonBar.addColumn(0, theBtCheck, thePicture, theBtClear, theBtReserve, theBtRemove, theBtSubmit);
     buttonBar.setVgap(30); // Set the horizontal spacing to 10px
     
     GridPane inputBar = new GridPane();
@@ -145,10 +150,11 @@ public class CustomerView implements Observer
     String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
     
     root.setStyle(rootStyle);
-    theBtClear.setStyle(greyButtonStyle);
+    theBtClear.setStyle(brownButtonStyle);
     theBtCheck.setStyle(redButtonStyle);
     theBtReserve.setStyle(pinkButtonStyle);
     theBtSubmit.setStyle(blueButtonStyle);
+    theBtRemove.setStyle(greyButtonStyle);
     theInputName.setStyle(labelStyle);
     theInput.setStyle(inputStyle);
     theOutput.setStyle(richAreaStyle);

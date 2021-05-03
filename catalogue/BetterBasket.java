@@ -56,7 +56,8 @@ public class BetterBasket extends Basket implements Serializable
 	  // if quantity is 0, remove the product
 	  if(((Product)get(idx)).decreaseQuantity() != true)
 		  this.remove(idx);
-	  return pr;
+	  
+	  return new Product(pr.getProductNum(), pr.getDescription(), pr.getPrice(), 1);
   }
   
   private int findIndex(String prNum)
