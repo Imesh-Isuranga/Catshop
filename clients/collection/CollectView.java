@@ -25,6 +25,7 @@ public class CollectView implements Observer
     private static final int W = 800;       // Width  of window pixels
 
     private final Label      theAction  = new Label();
+    private final Label      theInputName  = new Label();
     private final TextField  theInput   = new TextField();
     private final TextArea   theOutput  = new TextArea();
     private final Button     theBtCollect= new Button( COLLECT );
@@ -63,7 +64,10 @@ public class CollectView implements Observer
         theAction.setPrefSize( 650, 20 );       // Message area
         theAction.setText( "Welcome!" );                        // Blank
 
-        theInput.setPrefSize( 650, 40 );         // Input Area
+        theInputName.setPrefSize( 100, 40 );         // Input Area
+        theInputName.setText("Order Number:");                           // Blank
+
+        theInput.setPrefSize( 540, 40 );         // Input Area
         theInput.setText("");                           // Blank
 
         theOutput.setPrefSize( 650, 460 );          // In TextArea
@@ -74,8 +78,12 @@ public class CollectView implements Observer
         buttonPane.addColumn(0, theBtCollect );
         buttonPane.setVgap(30); // Vertical Spacing
 
+        GridPane iputPane = new GridPane(); // button Pane
+        iputPane.addRow(0, theInputName, theInput );
+        iputPane.setHgap(10); // Vertical Spacing
+
         GridPane infoPane = new GridPane();
-        infoPane.addColumn(0, theAction, theInput, theOutput);
+        infoPane.addColumn(0, theAction, iputPane, theOutput);
         infoPane.setVgap(10);
 
         HBox root = new HBox();
@@ -103,6 +111,7 @@ public class CollectView implements Observer
         theBtCollect.setStyle(blueButtonStyle);
         theAction.setStyle(labelStyle);
         theInput.setStyle(inputStyle);
+        theInputName.setStyle(labelStyle);
         theOutput.setStyle(richAreaStyle);
 
         Scene scene = new Scene(root);  // Create the Scene

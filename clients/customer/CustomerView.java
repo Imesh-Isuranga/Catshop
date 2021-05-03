@@ -42,6 +42,7 @@ public class CustomerView implements Observer
   private AudioClip theAudioClip;
 
   private final Label theAction  = new Label();
+  private final Label theInputName = new Label();
   private final TextField  theInput   = new TextField();
   private final TextArea   theOutput  = new TextArea();
   private final Button     theBtCheck = new Button( Name.CHECK );
@@ -92,7 +93,10 @@ public class CustomerView implements Observer
     theAction.setPrefSize( 650, 20 );
     theAction.setText( "Welcome!" );                        //  Blank
 
-    theInput.setPrefSize( 650, 40 );
+    theInputName.setPrefSize(100, 40);
+    theInputName.setText("Product No:");
+    
+    theInput.setPrefSize( 540, 40 );
     theInput.setText("");                           // Blank
 
     theOutput.setPrefSize( 650, 460 );
@@ -101,9 +105,13 @@ public class CustomerView implements Observer
     GridPane buttonBar = new GridPane();
     buttonBar.addColumn(0, theBtCheck, theBtClear, thePicture);
     buttonBar.setVgap(30); // Set the horizontal spacing to 10px
-
+    
+    GridPane inputBar = new GridPane();
+    inputBar.addRow(0, theInputName, theInput);
+    inputBar.setHgap(10);
+    
     GridPane infoBar = new GridPane();
-    infoBar.addColumn(0, theAction, theInput, theOutput);
+    infoBar.addColumn(0, theAction, inputBar, theOutput);
     infoBar.setVgap(10);
 
     HBox root = new HBox();
@@ -126,6 +134,7 @@ public class CustomerView implements Observer
     root.setStyle(rootStyle);
     theBtClear.setStyle(redButtonStyle);
     theBtCheck.setStyle(blueButtonStyle);
+    theInputName.setStyle(labelStyle);
     theInput.setStyle(inputStyle);
     theOutput.setStyle(richAreaStyle);
     theAction.setStyle(labelStyle);

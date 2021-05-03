@@ -31,8 +31,10 @@ public class BackDoorView implements Observer
   private static final int W = 800;       // Width  of window pixels
 
   private final Label      theAction  = new Label();
+  private final Label      theInputName  = new Label();
+  private final Label      theAmountName  = new Label();
   private final TextField  theInput   = new TextField();
-  private final TextField  theInputNo = new TextField();
+  private final TextField  theInputAmount = new TextField();
   private final TextArea   theOutput  = new TextArea();
   private final Button     theBtClear = new Button( CLEAR );
   private final Button     theBtRStock = new Button( RESTOCK );
@@ -69,7 +71,7 @@ public class BackDoorView implements Observer
 
     theBtRStock.setPrefSize( 100, 40 ); // Check Button
     theBtRStock.setOnAction(event->cont.doRStock( theInput.getText(),
-            theInputNo.getText() ) ); // Call back code
+            theInputAmount.getText() ) ); // Call back code
 
     theBtClear.setPrefSize( 100, 40 ); // Clear button
     theBtClear.setOnAction(event->cont.doClear() ); // Call back code
@@ -78,11 +80,17 @@ public class BackDoorView implements Observer
     theAction.setPrefSize( 650, 20 ); // Message area
     theAction.setText( "Welcome!" );                        // Blank
 
-    theInput.setPrefSize( 315, 40 ); // Input Area
+    theInputName.setPrefSize( 100, 40 ); // Input Area
+    theInputName.setText("Product No:");                           // Blank
+
+    theInput.setPrefSize( 210, 40 ); // Input Area
     theInput.setText("");                           // Blank
 
-    theInputNo.setPrefSize( 315, 40 ); // Input Area
-    theInputNo.setText("0");                        // 0
+    theAmountName.setPrefSize( 110, 40 ); // Input Area
+    theAmountName.setText("Product Amount:");                           // Blank
+
+    theInputAmount.setPrefSize( 200, 40 ); // Input Area
+    theInputAmount.setText("0");                        // 0
 
     theOutput.setPrefSize( 650, 460 ); // Output text area
     theOutput.setText( "" );                        //  Blank
@@ -92,8 +100,8 @@ public class BackDoorView implements Observer
     buttonPane.setVgap(30); // Vertical Spacing
 
     GridPane inputPane = new GridPane();
-    inputPane.addRow(0, theInput, theInputNo);
-    inputPane.setHgap(20);
+    inputPane.addRow(0, theInputName, theInput, theAmountName, theInputAmount);
+    inputPane.setHgap(10);
 
     GridPane infoPane = new GridPane();
     infoPane.addColumn(0, theAction, inputPane, theOutput);
@@ -125,7 +133,9 @@ public class BackDoorView implements Observer
     theAction.setStyle(labelStyle);
     theOutput.setStyle(richAreaStyle);
     theInput.setStyle(inputStyle);
-    theInputNo.setStyle(inputStyle);
+    theInputAmount.setStyle(inputStyle);
+    theInputName.setStyle(labelStyle);
+    theAmountName.setStyle(labelStyle);
     
     Scene scene = new Scene(root);  // Create the Scene
     stage.setScene(scene); // Add the scene to the Stage

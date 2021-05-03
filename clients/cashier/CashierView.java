@@ -31,6 +31,8 @@ public class CashierView implements Observer
   private static final String DISCOUNT = "Discount";
   
   private final Label      theAction  = new Label();
+  private final Label      theInputName  = new Label();
+  private final Label      theDiscountName  = new Label();
   private final TextField  theInput   = new TextField();
   private final TextField  theInputDiscount   = new TextField();
   private final TextArea   theOutput  = new TextArea();
@@ -89,10 +91,16 @@ public class CashierView implements Observer
     theAction.setPrefSize( 650, 20 );       // Message area
     theAction.setText( "Welcome" );                        // Blank
 
-    theInput.setPrefSize( 650, 40 );         // Input Area
+    theInputName.setPrefSize( 100, 40 );         // Input Area
+    theInputName.setText("Product No:");                           // Blank
+
+    theInput.setPrefSize( 540, 40 );         // Input Area
     theInput.setText("");                           // Blank
 
-    theInputDiscount.setPrefSize( 650, 40 );         // Input Area
+    theDiscountName.setPrefSize( 100, 40 );         // Input Area
+    theDiscountName.setText("Discount Rate:");                           // Blank
+
+    theInputDiscount.setPrefSize( 540, 40 );         // Input Area
     theInputDiscount.setText("10.0");                           
 
     theOutput.setPrefSize( 650, 400 );          // Scrolling pane
@@ -103,8 +111,16 @@ public class CashierView implements Observer
     buttonPane.addColumn(0, theBtCheck, theBtBuy, theBtRemove, theBtBought, theBtDiscount);
     buttonPane.setVgap(30); // Vertical Spacing
 
+    GridPane inputBar = new GridPane();
+    inputBar.addRow(0, theInputName, theInput);
+    inputBar.setHgap(10);
+
+    GridPane discountBar = new GridPane();
+    discountBar.addRow(0, theDiscountName, theInputDiscount);
+    discountBar.setHgap(10);
+
     GridPane infoPane = new GridPane();
-    infoPane.addColumn(0, theAction, theInput, theOutput, theInputDiscount);
+    infoPane.addColumn(0, theAction, inputBar, theOutput, discountBar);
     infoPane.setVgap(10);
 
     HBox root = new HBox();
@@ -134,6 +150,8 @@ public class CashierView implements Observer
     theBtBought.setStyle(brownButtonStyle);
     theBtRemove.setStyle(greyButtonStyle);
     theBtDiscount.setStyle(pinkButtonStyle);
+    theInputName.setStyle(labelStyle);
+    theDiscountName.setStyle(labelStyle);
     theInput.setStyle(inputStyle);
     theInputDiscount.setStyle(inputStyle);
     theOutput.setStyle(richAreaStyle);

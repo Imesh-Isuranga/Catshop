@@ -38,6 +38,7 @@ public class CatalogueView implements Observer {
     private static final int W = 800;       // Width  of window pixels
 
     private final Label theAction = new Label();
+    private final Label theInputName = new Label();
     private final TextField theInput = new TextField();
     private final TextArea theOutput = new TextArea();
     private final Button theBtFind = new Button(clients.catalogueDisplay.CatalogueView.Name.FIND);
@@ -78,7 +79,10 @@ public class CatalogueView implements Observer {
         theAction.setPrefSize(650, 20);
         theAction.setText("Welcome!");                        //  Blank
 
-        theInput.setPrefSize(650, 40);
+        theInputName.setPrefSize(100, 40);
+        theInputName.setText("Product Name:");                           // Blank
+
+        theInput.setPrefSize(540, 40);
         theInput.setText("");                           // Blank
 
         theOutput.setPrefSize(650, 460);
@@ -87,9 +91,13 @@ public class CatalogueView implements Observer {
         GridPane buttonBar = new GridPane();
         buttonBar.addColumn(0, theBtFind, theBtClear);
         buttonBar.setVgap(30); // Set the horizontal spacing to 10px
-
+        
+        GridPane inputBar = new GridPane();
+        inputBar.addRow(0,  theInputName, theInput);
+        inputBar.setHgap(10);
+        
         GridPane infoBar = new GridPane();
-        infoBar.addColumn(0, theAction, theInput, theOutput);
+        infoBar.addColumn(0, theAction, inputBar, theOutput);
         infoBar.setVgap(10);
 
         HBox root = new HBox();
@@ -120,6 +128,7 @@ public class CatalogueView implements Observer {
         theAction.setStyle(labelStyle);
         theOutput.setStyle(richAreaStyle);
         theInput.setStyle(inputStyle);
+        theInputName.setStyle(labelStyle);
 
         Scene scene = new Scene(root);  // Create the Scene
         stage.setScene(scene); // Add the scene to the Stage
