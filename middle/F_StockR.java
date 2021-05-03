@@ -9,6 +9,7 @@ package middle;
  * @version 2.0
  */
 
+import catalogue.Basket;
 import catalogue.Product;
 import debug.DEBUG;
 import javafx.scene.image.Image;
@@ -145,6 +146,21 @@ public class F_StockR implements StockReader
 	    {
 	      if ( aR_StockR == null ) connect();
 	      return aR_StockR.available(pNum, amount);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+
+	public synchronized Basket getReservation(int rNum) 
+			throws StockException 
+	{
+	    DEBUG.trace("F_StockR:getReservation()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getReservation(rNum);
 	    } catch ( RemoteException e )
 	    {
 	      aR_StockR = null;

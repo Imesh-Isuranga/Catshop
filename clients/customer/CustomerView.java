@@ -34,6 +34,8 @@ public class CustomerView implements Observer
   {
     public static final String CHECK  = "Check";
     public static final String CLEAR  = "Clear";
+    public static final String RESERVE  = "Reserve";
+    public static final String SUBMIT  = "Submit";
   }
 
   private static final int H = 600;       // Height of window pixels
@@ -47,6 +49,8 @@ public class CustomerView implements Observer
   private final TextArea   theOutput  = new TextArea();
   private final Button     theBtCheck = new Button( Name.CHECK );
   private final Button     theBtClear = new Button( Name.CLEAR );
+  private final Button     theBtReserve = new Button( Name.RESERVE );
+  private final Button     theBtSubmit = new Button( Name.SUBMIT );
 
   private ImageView thePicture = new ImageView();
 
@@ -87,6 +91,12 @@ public class CustomerView implements Observer
     theBtClear.setPrefSize( 100, 40 ); // Clear Button Size
     theBtClear.setOnAction(event -> cont.doClear());
 
+    theBtReserve.setPrefSize( 100, 40 ); // Reserve Button Size
+    theBtReserve.setOnAction(event -> cont.doReserve(theInput.getText()));
+
+    theBtSubmit.setPrefSize( 100, 40 ); // Submit Button Size
+    theBtSubmit.setOnAction(event -> cont.doSubmitReservation());
+
     thePicture.setFitWidth( 100 );   // Picture area
     thePicture.setFitHeight( 100 );
 
@@ -103,7 +113,7 @@ public class CustomerView implements Observer
     theOutput.setText( "" );                        //  Blank
 
     GridPane buttonBar = new GridPane();
-    buttonBar.addColumn(0, theBtCheck, theBtClear, thePicture);
+    buttonBar.addColumn(0, theBtCheck, thePicture, theBtClear, theBtReserve, theBtSubmit);
     buttonBar.setVgap(30); // Set the horizontal spacing to 10px
     
     GridPane inputBar = new GridPane();
@@ -127,13 +137,18 @@ public class CustomerView implements Observer
             "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
     String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String pinkButtonStyle = "-fx-background-radius: 1em; -fx-background-color: pink; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String greyButtonStyle = "-fx-background-radius: 1em; -fx-background-color: grey; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 16px";
     String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 16px";
     String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
     
     root.setStyle(rootStyle);
-    theBtClear.setStyle(redButtonStyle);
-    theBtCheck.setStyle(blueButtonStyle);
+    theBtClear.setStyle(greyButtonStyle);
+    theBtCheck.setStyle(redButtonStyle);
+    theBtReserve.setStyle(pinkButtonStyle);
+    theBtSubmit.setStyle(blueButtonStyle);
     theInputName.setStyle(labelStyle);
     theInput.setStyle(inputStyle);
     theOutput.setStyle(richAreaStyle);
@@ -177,7 +192,7 @@ public class CustomerView implements Observer
     } else {
       thePicture.setImage(image);             // Display picture
     }
-    theOutput.setText( model.getBasket().getDetails() );
+   	theOutput.setText( model.getBasket().getDetails() );
     theInput.requestFocus();               // Focus is here
   }
 }

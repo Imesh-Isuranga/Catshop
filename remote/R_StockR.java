@@ -1,5 +1,6 @@
 package remote;
 
+import catalogue.Basket;
 import catalogue.Product;
 import dbAccess.StockR;
 import javafx.scene.image.Image;
@@ -94,6 +95,11 @@ public class      R_StockR
 		 throws RemoteException, StockException
 	{
 		return aStockR.available(pNum, amount);
+	}
+
+	public synchronized Basket getReservation(int rNum) 
+			throws StockException {
+		return aStockR.getReservation(rNum);
 	}
 
 }

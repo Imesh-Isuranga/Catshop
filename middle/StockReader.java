@@ -1,5 +1,6 @@
 package middle;
 
+import catalogue.Basket;
 import catalogue.Product;
 import javafx.scene.image.Image;
 
@@ -68,4 +69,13 @@ public interface StockReader
   */
 
  List<String> getTopProducts(int count) throws StockException;
+ 
+ /**
+  * Returns reservation basket
+  * @param rNum reservation number
+  * @return basket
+  * @throws StockException if issue
+  */
+
+ Basket getReservation(int rNum) throws StockException;
 }

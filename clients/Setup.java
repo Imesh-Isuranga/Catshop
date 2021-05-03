@@ -48,23 +48,35 @@ class Setup
 //  "select * from ProductTable",
 
 
-  "drop table StockTable",
-  "create table StockTable ("+
-      "productNo      Char(4)," +
-      "stockLevel     Integer," +
-      "PRIMARY KEY (productNo))",
+     "drop table StockTable",
+     "create table StockTable ("+
+         "productNo      Char(4)," +
+         "stockLevel     Integer," +
+         "PRIMARY KEY (productNo))",
 
-  "insert into StockTable values ( '0001',  90 )",
-  "insert into StockTable values ( '0002',  20 )",
-  "insert into StockTable values ( '0003',  33 )",
-  "insert into StockTable values ( '0004',  10 )",
-  "insert into StockTable values ( '0005',  17 )",
-  "insert into StockTable values ( '0006',  15 )",
-  "insert into StockTable values ( '0007',  01 )",
+     "insert into StockTable values ( '0001',  90 )",
+     "insert into StockTable values ( '0002',  20 )",
+     "insert into StockTable values ( '0003',  33 )",
+     "insert into StockTable values ( '0004',  10 )",
+     "insert into StockTable values ( '0005',  17 )",
+     "insert into StockTable values ( '0006',  15 )",
+     "insert into StockTable values ( '0007',  01 )",
 
-  "select * from StockTable, ProductTable " +
-          " where StockTable.productNo = ProductTable.productNo"
+     "select * from StockTable, ProductTable " +
+             " where StockTable.productNo = ProductTable.productNo",
 
+  "drop table ReservationTable",
+  "create table ReservationTable ("+
+      "reservationNo  Integer NOT NULL AUTO_INCREMENT," +
+      "reserveTime    Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
+      "customerName   Char(20)," +
+      "PRIMARY KEY (reservationNo))",
+
+  "drop table ReservationDetailTable",
+  "create table ReservationDetailTable ("+
+      "reservationNo  Integer, " +
+      "productNo    Char(4)," +
+      "reservedAmount   Integer)"
  };
 
   public static void main(String[] args)

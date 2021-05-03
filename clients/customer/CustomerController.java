@@ -31,6 +31,23 @@ public class CustomerController
   }
 
   /**
+   * reserve product
+   * @param pn The product number to be reserved
+   */
+  public void doReserve( String pn )
+  {
+    model.doReserve(pn);
+  }
+  
+  /**
+   * submit reservation
+   */
+  public void doSubmitReservation()
+  {
+    model.doSubmitReservation();
+  }
+
+  /**
    * Clear interaction from view
    */
   public void doClear()

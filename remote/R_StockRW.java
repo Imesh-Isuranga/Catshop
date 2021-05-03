@@ -1,5 +1,6 @@
 package remote;
 
+import catalogue.Basket;
 import catalogue.Product;
 import dbAccess.StockRW;
 import javafx.scene.image.Image;
@@ -124,7 +125,7 @@ public class      R_StockRW
    * @return List of Product numbers
    */
   public synchronized List<String> getTopProducts(int count)
-          throws RemoteException, StockException
+          throws StockException
   {
     return aStockRW.getTopProducts(count);
   }
@@ -136,14 +137,31 @@ public class      R_StockRW
    * @throws StockException if issue
    */
   public synchronized ArrayList<Product> findProducts(String pName)
-          throws RemoteException, StockException
+          throws StockException
   {
     return aStockRW.findProducts(pName);
   }
 
   public synchronized boolean available(String pNum, int amount) 
-		throws RemoteException, StockException 
+		throws StockException 
   {
 	return aStockRW.available(pNum, amount);
   }
+
+	public synchronized int addReservation(String name) 
+			throws StockException {
+		return aStockRW.addReservation(name);
+	}
+	
+	public synchronized void addReservedProduct(int rNum, String pNum, int amount)
+			throws StockException 
+	{
+		aStockRW.addReservedProduct(rNum, pNum, amount);
+	}
+
+	public synchronized Basket getReservation(int rNum) 
+			throws StockException 
+	{
+		return aStockRW.getReservation(rNum);
+	}
 }

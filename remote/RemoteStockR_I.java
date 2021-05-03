@@ -1,5 +1,6 @@
 package remote;
 
+import catalogue.Basket;
 import catalogue.Product;
 import javafx.scene.image.Image;
 import middle.StockException;
@@ -31,5 +32,8 @@ public interface RemoteStockR_I
 		  throws RemoteException, StockException;
   boolean available(String pNum, int amount) 
 		  throws RemoteException, StockException;
+  Basket getReservation(int rNum) 
+		  throws RemoteException, StockException;
+ 
 }
 

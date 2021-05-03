@@ -29,6 +29,23 @@ public interface StockReadWriter extends StockReader
   void addStock(String pNum, int amount) throws StockException;
   
   /**
+   * Adds reservation to store.
+   * @param name Customer Name
+   * @return reservation number
+   * @throws middle.StockException if issue
+   */
+  int addReservation(String name) throws StockException;
+  
+  /**
+   * Adds reserved product to store.
+   * @param rNum reservation number
+   * @param pNum product number
+   * @param amount amount of product
+   * @throws middle.StockException if issue
+   */
+  void addReservedProduct(int rNum, String pNum, int amount) throws StockException;
+  
+  /**
    * Modifies Stock details for a given product number.
    * Information modified: Description, Price
    * @param detail Replace with this version of product

@@ -1,15 +1,18 @@
 package clients.customer;
 
 import catalogue.Basket;
+import catalogue.BetterBasket;
 import catalogue.Product;
 import debug.DEBUG;
 import javafx.scene.image.Image;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockException;
+import middle.StockReadWriter;
 import middle.StockReader;
 
 import javax.swing.*;
+
 import java.util.Observable;
 
 /**
@@ -19,15 +22,16 @@ import java.util.Observable;
  */
 public class CustomerModel extends Observable
 {
+  private enum State { process, checked }
+  private State       theState   = State.process;   // Current state
   private Product     theProduct = null;          // Current product
   private Basket      theBasket  = null;          // Bought items
 
   private String      pn = "";                    // Product being processed
 
-  private StockReader     theStock     = null;
+  private StockReadWriter     theStock     = null;
   private OrderProcessing theOrder     = null;
   private Image           thePic       = null;
-
   /*
    * Construct the model of the Customer
    * @param mf The factory to create the connection objects
@@ -36,14 +40,14 @@ public class CustomerModel extends Observable
   {
     try                                          //
     {  
-      theStock = mf.makeStockReader();           // Database access
+      theStock = mf.makeStockReadWriter();           // Database access
     } catch ( Exception e )
     {
       DEBUG.error("CustomerModel.constructor\n" +
                   "Database not created?\n%s\n", e.getMessage() );
     }
     theBasket = makeBasket();                    // Initial Basket
-
+    theState = State.process;
   }
   
   /**
@@ -61,7 +65,6 @@ public class CustomerModel extends Observable
    */
   public void doCheck(String productNum )
   {
-    theBasket.clear();                          // Clear s. list
     String theAction = "";
     pn  = productNum.trim();                    // Product no.
     int    amount  = 1;                         //  & quantity
@@ -78,8 +81,8 @@ public class CustomerModel extends Observable
               pr.getPrice(),                    //    price
               pr.getQuantity() );               //    quantity
           pr.setQuantity( amount );             //   Require 1
-          theBasket.add( pr );                  //   Add to basket
           thePic = theStock.getImage( pn );     //    product
+          theState = State.checked;
         } else {                                //  F
           theAction =                           //   Inform
             pr.getDescription() +               //    product not
@@ -95,6 +98,74 @@ public class CustomerModel extends Observable
       e.getMessage() );
     }
     setChanged(); notifyObservers(theAction);
+  }
+
+  /**
+   * reserve product
+   * @param productNum The product number
+   */
+  public void doReserve(String productNum )
+  {
+    String theAction = "";
+	if(theState != State.checked) {
+		theAction = "Please Confirm Product to Reserve!";
+	}
+	else {
+		pn  = productNum.trim();                    // Product no.
+	    int amount  = 1;                         //  & quantity
+	    try
+	    {
+	        Product pr = theStock.getDetails( pn ); //  Product
+	        if ( pr.getQuantity() >= amount )       //  In stock?
+	        { 
+	          theAction =                           //   Display 
+	            String.format( "Product #%s is reserved for you!", pn);
+	          pr.setQuantity( amount );             //   Require 1
+	          thePic = theStock.getImage( pn );     //    product
+	          theBasket.add(pr);
+	        } else {                                //  F
+	          theAction =                           //   Inform
+	            pr.getDescription() +               //    product not
+	            " not in stock" ;                   //    in stock
+	        }
+	        theState = State.process;
+	    } catch( StockException e )
+	    {
+	      DEBUG.error("CustomerClient.doReserve()\n%s",
+	      e.getMessage() );
+	    }
+	 }
+
+    setChanged(); notifyObservers(theAction);
+  }
+
+  /**
+   * submit reservation
+   */
+  public void doSubmitReservation()
+  {
+    String theAction = "";
+    String customerName = "Customer";
+    if(theBasket.isEmpty()) {
+		theAction = "Please add Product to Reserve!";
+	}
+	else {
+	    try
+	    {
+	    	int reservationNum = theStock.addReservation(customerName);
+	        for(Product pr:theBasket) {
+	        	theStock.addReservedProduct(reservationNum, pr.getProductNum(), pr.getQuantity());
+	        }
+	        theAction = String.format("Your reservation number is %d.", reservationNum);                          //   Inform
+	        theState = State.process;
+	        theBasket.clear();
+	    } catch( StockException e )
+	    {
+	      DEBUG.error("CustomerClient.doSubmitReservation()\n%s",
+	      e.getMessage() );
+	    }
+	 }
+     setChanged(); notifyObservers(theAction);
   }
 
   /**
@@ -132,7 +203,7 @@ public class CustomerModel extends Observable
    */
   protected Basket makeBasket()
   {
-    return new Basket();
+    return new BetterBasket();
   }
 
 }

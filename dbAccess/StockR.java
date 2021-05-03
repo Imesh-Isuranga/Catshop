@@ -7,6 +7,8 @@ package dbAccess;
  * @version 2.0
  */
 
+import catalogue.Basket;
+import catalogue.BetterBasket;
 import catalogue.Product;
 import debug.DEBUG;
 import javafx.scene.image.Image;
@@ -278,4 +280,34 @@ public class StockR implements StockReader
     else
     	return false;
   }
+
+
+	public Basket getReservation(int rNum) throws StockException {
+	    Basket basket = new BetterBasket();
+	    String productNo = "";
+	    int amount = 0;
+	    try
+	    {
+	      ResultSet rs = getStatementObject().executeQuery(
+	              "select productNo, reservedAmount from productdetailtable where reservationNo = " + rNum
+	      );
+	      boolean res = rs.next();
+	      while( res )
+	      {
+	        productNo = rs.getString( "productNo" );
+	        amount = rs.getInt("reservedAmount");
+	        Product pr = getDetails(productNo);
+	        pr.setQuantity(amount);
+	        
+	        basket.add(pr);
+	        
+	        res = rs.next();
+	      }
+	      rs.close();
+	      return basket;
+	    } catch ( SQLException e )
+	    {
+	      throw new StockException( "SQL getReservation: " + e.getMessage() );
+	    }
+	}
 }

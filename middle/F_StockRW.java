@@ -113,4 +113,33 @@ public class F_StockRW extends F_StockR
       throw new StockException( "Net: " + e.getMessage() );
     }
   }
+
+	public int addReservation(String name) 
+			throws StockException
+    {
+	    DEBUG.trace("F_StockRW:modifyStock()" );
+	    try
+	    {
+	      if ( aR_StockRW == null ) connect();
+	      return aR_StockRW.addReservation(name);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockRW = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+	
+	public void addReservedProduct(int rNum, String pNum, int amount)
+			throws StockException {
+	    DEBUG.trace("F_StockRW:addReservedProduct()" );
+	    try
+	    {
+	      if ( aR_StockRW == null ) connect();
+	      aR_StockRW.addReservedProduct(rNum, pNum, amount);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockRW = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
 }

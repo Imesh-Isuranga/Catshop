@@ -12,6 +12,7 @@ import debug.DEBUG;
 import middle.StockException;
 import middle.StockReadWriter;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // There can only be 1 ResultSet opened per statement
@@ -82,7 +83,47 @@ public class StockRW extends StockR implements StockReadWriter
     }
   }
 
-
+  /**
+   * Adds reservation to the store.
+   * @param name Customer name
+   * @return reservation number
+   */
+  public synchronized int addReservation( String name )
+         throws StockException
+  {
+    try
+    {
+      getStatementObject().executeUpdate(
+        "insert into reservationtable values (0, null, '" + name + "')"
+      );
+      int reservationNo = -1;
+      ResultSet rs = getStatementObject().executeQuery("Select Max(reservationNo) from reservationtable");
+      if(rs.next())
+    	  reservationNo = rs.getInt("Max(reservationNo)");
+      //getConnectionObject().commit();
+      DEBUG.trace( "DB StockRW: addReservation(%s)" , name);
+      rs.close();
+      return reservationNo;
+    } catch ( SQLException e )
+    {
+      throw new StockException( "SQL addStock: " + e.getMessage() );
+    }
+  }
+	
+  public synchronized void addReservedProduct(int rNum, String pNum, int amount)
+			throws StockException {
+    try
+    {
+      getStatementObject().executeUpdate(
+        "insert into reservationdetailtable values (" + rNum + ", " + "'" + pNum + "', " + amount + ")"
+      );
+      DEBUG.trace( "DB StockRW: addReservedProduct(%d,%s,%d)" , rNum, pNum, amount);
+    } catch ( SQLException e )
+    {
+      throw new StockException( "SQL addReservedProduct: " + e.getMessage() );
+    }
+  }
+	
   /**
    * Modifies Stock details for a given product number.
    *  Assumed to exist in database.
@@ -130,4 +171,6 @@ public class StockRW extends StockR implements StockReadWriter
       throw new StockException( "SQL modifyStock: " + e.getMessage() );
     }
   }
+
+
 }
