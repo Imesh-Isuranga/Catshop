@@ -56,7 +56,23 @@ public class CashierController
     model.doRemove();
   }
 
+  /**
+   * load reservation
+   */
+  public void doLoadReservation(String sNum)
+  {
+	  int rNum = Integer.parseInt(sNum);
+	  model.doLoadReservation(rNum);
+  }
 
+  /**
+   * reserve product
+   */
+  public void doReserve()
+  {
+	  model.doReserve();
+  }
+  
   /**
    * Bought interaction from view
    */

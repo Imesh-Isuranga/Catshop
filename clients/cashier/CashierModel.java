@@ -104,7 +104,7 @@ public class CashierModel extends Observable
         	// get expired reservation
         	int rNum = theStock.getExpiredReservationNum();
         	Basket basket = theStock.getReservation(rNum);
-        	theStock.removeReservation(rNum);
+        	theStock.removeReservation(rNum); // remove resrvation
         	for(Product pr : basket) {
         		// restore products
         		theStock.addStock(pr.getProductNum(), pr.getQuantity());
@@ -250,6 +250,63 @@ public class CashierModel extends Observable
     }
     setChanged(); notifyObservers(theAction); // Notify
   }
+  
+  /**
+   * Load reserved products
+   */
+  public void doLoadReservation(int rNum)
+  {
+	  if(theBasket != null) {
+		  theAction = "Please try after buying completely!";
+	  }
+	  else {
+		  try {
+			  if(theStock.isInReservations(rNum) != true) {
+				  theAction = String.format("Reservation #%d is not exist.", rNum);
+			  }
+			  else {
+				  theBasket = theStock.getReservation(rNum);
+				  if(theBasket == null) {
+					  theAction = String.format("Reservation #%d is invalid.", rNum);
+				  }
+				  else {
+					  theBasket.setUniqueOrderNum();
+				  }
+				  theStock.removeReservation(rNum);
+			  }
+		  } catch (StockException e) {
+		      DEBUG.error( "%s\n%s",
+		              "CashierModel.doLoadReservation", e.getMessage() );
+		      theAction = e.getMessage();
+		  }	  
+	  }
+	  setChanged(); notifyObservers(theAction); // Notify
+ }
+  
+  /**
+   * reserve product in basket
+   */
+  public void doReserve()
+  {
+	  if(theBasket.isEmpty()) {
+		  theAction = "There is no product to reserve.";
+	  }
+	  else {
+		  try {
+			  int rNum = theStock.addReservation("Customer");
+			  for(Product pr : theBasket) {
+				  theStock.addReservedProduct(rNum, pr.getProductNum(), pr.getQuantity());
+			  }
+			  theBasket = null;
+			  theAction = String.format("Your reservation number is %d.", rNum);
+		  } catch (StockException e) {
+		      DEBUG.error( "%s\n%s",
+		              "CashierModel.doReserve", e.getMessage() );
+		      theAction = e.getMessage();
+		  }
+	  }
+	  setChanged(); notifyObservers(theAction); // Notify
+}
 
   /**
    * Set Discount rate

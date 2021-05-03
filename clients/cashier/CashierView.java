@@ -29,11 +29,15 @@ public class CashierView implements Observer
   private static final String BOUGHT = "Bought";
   private static final String REMOVE = "Remove";
   private static final String DISCOUNT = "Discount";
+  private static final String RESERVE = "Reserve";
+  private static final String LOADRESERVATION = "Load";
   
   private final Label      theAction  = new Label();
   private final Label      theInputName  = new Label();
   private final Label      theDiscountName  = new Label();
+  private final Label      theReserveName  = new Label();
   private final TextField  theInput   = new TextField();
+  private final TextField  theInputReserve   = new TextField();
   private final TextField  theInputDiscount   = new TextField();
   private final TextArea   theOutput  = new TextArea();
   private final Button     theBtCheck = new Button( CHECK );
@@ -41,6 +45,8 @@ public class CashierView implements Observer
   private final Button     theBtBought= new Button( BOUGHT );
   private final Button     theBtRemove= new Button( REMOVE );
   private final Button 		theBtDiscount = new Button( DISCOUNT );
+  private final Button 		theBtReserve = new Button( RESERVE );
+  private final Button 		theBtLoad = new Button( LOADRESERVATION );
   
   private StockReadWriter theStock     = null;
   private OrderProcessing theOrder     = null;
@@ -84,6 +90,14 @@ public class CashierView implements Observer
     theBtBought.setOnAction(                  // Call back code
             event -> cont.doBought() );
 
+    theBtReserve.setPrefSize(  100, 40 );   // Reserve Button
+    theBtReserve.setOnAction(                  // Call back code
+            event -> cont.doReserve() );
+
+    theBtLoad.setPrefSize(  100, 40 );   // Load Button
+    theBtLoad.setOnAction(                  // Call back code
+            event -> cont.doLoadReservation(theInputReserve.getText()) );
+
     theBtRemove.setPrefSize(  100, 40 );   // Clear Button
     theBtRemove.setOnAction(                  // Call back code
             event -> cont.doRemove() );
@@ -94,8 +108,14 @@ public class CashierView implements Observer
     theInputName.setPrefSize( 100, 40 );         // Input Area
     theInputName.setText("Product No:");                           // Blank
 
-    theInput.setPrefSize( 540, 40 );         // Input Area
+    theInput.setPrefSize( 210, 40 );         // Input Area
     theInput.setText("");                           // Blank
+    
+    theInputReserve.setPrefSize(210, 40);
+    theInputReserve.setText("");
+    
+    theReserveName.setPrefSize(100, 40);
+    theReserveName.setText("Reservation No:");
 
     theDiscountName.setPrefSize( 100, 40 );         // Input Area
     theDiscountName.setText("Discount Rate:");                           // Blank
@@ -108,11 +128,11 @@ public class CashierView implements Observer
 //    theOutput.setFont( f );                         //  Uses font
 
     GridPane buttonPane = new GridPane(); // button Pane
-    buttonPane.addColumn(0, theBtCheck, theBtBuy, theBtRemove, theBtBought, theBtDiscount);
+    buttonPane.addColumn(0, theBtCheck, theBtBuy, theBtRemove, theBtBought, theBtReserve, theBtLoad, theBtDiscount);
     buttonPane.setVgap(30); // Vertical Spacing
 
     GridPane inputBar = new GridPane();
-    inputBar.addRow(0, theInputName, theInput);
+    inputBar.addRow(0, theInputName, theInput, theReserveName, theInputReserve);
     inputBar.setHgap(10);
 
     GridPane discountBar = new GridPane();
@@ -138,8 +158,10 @@ public class CashierView implements Observer
     String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
-    String pinkButtonStyle = "-fx-background-radius: 1em; -fx-background-color: pink; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String darkblueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: darkblue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String greyButtonStyle = "-fx-background-radius: 1em; -fx-background-color: grey; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String midnightblueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: midnightblue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String purpleButtonStyle = "-fx-background-radius: 1em; -fx-background-color: purple; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 16px";
     String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 16px";
     String labelStyle = "-fx-font-family: Calibri; -fx-font-size: 14px; -fx-font-weight: bolder;";
@@ -149,8 +171,12 @@ public class CashierView implements Observer
     theBtBuy.setStyle(redButtonStyle);
     theBtBought.setStyle(brownButtonStyle);
     theBtRemove.setStyle(greyButtonStyle);
-    theBtDiscount.setStyle(pinkButtonStyle);
+    theBtDiscount.setStyle(darkblueButtonStyle);
+    theBtLoad.setStyle(purpleButtonStyle);
+    theBtReserve.setStyle(midnightblueButtonStyle);
     theInputName.setStyle(labelStyle);
+    theInputReserve.setStyle(inputStyle);
+    theReserveName.setStyle(labelStyle);
     theDiscountName.setStyle(labelStyle);
     theInput.setStyle(inputStyle);
     theInputDiscount.setStyle(inputStyle);
@@ -190,7 +216,7 @@ public class CashierView implements Observer
     else
     	Platform.runLater(()->theOutput.setText( basket.getDetails()));
     
-    Platform.runLater(()->theInput.requestFocus());               // Focus is here
+//    Platform.runLater(()->theInput.requestFocus());               // Focus is here
   }
 
 }

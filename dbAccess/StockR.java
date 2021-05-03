@@ -106,6 +106,7 @@ public class StockR implements StockReader
       boolean res = rs.next();
       DEBUG.trace( "DB StockR: exists(%s) -> %s", 
                     pNum, ( res ? "T" : "F" ) );
+      rs.close();
       return res;
     } catch ( SQLException e )
     {
@@ -285,21 +286,23 @@ public class StockR implements StockReader
 
 	public synchronized Basket getReservation(int rNum) throws StockException {
 	    Basket basket = new BetterBasket();
-	    String productNo = "";
-	    int amount = 0;
 	    try
 	    {
 	      ResultSet rs = getStatementObject().executeQuery(
-	              "select productNo, reservedAmount from reservationdetailtable where reservationNo = " + rNum
+	              "SELECT reservationdetailtable.productNo AS productNo, description, price, reservedAmount"
+	              + " FROM reservationdetailtable, producttable"
+	              + " WHERE reservationdetailtable.productNo = producttable.productNo"
+	              + " AND reservationNo = " + rNum
 	      );
 	      boolean res = rs.next();
 	      while( res )
 	      {
-	        productNo = rs.getString( "productNo" );
-	        amount = rs.getInt("reservedAmount");
-	        Product pr = getDetails(productNo);
-	        pr.setQuantity(amount);
-	        
+	        Product pr = new Product(
+	        		rs.getString("productNo"), 
+	        		rs.getString("description"), 
+	        		rs.getDouble("price"), 
+	        		rs.getInt("reservedAmount")
+	        );
 	        basket.add(pr);
 	        
 	        res = rs.next();
@@ -325,6 +328,7 @@ public class StockR implements StockReader
 	    	statement.setTimestamp(2, validTimestamp);
     		ResultSet rs   = statement.executeQuery();
     		boolean res = rs.next();
+    		rs.close();
     		DEBUG.trace( "DB StockR: isInReservations(%d) -> %d", 
     				rNum, ( res ? "T" : "F" ) );
     		return res;
