@@ -25,13 +25,21 @@ public interface StockReader
   boolean exists(String pNum) throws StockException;
   
   /**
+   * Checks if the reservation exits in the reservation list
+   * @param rNum Reservation Number
+   * @return true if exists otherwise false
+   * @throws StockException if issue
+   */
+  boolean isInReservations(int rNum) throws StockException;
+  
+  /**
    * Checks if the product amount available in the stock
    * @param pNum Product number
    * @param amount Product amount
    * @return true if available otherwise false
    * @throws StockException if issue
    */
-  boolean available(String pNum, int amount) throws StockException;
+  boolean isInStock(String pNum, int amount) throws StockException;
 
  /**
   * Returns details about the product in the stock list
@@ -78,4 +86,13 @@ public interface StockReader
   */
 
  Basket getReservation(int rNum) throws StockException;
+
+ /**
+  * Returns expired reservation 
+  * @return reservation number of expired reservation
+  * @throws StockException if issue
+  */
+
+ int getExpiredReservationNum() throws StockException;
+
 }

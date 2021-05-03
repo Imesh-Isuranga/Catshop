@@ -30,10 +30,14 @@ public interface RemoteStockR_I
 
   ArrayList<Product> findProducts(String pName) 
 		  throws RemoteException, StockException;
-  boolean available(String pNum, int amount) 
+  boolean isInStock(String pNum, int amount) 
 		  throws RemoteException, StockException;
+  
   Basket getReservation(int rNum) 
 		  throws RemoteException, StockException;
- 
+  boolean isInReservations(int rNum) 
+		  throws RemoteException, StockException;
+  int getExpiredReservationNum() 
+		  throws RemoteException, StockException;
 }
 

@@ -107,17 +107,17 @@ public class      R_StockRW
   }
 
 
-  /**
-   * Modifies Stock details for a given product number.
-   * Information modified: Description, Price
-   * @param product The product to be modified
-   * @throws middle.StockException if underlying error
-   */
-  public synchronized void modifyStock( Product product )
+  	/**
+  	 * Modifies Stock details for a given product number.
+  	 * Information modified: Description, Price
+  	 * @param product The product to be modified
+  	 * @throws middle.StockException if underlying error
+  	 */
+  	public synchronized void modifyStock( Product product )
               throws StockException
-  {
-    aStockRW.modifyStock( product );
-  }
+  	{
+  		aStockRW.modifyStock( product );
+  	}
 
   /**
    * Returns an Product numbers of the Top seller products
@@ -142,10 +142,10 @@ public class      R_StockRW
     return aStockRW.findProducts(pName);
   }
 
-  public synchronized boolean available(String pNum, int amount) 
+  public synchronized boolean isInStock(String pNum, int amount) 
 		throws StockException 
   {
-	return aStockRW.available(pNum, amount);
+	return aStockRW.isInStock(pNum, amount);
   }
 
 	public synchronized int addReservation(String name) 
@@ -163,5 +163,23 @@ public class      R_StockRW
 			throws StockException 
 	{
 		return aStockRW.getReservation(rNum);
+	}
+
+	public synchronized boolean isInReservations(int rNum) 
+			throws RemoteException, StockException 
+	{
+		return aStockRW.isInReservations(rNum);
+	}
+
+	public synchronized int getExpiredReservationNum() 
+			throws RemoteException, StockException 
+	{
+		return aStockRW.getExpiredReservationNum();
+	}
+	
+	public synchronized void removeReservation(int rNum) 
+			throws RemoteException, StockException 
+	{
+		aStockRW.removeReservation(rNum);
 	}
 }

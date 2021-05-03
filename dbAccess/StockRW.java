@@ -12,8 +12,11 @@ import debug.DEBUG;
 import middle.StockException;
 import middle.StockReadWriter;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -123,6 +126,29 @@ public class StockRW extends StockR implements StockReadWriter
       throw new StockException( "SQL addReservedProduct: " + e.getMessage() );
     }
   }
+  	/**
+  	 * remove reservation
+  	 */
+	public synchronized void removeReservation(int rNum) 
+			throws StockException 
+	{
+	    try
+	    {
+			// delete from reservation table
+			getStatementObject().executeUpdate(
+	    		"delete from reservationtable where reservationNo = " + rNum
+	    	);
+			// delete from reservationdetailtable
+			getStatementObject().executeUpdate(
+		    	"delete from reservationdetailtable where reservationNo = " + rNum
+		    );
+  	      	DEBUG.trace( "DB StockR: removeReservation()");
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL removeReservation: " + e.getMessage() );
+	    }
+	}
+
 	
   /**
    * Modifies Stock details for a given product number.
@@ -171,6 +197,5 @@ public class StockRW extends StockR implements StockReadWriter
       throw new StockException( "SQL modifyStock: " + e.getMessage() );
     }
   }
-
 
 }

@@ -138,14 +138,14 @@ public class F_StockR implements StockReader
     }
   }
 
-	public synchronized boolean available(String pNum, int amount) 
+	public synchronized boolean isInStock(String pNum, int amount) 
 			throws StockException 
 	{
 	    DEBUG.trace("F_StockR:available()" );
 	    try
 	    {
 	      if ( aR_StockR == null ) connect();
-	      return aR_StockR.available(pNum, amount);
+	      return aR_StockR.isInStock(pNum, amount);
 	    } catch ( RemoteException e )
 	    {
 	      aR_StockR = null;
@@ -161,6 +161,36 @@ public class F_StockR implements StockReader
 	    {
 	      if ( aR_StockR == null ) connect();
 	      return aR_StockR.getReservation(rNum);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+
+	public synchronized boolean isInReservations(int rNum) 
+			throws StockException 
+	{
+	    DEBUG.trace("F_StockR:isInReservations()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.isInReservations(rNum);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+	
+	public synchronized int getExpiredReservationNum() 
+			throws StockException 
+	{
+	    DEBUG.trace("F_StockR:getReservation()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getExpiredReservationNum();
 	    } catch ( RemoteException e )
 	    {
 	      aR_StockR = null;

@@ -100,6 +100,15 @@ public class CashierModel extends Observable
         		theAction = "Need Attention Order #" + theBasket.getOrderNum();  
         	else
         		theAction = "Next customer";            // New Customer
+        	
+        	// get expired reservation
+        	int rNum = theStock.getExpiredReservationNum();
+        	Basket basket = theStock.getReservation(rNum);
+        	theStock.removeReservation(rNum);
+        	for(Product pr : basket) {
+        		// restore products
+        		theStock.addStock(pr.getProductNum(), pr.getQuantity());
+        	}
         	setChanged(); notifyObservers(theAction);
         }                                    // 
         Thread.sleep(2000);                  // idle

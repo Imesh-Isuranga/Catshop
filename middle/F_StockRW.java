@@ -99,20 +99,20 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
-  public void modifyStock( Product detail )
+  	public void modifyStock( Product detail )
               throws StockException
-  {
-    DEBUG.trace("F_StockRW:modifyStock()" );
-    try
-    {
-      if ( aR_StockRW == null ) connect();
-      aR_StockRW.modifyStock( detail );
-    } catch ( RemoteException e )
-    {
-      aR_StockRW = null;
-      throw new StockException( "Net: " + e.getMessage() );
-    }
-  }
+  	{
+  		DEBUG.trace("F_StockRW:modifyStock()" );
+  		try
+  		{
+  			if ( aR_StockRW == null ) connect();
+  			aR_StockRW.modifyStock( detail );
+  		} catch ( RemoteException e )
+  		{
+  			aR_StockRW = null;
+  			throw new StockException( "Net: " + e.getMessage() );
+  		}
+  	}
 
 	public int addReservation(String name) 
 			throws StockException
@@ -120,12 +120,12 @@ public class F_StockRW extends F_StockR
 	    DEBUG.trace("F_StockRW:modifyStock()" );
 	    try
 	    {
-	      if ( aR_StockRW == null ) connect();
-	      return aR_StockRW.addReservation(name);
+	    	if ( aR_StockRW == null ) connect();
+	    	return aR_StockRW.addReservation(name);
 	    } catch ( RemoteException e )
 	    {
-	      aR_StockRW = null;
-	      throw new StockException( "Net: " + e.getMessage() );
+	    	aR_StockRW = null;
+	    	throw new StockException( "Net: " + e.getMessage() );
 	    }
 	}
 	
@@ -134,12 +134,27 @@ public class F_StockRW extends F_StockR
 	    DEBUG.trace("F_StockRW:addReservedProduct()" );
 	    try
 	    {
-	      if ( aR_StockRW == null ) connect();
-	      aR_StockRW.addReservedProduct(rNum, pNum, amount);
+	    	if ( aR_StockRW == null ) connect();
+	    	aR_StockRW.addReservedProduct(rNum, pNum, amount);
 	    } catch ( RemoteException e )
 	    {
-	      aR_StockRW = null;
-	      throw new StockException( "Net: " + e.getMessage() );
+	    	aR_StockRW = null;
+	    	throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+
+	public void removeReservation(int rNum) 
+			throws StockException 
+	{
+	    DEBUG.trace("F_StockRW:removeExpiredReservations()" );
+	    try
+	    {
+	    	if ( aR_StockRW == null ) connect();
+	    	aR_StockRW.removeReservation(rNum);
+	    } catch ( RemoteException e )
+	    {
+	    	aR_StockRW = null;
+	    	throw new StockException( "Net: " + e.getMessage() );
 	    }
 	}
 }

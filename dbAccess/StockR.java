@@ -16,6 +16,7 @@ import middle.StockException;
 import middle.StockReader;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -255,7 +256,7 @@ public class StockR implements StockReader
    * @return true if available otherwise false
    * @throws StockException if issue
    */
-  public boolean available(String pNum, int reqAmount) 
+  public synchronized boolean isInStock(String pNum, int reqAmount) 
 		  throws StockException 
   {
     int availAmount = 0;
@@ -282,14 +283,14 @@ public class StockR implements StockReader
   }
 
 
-	public Basket getReservation(int rNum) throws StockException {
+	public synchronized Basket getReservation(int rNum) throws StockException {
 	    Basket basket = new BetterBasket();
 	    String productNo = "";
 	    int amount = 0;
 	    try
 	    {
 	      ResultSet rs = getStatementObject().executeQuery(
-	              "select productNo, reservedAmount from productdetailtable where reservationNo = " + rNum
+	              "select productNo, reservedAmount from reservationdetailtable where reservationNo = " + rNum
 	      );
 	      boolean res = rs.next();
 	      while( res )
@@ -308,6 +309,51 @@ public class StockR implements StockReader
 	    } catch ( SQLException e )
 	    {
 	      throw new StockException( "SQL getReservation: " + e.getMessage() );
+	    }
+	}
+
+	public synchronized boolean isInReservations(int rNum) 
+			throws StockException 
+	{
+	    try
+	    {
+	    	Timestamp validTimestamp = Timestamp.valueOf(LocalDateTime.now().minusHours(24));
+	    	PreparedStatement statement = 
+	    		getConnectionObject().prepareStatement("select * from ReservationTable" +
+					" where  reservationNo = ? and reserveTime > ?");
+	    	statement.setInt(1, rNum);
+	    	statement.setTimestamp(2, validTimestamp);
+    		ResultSet rs   = statement.executeQuery();
+    		boolean res = rs.next();
+    		DEBUG.trace( "DB StockR: isInReservations(%d) -> %d", 
+    				rNum, ( res ? "T" : "F" ) );
+    		return res;
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL isInReservations: " + e.getMessage() );
+	    }
+	}
+
+	public synchronized int getExpiredReservationNum() 
+			throws StockException 
+	{
+	    try
+	    {
+	    	Timestamp validTimestamp = Timestamp.valueOf(LocalDateTime.now().minusHours(24));
+	    	PreparedStatement statement = 
+	    		getConnectionObject().prepareStatement("select * from ReservationTable" +
+					" where reserveTime < ?");
+	    	statement.setTimestamp(1, validTimestamp);
+    		ResultSet rs   = statement.executeQuery();
+    		boolean res = rs.next();
+    		int rNum = -1;
+    		if(res)
+    			rNum = rs.getInt("reservationNo");
+    		DEBUG.trace( "DB StockR: getExpiredReservationNum()" );
+    		return rNum;
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL getExpiredReservationNum: " + e.getMessage() );
 	    }
 	}
 }

@@ -30,5 +30,7 @@ public interface RemoteStockRW_I
 		  throws RemoteException, StockException;
   void addReservedProduct(int rNum, String pNum, int amount) 
 		  throws RemoteException, StockException;
+  void removeReservation(int rNum)
+		  throws RemoteException, StockException;
 }
 

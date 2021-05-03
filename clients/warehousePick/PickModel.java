@@ -128,7 +128,7 @@ public class PickModel extends Observable
   {
 	  try {
 		for(Product p : basket) {
-		  if(!theStock.available(p.getProductNum(), p.getQuantity()))
+		  if(!theStock.isInStock(p.getProductNum(), p.getQuantity()))
 			return false;
 		}
 		return true;

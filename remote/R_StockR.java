@@ -91,10 +91,10 @@ public class      R_StockR
     return aStockR.findProducts(pName);
   }
 
-	public synchronized boolean available(String pNum, int amount) 
+	public synchronized boolean isInStock(String pNum, int amount) 
 		 throws RemoteException, StockException
 	{
-		return aStockR.available(pNum, amount);
+		return aStockR.isInStock(pNum, amount);
 	}
 
 	public synchronized Basket getReservation(int rNum) 
@@ -102,4 +102,15 @@ public class      R_StockR
 		return aStockR.getReservation(rNum);
 	}
 
+	public synchronized boolean isInReservations(int rNum) 
+			throws RemoteException, StockException 
+	{
+		return aStockR.isInReservations(rNum);
+	}
+	
+	public synchronized int getExpiredReservationNum()
+			throws RemoteException, StockException
+	{
+		return aStockR.getExpiredReservationNum();
+	}
 }
