@@ -360,4 +360,54 @@ public class StockR implements StockReader
 	    	throw new StockException( "SQL getExpiredReservationNum: " + e.getMessage() );
 	    }
 	}
+	
+	public synchronized String getReview(String pNum)
+		throws StockException
+	{
+		String review = "";
+	    try
+	    {
+		      ResultSet rs = getStatementObject().executeQuery(
+		              "SELECT comment FROM reviewtable WHERE productNo='" 
+		            		  + pNum + "'"
+		      );
+		      boolean res = rs.next();
+		      while( res )
+		      {
+		    	  review += rs.getString("comment");
+		    	  review += "\n";
+		    	  res = rs.next();
+		      }
+		      rs.close();
+		      return review;
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL getExpiredReservationNum: " + e.getMessage() );
+	    }	
+	}
+	
+	public synchronized double getRating(String pNum)
+			throws StockException
+	{
+	    try
+	    {
+			double rating = 0;
+			int cnt = 0;
+			ResultSet rs = getStatementObject().executeQuery(
+					"SELECT rating FROM reviewtable WHERE productNo='" + pNum + "'"
+			);
+			boolean res = rs.next();
+			while( res )
+			{
+		    	  rating += rs.getDouble("rating");
+		    	  cnt++;
+		    	  res = rs.next();
+		      }
+		      rs.close();
+		      return (rating / cnt);
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL getRating: " + e.getMessage() );
+	    }	
+	}
 }

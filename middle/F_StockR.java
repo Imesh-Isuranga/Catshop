@@ -197,5 +197,34 @@ public class F_StockR implements StockReader
 	      throw new StockException( "Net: " + e.getMessage() );
 	    }
 	}
-
+	
+	public synchronized String getReview(String pNum)
+			throws StockException
+	{
+	    DEBUG.trace("F_StockR:getReservation()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getReview(pNum);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+	
+	public synchronized double getRating(String pNum)
+			throws StockException
+	{
+	    DEBUG.trace("F_StockR:getReservation()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getRating(pNum);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
 }

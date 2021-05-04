@@ -113,4 +113,16 @@ public class      R_StockR
 	{
 		return aStockR.getExpiredReservationNum();
 	}
+	
+	public synchronized String getReview(String pNum)
+			throws RemoteException, StockException
+	{
+		return aStockR.getReview(pNum);
+	}
+
+	public synchronized double getRating(String pNum)
+			throws RemoteException, StockException
+	{
+		return aStockR.getRating(pNum);
+	}
 }

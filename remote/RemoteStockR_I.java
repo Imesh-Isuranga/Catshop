@@ -39,5 +39,9 @@ public interface RemoteStockR_I
 		  throws RemoteException, StockException;
   int getExpiredReservationNum() 
 		  throws RemoteException, StockException;
+  String getReview(String pNum) 
+		  throws RemoteException, StockException;
+  double getRating(String pNum) 
+		  throws RemoteException, StockException;
 }
 

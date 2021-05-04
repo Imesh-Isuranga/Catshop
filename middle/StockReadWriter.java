@@ -60,4 +60,13 @@ public interface StockReadWriter extends StockReader
    */
   void modifyStock(Product detail) throws StockException;
 
+  /**
+   * Add review and rating of the product.
+   * @param pNum product number
+   * @param reivew review string
+   * @param rating rating of the product
+   * @throws middle.StockException if issue
+   */
+  void addReviewAndRating(String pNum, String review, double rating) throws StockException;
+
 }

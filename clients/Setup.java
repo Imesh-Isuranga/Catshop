@@ -76,8 +76,20 @@ class Setup
   "create table ReservationDetailTable ("+
       "reservationNo  Integer, " +
       "productNo    Char(4)," +
-      "reservedAmount   Integer)"
- };
+      "reservedAmount   Integer)",
+      
+  "drop table reviewtable",
+  "create table reviewtable ("+
+      "productNo  Char(4), " +
+      "comment    Char(255)," +
+      "rating   Double)",
+          
+  "drop table productpairtable",
+  "create table productpairtable ("+
+      "productNo  Char(4), " +
+      "pairNo    Char(4)," +
+      "frequancy   Integer)"
+  };
 
   public static void main(String[] args)
   {

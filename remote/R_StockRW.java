@@ -182,4 +182,21 @@ public class      R_StockRW
 	{
 		aStockRW.removeReservation(rNum);
 	}
+	
+	public synchronized String getReview(String pNum)
+			throws RemoteException, StockException
+	{
+		return aStockRW.getReview(pNum);
+	}
+
+	public synchronized double getRating(String pNum)
+			throws RemoteException, StockException
+	{
+		return aStockRW.getRating(pNum);
+	}
+
+	public synchronized void addReviewAndRating(String pNum, String review, double rating)
+			throws RemoteException, StockException {
+		aStockRW.addReviewAndRating(pNum, review, rating);
+	}
 }

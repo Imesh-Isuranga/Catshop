@@ -198,4 +198,22 @@ public class StockRW extends StockR implements StockReadWriter
     }
   }
 
+	/**
+	 * add review and rating reservation
+	 */
+	public synchronized void addReviewAndRating(String pNum, String review, double rating) 
+			throws StockException 
+	{
+	    try
+	    {
+			// delete from reservation table
+			getStatementObject().executeUpdate(
+	    		"insert int reviewtable values ('" + pNum + "', " + "'" +  review + "', " + rating + ")"
+	    	);
+	      	DEBUG.trace( "DB StockRW: addReviewAndRating()");
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL addReviewAndRating: " + e.getMessage() );
+	    }
+	}
 }

@@ -75,7 +75,6 @@ public interface StockReader
   * @return List<String>
   * @throws StockException if issue
   */
-
  List<String> getTopProducts(int count) throws StockException;
  
  /**
@@ -84,7 +83,6 @@ public interface StockReader
   * @return basket
   * @throws StockException if issue
   */
-
  Basket getReservation(int rNum) throws StockException;
 
  /**
@@ -92,7 +90,20 @@ public interface StockReader
   * @return reservation number of expired reservation
   * @throws StockException if issue
   */
-
  int getExpiredReservationNum() throws StockException;
+
+ /**
+  * Returns reviews of the product 
+  * @return review string
+  * @throws StockException if issue
+  */
+ String getReview(String pNum) throws StockException;
+
+ /**
+  * Returns rating of the product 
+  * @return rating of the product
+  * @throws StockException if issue
+  */
+ double getRating(String pNum) throws StockException;
 
 }
