@@ -138,14 +138,17 @@ public class CashierModel extends Observable
         Product pr = theStock.getDetails(pn);   //  Get details
         if ( pr.getQuantity() >= amount )       //  In stock?
         {                                       //  T
-          theAction =                           //   Display 
-            String.format( "%s : %7.2f (%2d) ", //
-              pr.getDescription(),              //    description
-              pr.getPrice(),                    //    price
-              pr.getQuantity() );               //    quantity     
-          theProduct = pr;                      //   Remember prod.
-          theProduct.setQuantity( amount );     //    & quantity
-          theState = State.checked;             //   OK await BUY 
+        	String pairNo = theStock.getRecommendedProduct(pn);
+        	theAction =                           //   Display 
+	            String.format( "%s : %7.2f (%2d)", //
+	              pr.getDescription(),              //    description
+	              pr.getPrice(),                    //    price
+	              pr.getQuantity() );               //    quantity  
+        	if(pairNo.isEmpty() == false)
+        		theAction += String.format( "  ***Customers who bought %s also bought %s", pn, pairNo);
+        	theProduct = pr;                      //   Remember prod.
+        	theProduct.setQuantity( amount );     //    & quantity
+        	theState = State.checked;             //   OK await BUY 
         } else {                                //  F
           theAction =                           //   Not in Stock
             pr.getDescription() +" not in stock";
@@ -185,6 +188,12 @@ public class CashierModel extends Observable
           theBasket.add( theProduct );          //  Add to bought
           theAction = "Purchased " +            //    details
                   theProduct.getDescription();  //
+          
+          for(Product pr : theBasket) {	// update pairing level
+        	  if(theProduct.equals(pr))
+        		  continue;
+        	  theStock.updateRecommendLevel(theProduct.getProductNum(), pr.getProductNum());
+          }
         } else {                                // F
           theAction = "!!! Not in stock";       //  Now no stock
         }

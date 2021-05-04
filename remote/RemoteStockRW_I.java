@@ -34,5 +34,7 @@ public interface RemoteStockRW_I
 		  throws RemoteException, StockException;
   void addReviewAndRating(String pNum, String review, double rating) 
 		  throws RemoteException, StockException;
+  void updateRecommendLevel(String pNum1, String pNum2) 
+		  throws RemoteException, StockException;
 }
 

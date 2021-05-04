@@ -125,4 +125,9 @@ public class      R_StockR
 	{
 		return aStockR.getRating(pNum);
 	}
+	
+	public synchronized String getRecommendedProduct(String pNum)
+			throws RemoteException, StockException {
+		return aStockR.getRecommendedProduct(pNum);
+	}
 }

@@ -159,13 +159,28 @@ public class F_StockRW extends F_StockR
 	}
 	
 	public void addReviewAndRating(String pNum, String review, double rating)
-		throws StockException
+			throws StockException
 	{
 	    DEBUG.trace("F_StockRW:addReview()" );
 	    try
 	    {
 	    	if ( aR_StockRW == null ) connect();
 	    	aR_StockRW.addReviewAndRating(pNum, review, rating);
+	    } catch ( RemoteException e )
+	    {
+	    	aR_StockRW = null;
+	    	throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
+	
+	public void updateRecommendLevel(String pNum1, String pNum2)
+			throws StockException
+	{
+	    DEBUG.trace("F_StockRW:updateRecommendLevel()" );
+	    try
+	    {
+	    	if ( aR_StockRW == null ) connect();
+	    	aR_StockRW.updateRecommendLevel(pNum1, pNum2);
 	    } catch ( RemoteException e )
 	    {
 	    	aR_StockRW = null;

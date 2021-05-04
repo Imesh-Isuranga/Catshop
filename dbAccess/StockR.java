@@ -410,4 +410,33 @@ public class StockR implements StockReader
 	    	throw new StockException( "SQL getRating: " + e.getMessage() );
 	    }	
 	}
+
+	public synchronized String getRecommendedProduct(String pNum)
+			throws StockException
+	{
+	    try
+	    {
+			String pairNo = "";
+			ResultSet rs = getStatementObject().executeQuery(
+					"SELECT * FROM productpairtable WHERE ( productNo='" + pNum + "' OR pairNo='" + pNum + "') "
+					+ "ORDER BY level DESC LIMIT 1"
+			);
+			boolean res = rs.next();
+			
+			if( res ) {
+				String sNo1 = rs.getString("productNo");
+				String sNo2 = rs.getString("pairNo");
+				if(pNum.compareTo(sNo1) == 0)
+					pairNo = sNo2;
+				else
+					pairNo = sNo1;
+			}
+			rs.close();
+			
+		    return pairNo;
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL getRating: " + e.getMessage() );
+	    }	
+	}
 }

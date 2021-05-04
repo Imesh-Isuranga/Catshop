@@ -199,4 +199,14 @@ public class      R_StockRW
 			throws RemoteException, StockException {
 		aStockRW.addReviewAndRating(pNum, review, rating);
 	}
+	
+	public synchronized String getRecommendedProduct(String pNum)
+			throws RemoteException, StockException {
+		return aStockRW.getRecommendedProduct(pNum);
+	}
+	
+	public synchronized void updateRecommendLevel(String pNum1, String pNum2)
+			throws RemoteException, StockException {
+		aStockRW.updateRecommendLevel(pNum1, pNum2);
+	}
 }

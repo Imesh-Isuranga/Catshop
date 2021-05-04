@@ -69,4 +69,12 @@ public interface StockReadWriter extends StockReader
    */
   void addReviewAndRating(String pNum, String review, double rating) throws StockException;
 
+  /**
+   * Update pairing frequency of two products.
+   * @param pNum1 product number
+   * @param pNum2 product number
+   * @throws middle.StockException if issue
+   */
+  void updateRecommendLevel(String pNum1, String pNum2) throws StockException;
+
 }

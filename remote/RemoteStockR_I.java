@@ -43,5 +43,7 @@ public interface RemoteStockR_I
 		  throws RemoteException, StockException;
   double getRating(String pNum) 
 		  throws RemoteException, StockException;
+  String getRecommendedProduct(String pNum) 
+		  throws RemoteException, StockException;
 }
 

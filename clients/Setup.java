@@ -88,7 +88,7 @@ class Setup
   "create table productpairtable ("+
       "productNo  Char(4), " +
       "pairNo    Char(4)," +
-      "frequancy   Integer)"
+      "level   Integer)"
   };
 
   public static void main(String[] args)

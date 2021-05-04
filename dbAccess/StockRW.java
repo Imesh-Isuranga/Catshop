@@ -216,4 +216,41 @@ public class StockRW extends StockR implements StockReadWriter
 	    	throw new StockException( "SQL addReviewAndRating: " + e.getMessage() );
 	    }
 	}
+
+	/**
+	 * add review and rating reservation
+	 */
+	public synchronized void updateRecommendLevel(String pNum1, String pNum2) 
+			throws StockException 
+	{
+	    try
+	    {
+	    	String query = "SELECT * FROM productpairtable "
+					+ "WHERE (productNo = '" + pNum1 + "' AND pairNo = '" + pNum2 + "')"
+					+ " OR (productNo = '" + pNum2 + "' AND pairNo = '" + pNum1 + "')";
+	    	ResultSet rs = getStatementObject().executeQuery(query);
+    		boolean res = rs.next();
+    		int level = 0;
+    		if(res)
+    			level = rs.getInt("level");
+    		rs.close();
+    		
+    		level += 1;
+    		
+    		if(res) {
+    			query = "UPDATE productpairtable SET level=" + level 
+        				+ " WHERE (productNo = '" + pNum1 + "' AND pairNo = '" + pNum2 + "')"
+        				+ " OR (productNo = '" + pNum2 + "' AND pairNo = '" + pNum1 + "')";
+    			getStatementObject().executeUpdate(query);
+    	    }
+    		else {
+    			getStatementObject().executeUpdate(
+	    			"INSERT into productpairtable values ('" + pNum1 + "', '" + pNum2 + "', " + level + ")");
+    		}
+    		DEBUG.trace( "DB StockR: updateRecommendLevel()" );
+	    } catch ( SQLException e )
+	    {
+	    	throw new StockException( "SQL updateRecommendLevel: " + e.getMessage() );
+	    }
+	}
 }

@@ -227,4 +227,19 @@ public class F_StockR implements StockReader
 	      throw new StockException( "Net: " + e.getMessage() );
 	    }
 	}
+	
+	public synchronized String getRecommendedProduct(String pNum)
+			throws StockException
+	{
+	    DEBUG.trace("F_StockR:getRecommendedProduct()" );
+	    try
+	    {
+	      if ( aR_StockR == null ) connect();
+	      return aR_StockR.getRecommendedProduct(pNum);
+	    } catch ( RemoteException e )
+	    {
+	      aR_StockR = null;
+	      throw new StockException( "Net: " + e.getMessage() );
+	    }
+	}
 }

@@ -106,4 +106,12 @@ public interface StockReader
   */
  double getRating(String pNum) throws StockException;
 
+ /**
+  * Returns recommended product 
+  * @param product number
+  * @return Recommended product number
+  * @throws StockException if issue
+  */
+ String getRecommendedProduct(String pNum) throws StockException;
+
 }
