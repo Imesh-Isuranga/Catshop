@@ -18,6 +18,9 @@ import clients.collection.CollectView;
 import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
+import clients.review.ReviewController;
+import clients.review.ReviewModel;
+import clients.review.ReviewView;
 import clients.shopDisplay.DisplayController;
 import clients.shopDisplay.DisplayModel;
 import clients.shopDisplay.DisplayView;
@@ -197,6 +200,23 @@ public class Main extends Application
     stage.show();
   }
 
+  public void startReviewGUI_MVC(MiddleFactory mlf )
+  {
+    Stage stage = new Stage();
+    stage.setTitle( "Review Client MVC" );
+//    stage.setOnCloseRequest(event -> {Platform.exit();});
+//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Dimension pos = PosOnScrn.getPos();
+
+    ReviewModel model      = new ReviewModel(mlf);
+    ReviewView view        = new ReviewView( stage, mlf, pos.width, pos.height );
+    ReviewController cont  = new ReviewController( model, view );
+    view.setController( cont );
+
+    model.addObserver( view );       // Add observer to the model
+    stage.show();
+  }
+
   @Override
   public void start(Stage primaryStage) throws Exception {
     MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
@@ -204,17 +224,18 @@ public class Main extends Application
     startCustomerGUI_MVC( mlf );
     if ( many )
      startCustomerGUI_MVC( mlf );
-    startCatalogueGUI_MVC( mlf );
+//    startCatalogueGUI_MVC( mlf );
     startCashierGUI_MVC( mlf );
-    startBackDoorGUI_MVC( mlf );
+//    startBackDoorGUI_MVC( mlf );
     if ( many )
       startPickGUI_MVC( mlf );
-    startPickGUI_MVC( mlf );
-    startDisplayGUI_MVC( mlf );
+//    startPickGUI_MVC( mlf );
+//    startDisplayGUI_MVC( mlf );
     if ( many )
       startDisplayGUI_MVC( mlf );
-    startCollectionGUI_MVC( mlf );
+//    startCollectionGUI_MVC( mlf );
     startAdvertiseGUI_MVC(mlf);
+    startReviewGUI_MVC( mlf );
   }
 
   @Override

@@ -208,7 +208,7 @@ public class StockRW extends StockR implements StockReadWriter
 	    {
 			// delete from reservation table
 			getStatementObject().executeUpdate(
-	    		"insert int reviewtable values ('" + pNum + "', " + "'" +  review + "', " + rating + ")"
+	    		"insert into reviewtable values ('" + pNum + "', " + "'" +  review + "', " + rating + ")"
 	    	);
 	      	DEBUG.trace( "DB StockRW: addReviewAndRating()");
 	    } catch ( SQLException e )
