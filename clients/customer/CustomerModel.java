@@ -13,6 +13,7 @@ import middle.StockReader;
 
 import javax.swing.*;
 
+import java.util.Iterator;
 import java.util.Observable;
 
 /**
@@ -203,12 +204,15 @@ public class CustomerModel extends Observable
   {
     String theAction = "";
     try {
-        // restore reserved products
-        for(Product pr : theBasket) {
-        	theStock.addStock(pr.getProductNum(), pr.getQuantity());
-        	pr = theBasket.remove();
-        }
-        theBasket.clear();                        // Clear s. list
+    	if(theBasket != null && theBasket.isEmpty() != true) {
+	        // restore reserved products
+    		for (Iterator<Product> iterator = theBasket.iterator(); iterator.hasNext();) {
+    		    Product pr = iterator.next();
+    		    theStock.addStock(pr.getProductNum(), pr.getQuantity());
+    		    iterator.remove();
+    		}
+	        theBasket.clear();                        // Clear s. list
+    	}
         theAction = "Enter Product Number";       // Set display
         thePic = null;                            // No picture
     }  catch( StockException e )

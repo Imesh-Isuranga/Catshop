@@ -3,14 +3,18 @@ package clients.shopDisplay;
 import middle.MiddleFactory;
 import middle.OrderException;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 /**
  * The visual display seen by customers (Change to graphical version)
@@ -18,15 +22,15 @@ import java.util.Observer;
  * @author  Mike Smith University of Brighton
  * @version 1.0
  */
-public class DisplayView extends Canvas implements Observer
+public class DisplayView implements Observer
 {
   private static final long serialVersionUID = 1L;
-  private Font font = new Font("Monospaced",Font.BOLD,36);
   private int H = 600;         // Height of window 
   private int W = 800;         // Width  of window 
   private String textToDisplay = "";
   private DisplayController cont= null;
-  
+  private Canvas theCanvas = new Canvas(W, H);
+  private Pane theRoot;
   /**
    * Construct the view
    * @param rpc   Window in which to construct
@@ -35,16 +39,31 @@ public class DisplayView extends Canvas implements Observer
    * @param y     y-coordinate of position of window on screen  
    */
   
-  public DisplayView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
+  public DisplayView(  Stage stage, MiddleFactory mf, int x, int y )
   {
-    Container cp         = rpc.getContentPane();    // Content Pane
-    Container rootWindow = (Container) rpc;         // Root Window
-    cp.setLayout( new BorderLayout() );             // Border N E S W CENTER 
-    rootWindow.setSize( W, H );                     // Size of Window  
-    rootWindow.setLocation( x, y );                 // Position on screen
-    rootWindow.add( this, BorderLayout.CENTER );    //  Add to rootwindow
-    
-    rootWindow.setVisible( true );                  // Make visible
+	  stage.setWidth( W ); // Set Window Size
+	  stage.setHeight( H );
+	  stage.setX( x );  // Set Window Position
+	  stage.setY( y );
+	  
+	  GraphicsContext gc = theCanvas.getGraphicsContext2D();
+	  // Set line width
+	  gc.setLineWidth(5.0);
+	  // Create the Pane
+	  theRoot = new Pane();
+	  // Set the Style-properties of the Pane
+	  String rootStyle = "-fx-padding: 10;-fx-border-style: solid inside; -fx-border-width: 1; -fx-border-insets: 5;" +
+			  "-fx-border-radius: 5; -fx-border-color: purple; -fx-background-color: #b19cd9;";
+
+	  theRoot.setStyle(rootStyle);
+	  // Add the Canvas to the Pane
+	  theRoot.getChildren().add(theCanvas);
+	  // Create the Scene
+	  Scene scene = new Scene(theRoot);
+	  // Add the Scene to the Stage
+	  stage.setScene(scene);
+	  // Display the Stage
+	  stage.show();
   }
   
   
@@ -82,69 +101,21 @@ public class DisplayView extends Canvas implements Observer
     {
       textToDisplay = "\n" + "** Communication Failure **";
     }
-    repaint();                            // Draw graphically    
-  }
-  
-  @Override
-  public void update( Graphics g )        // Called by repaint
-  {                                       // 
-    drawScreen( (Graphics2D) g );         // Draw information on screen
-  }
-
-    /**
-     * Redraw the screen double buffered
-     * @param g Graphics context
-     */
-  @Override 
-  public void paint( Graphics g )         // When 'Window' is first 
-  {                                       //  shown or damaged 
-    drawScreen( (Graphics2D) g );         // Draw information on screen
-  }
-
-  private Dimension     theAD;           // Alternate Dimension
-  private BufferedImage theAI;           // Alternate Image
-  private Graphics2D    theAG;           // Alternate Graphics
-  
-  public void drawScreen( Graphics2D g )  // Re draw contents 
-  {                                         //  allow resize
-    Dimension d    = getSize();             // Size of image
-
-    if (  ( theAG == null )           ||
-          ( d.width  != theAD.width ) ||
-          ( d.height != theAD.height )   )
-    {                                       // New size
-      theAD = d;
-      theAI = (BufferedImage) createImage( d.width, d.height );
-      theAG = theAI.createGraphics();
-    }
-    drawActualScreen( theAG );            // draw
-    g.drawImage( theAI, 0, 0, this );     // Now on screen
-  }
-  
-  /**
-   * Redraw the screen
-   * @param g Graphics context
-   */
- 
-  public void drawActualScreen( Graphics2D g )  // Re draw contents 
-  {
-    g.setPaint( new Color(171, 156, 217) );            // Paint Colour
-    W = getWidth(); H = getHeight();      // Current size
     
-    g.setFont( font );
-    g.fill( new Rectangle2D.Double( 0, 0, W, H ) );
-
-    g.setPaint(new Color(128, 0, 128));
-    g.drawRoundRect(5, 5, W-10, H-10, 5, 5);
-
     // Draw state of system on display
     String lines[] = textToDisplay.split("\n");
-    g.setPaint( Color.black );
+
+    GraphicsContext gc = theCanvas.getGraphicsContext2D();
+	// Set fill color
+	gc.setFill(new Color(0.69, 0.611, 0.847, 1));
+    gc.fillRect(10, 10, W-40, H-60);
+    
+    gc.setFill(Color.BLACK);
+    gc.setFont(new Font(60));
     for ( int i=0; i<lines.length; i++ )
     {
-      g.drawString( lines[i], 50, 100 + 120*i );
+    	gc.fillText( lines[i], 50, 100 + 120*i, 1000 );
     }
-    
   }
 
   /**

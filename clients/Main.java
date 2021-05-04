@@ -33,13 +33,8 @@ import javafx.stage.Stage;
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
 
-import javax.swing.*;
-
 import java.awt.*;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 
 
 /**
@@ -63,8 +58,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle("Customer Client MVC");
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     CustomerModel model      = new CustomerModel(mlf);
@@ -80,8 +74,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle("Catalogue Client MVC");
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     CatalogueModel model      = new CatalogueModel(mlf);
@@ -101,8 +94,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle( "Cashier Client MVC" );
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     CashierModel model      = new CashierBetterBasketModel(mlf);
@@ -118,8 +110,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle( "BackDoor Client MVC" );
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     BackDoorModel model      = new BackDoorModel(mlf);
@@ -135,8 +126,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle( "Pick Client MVC" );
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     PickModel model      = new PickModel(mlf);
@@ -150,19 +140,18 @@ public class Main extends Application
 
   public void startDisplayGUI_MVC(MiddleFactory mlf )
   {
-    JFrame  window = new JFrame();
-
-    window.setTitle( "Display Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    Stage stage = new Stage();
+    stage.setTitle( "Display Client MVC" );
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     DisplayModel model      = new DisplayModel(mlf);
-    DisplayView view        = new DisplayView( window, mlf, pos.width, pos.height );
+    DisplayView view        = new DisplayView( stage, mlf, pos.width, pos.height );
     DisplayController cont  = new DisplayController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Make window visible
+    stage.show();        // Make window visible
   }
 
 
@@ -170,8 +159,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle( "Collect Client MVC" );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     CollectModel model      = new CollectModel(mlf);
@@ -187,8 +175,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle( "Advertise Client MVC" );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     AdvertsModel model      = new AdvertsModel(mlf);
@@ -204,8 +191,7 @@ public class Main extends Application
   {
     Stage stage = new Stage();
     stage.setTitle( "Review Client MVC" );
-//    stage.setOnCloseRequest(event -> {Platform.exit();});
-//    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    stage.setOnCloseRequest(event -> {Platform.exit();});
     Dimension pos = PosOnScrn.getPos();
 
     ReviewModel model      = new ReviewModel(mlf);
@@ -224,22 +210,17 @@ public class Main extends Application
     startCustomerGUI_MVC( mlf );
     if ( many )
      startCustomerGUI_MVC( mlf );
-//    startCatalogueGUI_MVC( mlf );
+    startCatalogueGUI_MVC( mlf );
     startCashierGUI_MVC( mlf );
-//    startBackDoorGUI_MVC( mlf );
+    startBackDoorGUI_MVC( mlf );
     if ( many )
       startPickGUI_MVC( mlf );
-//    startPickGUI_MVC( mlf );
-//    startDisplayGUI_MVC( mlf );
+    startPickGUI_MVC( mlf );
+    startDisplayGUI_MVC( mlf );
     if ( many )
       startDisplayGUI_MVC( mlf );
-//    startCollectionGUI_MVC( mlf );
+    startCollectionGUI_MVC( mlf );
     startAdvertiseGUI_MVC(mlf);
     startReviewGUI_MVC( mlf );
-  }
-
-  @Override
-  public void stop(){
-    Platform.exit();
   }
 }

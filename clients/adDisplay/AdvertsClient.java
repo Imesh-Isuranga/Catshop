@@ -2,11 +2,8 @@ package clients.adDisplay;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
-import javax.swing.*;
 
 /**
  * The standalone Adverts Client

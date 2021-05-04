@@ -11,7 +11,7 @@ import java.util.Comparator;
  * @version 2.0
  */
 
-public class Product implements Serializable, Comparator
+public class Product implements Serializable, Comparator<Product>
 {
   private static final long serialVersionUID = 20092506;
   private String theProductNum;       // Product number
@@ -90,12 +90,9 @@ public class Product implements Serializable, Comparator
    *  		1: arg0's product number is greater than arg1's
    *  		-1: arg0's product number is less than arg1
    */
-  @Override
-  public int compare(Object arg0, Object arg1) {
-	Product pr1 = (Product)arg0;
-	Product pr2 = (Product)arg1;
-		
-	return pr1.getProductNum().compareTo(pr2.getProductNum());
-  }
+	@Override
+	public int compare(Product pr1, Product pr2) {
+		return pr1.getProductNum().compareTo(pr2.getProductNum());
+	}
 
 }

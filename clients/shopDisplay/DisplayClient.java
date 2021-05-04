@@ -3,16 +3,17 @@ package clients.shopDisplay;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
-import javax.swing.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * The standalone shop Display Client.
  * @author  Mike Smith University of Brighton
  * @version 2.0
  */
-public class DisplayClient
+public class DisplayClient  extends Application
 {
+	  public static RemoteMiddleFactory mrf;
    public static void main (String args[])
    {
      String stockURL = args.length < 1     // URL of stock RW
@@ -22,25 +23,22 @@ public class DisplayClient
                      ? Names.ORDER         //  default  location
                      : args[1];            //  supplied location
      
-    RemoteMiddleFactory mrf = new RemoteMiddleFactory();
+    mrf = new RemoteMiddleFactory();
     mrf.setStockRWInfo( stockURL );
     mrf.setOrderInfo  ( orderURL );        //
-    displayGUI(mrf);                       // Create GUI
+    launch(args);                       // Create GUI
   }
   
-  private static void displayGUI(MiddleFactory mf)
-  {     
-    JFrame  window = new JFrame();
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+	    primaryStage.setTitle("Shop Display Client (MVC RMI)");
 
-    window.setTitle( "Pick Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    
-    DisplayModel    model = new  DisplayModel(mf);
-    DisplayView     view  = new  DisplayView( window, mf, 0, 0 );
-    DisplayController cont  = new DisplayController( model, view );
-    view.setController( cont );
+	    DisplayModel model = new DisplayModel(mrf);
+	    DisplayView  view  = new DisplayView( primaryStage, mrf, 0, 0 );
+	    DisplayController cont  = new DisplayController( model, view );
+	    view.setController( cont );
 
-    model.addObserver( view );       // Add observer to the model
-    window.setVisible(true);         // Display Screen 
-  }
+	    model.addObserver( view );       // Add observer to the model
+	    primaryStage.show();
+	}
 }

@@ -28,14 +28,8 @@ public class ReviewController {
    * reserve product
    * @param pn The product number to be reserved
    */
-  public void doReview( String review, String sRating )
+  public void doReview( String review, double rating )
   {
-	  double rating = 0.0;
-	  try {
-		  rating = Double.parseDouble(sRating);
-	  } catch (NumberFormatException e) {
-		  rating = 0.0;
-	  }
 	  model.doReview(review, rating);
   }
 }

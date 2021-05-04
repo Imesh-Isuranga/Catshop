@@ -297,7 +297,7 @@ public class CashierModel extends Observable
    */
   public void doReserve()
   {
-	  if(theBasket.isEmpty()) {
+	  if(theBasket == null || theBasket.isEmpty()) {
 		  theAction = "There is no product to reserve.";
 	  }
 	  else {

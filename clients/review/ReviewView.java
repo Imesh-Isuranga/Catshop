@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.controlsfx.control.Rating;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,6 +26,7 @@ import middle.MiddleFactory;
 import middle.StockReader;
 import clients.review.ReviewController;
 import clients.review.ReviewModel;
+import clients.review.ReviewModel.State;
 
 public class ReviewView implements Observer
 {
@@ -51,9 +54,8 @@ public class ReviewView implements Observer
   
   private final Label theLabelReview = new Label();
   private final TextArea   theAreaReview  = new TextArea();
-  private final TextField theInputRating = new TextField();
   private final Button     theBtSubmit = new Button( Name.SUBMIT );
-
+  private Rating theRating = new Rating();
   private StockReader theStock   = null;
   private ReviewController cont= null;
 
@@ -94,34 +96,34 @@ public class ReviewView implements Observer
     theBtCheck.setOnAction(event -> cont.doCheck(theInputPNo.getText()));
 
     thePicture.setStyle("-fx-background-color: WHITE");
-    thePicture.setFitWidth( 360 );   // Picture area
-    thePicture.setFitHeight( 320 );
-    thePicture.setPreserveRatio(true);
+    thePicture.setFitWidth( 370 );   // Picture area
+    thePicture.setFitHeight( 350 );
+    thePicture.setPreserveRatio(false);
     thePicture.setSmooth(true);
     thePicture.setCache(true);
     theBorderPane.setStyle("-fx-background-color: WHITE");
     theBorderPane.setCenter(thePicture);
     
     theLabelDesc.setMaxWidth(Double.MAX_VALUE);
-    theLabelDesc.setPrefSize( 360, 40 );
+    theLabelDesc.setPrefSize( 370, 40 );
     AnchorPane.setLeftAnchor(theLabelDesc, 0.0);
     AnchorPane.setRightAnchor(theLabelDesc, 0.0);
     theLabelDesc.setAlignment(Pos.CENTER);
     theLabelDesc.setText( "" ); 
     
-    theLabelRating.setPrefSize(360, 40);
-    theOutput.setPrefSize( 360, 320 );
+    theLabelRating.setPrefSize(370, 40);
+    theOutput.setPrefSize( 370, 350 );
     theOutput.setText( "" ); 
     
     //  Blank
     theLabelReview.setPrefSize(100,  40);
     theLabelReview.setText("My Reivew:");
-    theAreaReview.setPrefSize(400, 40);
+    theAreaReview.setPrefSize(350, 40);
     theAreaReview.setText("");
-    theInputRating.setPrefSize(100,  40);
-    theInputRating.setText("");
+    theRating.setPrefSize(100, 40);
+    theRating.setMax(5);
     theBtSubmit.setPrefSize( 100, 40 ); // Submit Button Size
-    theBtSubmit.setOnAction(event -> cont.doReview(theAreaReview.getText(), theInputRating.getText()));
+    theBtSubmit.setOnAction(event -> cont.doReview(theAreaReview.getText(), theRating.getRating()));
 
     // TODO change layout and add rating control
 
@@ -146,12 +148,12 @@ public class ReviewView implements Observer
     reviewPane.setHgap(10);
 
     GridPane pane2 = new GridPane();
-    pane2.addRow(0, theInputRating, theBtSubmit);
+    pane2.addRow(0, theRating, theBtSubmit);
     reviewPane.setHgap(10);
 
     GridPane pane = new GridPane();
     pane.addRow(0, pane1, pane2);
-    reviewPane.setHgap(10);
+    reviewPane.setHgap(40);
 
     VBox root = new VBox();
     root.setSpacing(10);   //Setting the space between the nodes of a root pane
@@ -176,7 +178,6 @@ public class ReviewView implements Observer
     theBtCheck.setStyle(redButtonStyle);
     theBtSubmit.setStyle(blueButtonStyle);
     theInputPNo.setStyle(inputStyle);
-    theInputRating.setStyle(inputStyle);
     theOutput.setStyle(richAreaStyle);
     theAreaReview.setStyle(richAreaStyle);
     theAction.setStyle(labelStyle);
@@ -223,5 +224,9 @@ public class ReviewView implements Observer
    	theOutput.setText( model.getReivew() );
    	theLabelDesc.setText(model.getDescription());
    	theLabelRating.setText( String.format("Rating of the Product : %.2f", model.getRating()) );
+   	if(model.getState() == State.process) {
+   		theRating.setRating(0);
+   		theAreaReview.setText("");
+   	}
   }
 }

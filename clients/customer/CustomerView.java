@@ -143,7 +143,7 @@ public class CustomerView implements Observer
     String redButtonStyle = "-fx-background-radius: 1em; -fx-background-color: red; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String blueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: blue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String brownButtonStyle = "-fx-background-radius: 1em; -fx-background-color: brown; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
-    String pinkButtonStyle = "-fx-background-radius: 1em; -fx-background-color: pink; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
+    String midnightblueButtonStyle = "-fx-background-radius: 1em; -fx-background-color: midnightblue; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String greyButtonStyle = "-fx-background-radius: 1em; -fx-background-color: grey; -fx-text-fill: white; -fx-font-family: 'Calibri'; -fx-font-weight: bolder; -fx-font-size: 14px";
     String inputStyle = "-fx-background-color:lightgreen; -fx-font-family: Calibri; -fx-font-size: 16px";
     String richAreaStyle = "-fx-control-inner-background:lightgreen; -fx-font-family: Calibri; -fx-font-size: 16px";
@@ -152,7 +152,7 @@ public class CustomerView implements Observer
     root.setStyle(rootStyle);
     theBtClear.setStyle(brownButtonStyle);
     theBtCheck.setStyle(redButtonStyle);
-    theBtReserve.setStyle(pinkButtonStyle);
+    theBtReserve.setStyle(midnightblueButtonStyle);
     theBtSubmit.setStyle(blueButtonStyle);
     theBtRemove.setStyle(greyButtonStyle);
     theInputName.setStyle(labelStyle);

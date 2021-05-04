@@ -17,7 +17,7 @@ import java.util.Observable;
 
 public class ReviewModel extends Observable
 {
-  private enum State { process, checked }
+  public enum State { process, checked }
   private State       theState   = State.process;   // Current state
 
   private String      pn = "";                    // Product being processed
@@ -161,6 +161,11 @@ public class ReviewModel extends Observable
   private void askForUpdate()
   {
     setChanged(); notifyObservers("START only"); // Notify
+  }
+  
+  public State getState()
+  {
+	  return theState;
   }
 }
 
