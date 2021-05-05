@@ -28,7 +28,7 @@ public class CustomerClient extends Application
     
     mrf = new RemoteMiddleFactory();
     mrf.setStockRInfo( stockURL );
-
+    mrf.setStockRWInfo(Names.STOCK_RW);
     launch(args);
   }
 

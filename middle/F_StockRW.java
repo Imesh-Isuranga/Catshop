@@ -55,7 +55,7 @@ public class F_StockRW extends F_StockR
    */
 
  
-  public boolean buyStock( String number, int amount )
+  public synchronized boolean buyStock( String number, int amount )
          throws StockException
   {
     DEBUG.trace("F_StockRW:buyStock()" );
@@ -77,7 +77,7 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
-  public void addStock( String number, int amount )
+  public synchronized void addStock( String number, int amount )
          throws StockException
   {
     DEBUG.trace("F_StockRW:addStock()" );
@@ -99,7 +99,7 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
-  	public void modifyStock( Product detail )
+  	public synchronized void modifyStock( Product detail )
               throws StockException
   	{
   		DEBUG.trace("F_StockRW:modifyStock()" );
@@ -114,7 +114,7 @@ public class F_StockRW extends F_StockR
   		}
   	}
 
-	public int addReservation(String name) 
+	public synchronized int addReservation(String name) 
 			throws StockException
     {
 	    DEBUG.trace("F_StockRW:modifyStock()" );
@@ -129,7 +129,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 	
-	public void addReservedProduct(int rNum, String pNum, int amount)
+	public synchronized void addReservedProduct(int rNum, String pNum, int amount)
 			throws StockException {
 	    DEBUG.trace("F_StockRW:addReservedProduct()" );
 	    try
@@ -143,7 +143,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 
-	public void removeReservation(int rNum) 
+	public synchronized void removeReservation(int rNum) 
 			throws StockException 
 	{
 	    DEBUG.trace("F_StockRW:removeExpiredReservations()" );
@@ -158,7 +158,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 	
-	public void addReviewAndRating(String pNum, String review, double rating)
+	public synchronized void addReviewAndRating(String pNum, String review, double rating)
 			throws StockException
 	{
 	    DEBUG.trace("F_StockRW:addReview()" );
@@ -173,7 +173,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 	
-	public void updateRecommendLevel(String pNum1, String pNum2)
+	public synchronized void updateRecommendLevel(String pNum1, String pNum2)
 			throws StockException
 	{
 	    DEBUG.trace("F_StockRW:updateRecommendLevel()" );
