@@ -1,6 +1,7 @@
 package clients.adDisplay;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -29,6 +30,7 @@ public class AdvertsClient extends Application
   @Override
   public void start(Stage primaryStage) throws Exception {
     primaryStage.setTitle("Advertisement Client (MVC RMI)");
+    primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
     AdvertsModel model = new AdvertsModel(mrf);
     AdvertsView  view  = new AdvertsView( primaryStage, mrf, 0, 0 );

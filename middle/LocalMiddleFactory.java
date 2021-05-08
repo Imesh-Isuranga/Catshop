@@ -5,6 +5,8 @@
 
 package middle;
 
+import java.util.ArrayList;
+
 import dbAccess.StockR;
 import dbAccess.StockRW;
 import orders.Order;
@@ -30,8 +32,9 @@ public class LocalMiddleFactory implements MiddleFactory
   
   public StockReader makeStockReader() throws StockException
   {
-    if ( aStockR == null )
+    if ( aStockR == null ) {
       aStockR = new StockR();
+    }
     return aStockR;
   }
 
@@ -57,6 +60,18 @@ public class LocalMiddleFactory implements MiddleFactory
     if ( aOrder == null )
       aOrder = new Order();
     return aOrder;
+  }
+
+  public StockReader makeStockReader2() throws StockException {
+	return null;
+  }
+
+  public StockReadWriter makeStockReadWriter2() throws StockException {
+	return null;
+  }
+
+  public OrderProcessing makeOrderProcessing2() throws OrderException {
+	return null;
   }
 }
 

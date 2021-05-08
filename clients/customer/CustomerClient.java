@@ -4,6 +4,7 @@ import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import middle.MiddleFactory;
 import middle.Names;
@@ -23,18 +24,23 @@ public class CustomerClient extends Application
   public static void main (String args[])
   {
     String stockURL = args.length < 1         // URL of stock R
-                    ? Names.STOCK_R           //  default  location
+                    ? Names.STOCK_RW           //  default  location
                     : args[0];                //  supplied location
     
+    String stockURL2 = args.length < 2         // URL of stock R
+            ? Names.STOCK_RW2           //  default  location
+            : args[0];                //  supplied location
+
     mrf = new RemoteMiddleFactory();
-    mrf.setStockRInfo( stockURL );
-    mrf.setStockRWInfo(Names.STOCK_RW);
+    mrf.setStockRWInfo(stockURL);
+    mrf.setStockRWInfo2(stockURL2);
     launch(args);
   }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
     primaryStage.setTitle("Customer Client (MVC RMI)");
+    primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
     CustomerModel model = new CustomerModel(mrf);
     CustomerView  view  = new CustomerView( primaryStage, mrf, 0, 0 );

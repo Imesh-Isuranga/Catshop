@@ -55,7 +55,7 @@ public class F_StockR implements StockReader
    * Checks if the product exits in the stock list
    * @return true if exists otherwise false
    */
-
+  @Override
   public synchronized boolean exists( String number )
          throws StockException
   {
@@ -76,6 +76,7 @@ public class F_StockR implements StockReader
    * @return StockNumber, Description, Price, Quantity
    */
 
+  @Override
   public synchronized Product getDetails( String number )
          throws StockException
   {
@@ -91,6 +92,7 @@ public class F_StockR implements StockReader
     }
   }
 
+  @Override
   public synchronized ArrayList<Product> findProducts(String pName) throws StockException {
     DEBUG.trace("F_StockR:findProducts()" );
     try
@@ -106,6 +108,7 @@ public class F_StockR implements StockReader
   }
 
 
+  @Override
   public synchronized Image getImage(String number )
          throws StockException
   {
@@ -122,6 +125,7 @@ public class F_StockR implements StockReader
     }
   }
 
+  @Override
   public synchronized List<String> getTopProducts(int count) 
 		  throws StockException 
   {
@@ -138,6 +142,7 @@ public class F_StockR implements StockReader
     }
   }
 
+  @Override
 	public synchronized boolean isInStock(String pNum, int amount) 
 			throws StockException 
 	{
@@ -153,6 +158,7 @@ public class F_StockR implements StockReader
 	    }
 	}
 
+  @Override
 	public synchronized Basket getReservation(int rNum) 
 			throws StockException 
 	{
@@ -168,6 +174,7 @@ public class F_StockR implements StockReader
 	    }
 	}
 
+  @Override
 	public synchronized boolean isInReservations(int rNum) 
 			throws StockException 
 	{
@@ -183,6 +190,7 @@ public class F_StockR implements StockReader
 	    }
 	}
 	
+  @Override
 	public synchronized int getExpiredReservationNum() 
 			throws StockException 
 	{
@@ -198,6 +206,7 @@ public class F_StockR implements StockReader
 	    }
 	}
 	
+  @Override
 	public synchronized String getReview(String pNum)
 			throws StockException
 	{
@@ -213,6 +222,7 @@ public class F_StockR implements StockReader
 	    }
 	}
 	
+  @Override
 	public synchronized double getRating(String pNum)
 			throws StockException
 	{
@@ -228,6 +238,7 @@ public class F_StockR implements StockReader
 	    }
 	}
 	
+  @Override
 	public synchronized String getRecommendedProduct(String pNum)
 			throws StockException
 	{

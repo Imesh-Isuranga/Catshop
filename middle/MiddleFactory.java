@@ -21,6 +21,7 @@ public interface MiddleFactory
    * @throws StockException if issue
    */
   public StockReader makeStockReader() throws StockException;
+  public StockReader makeStockReader2() throws StockException;
 
   /**
    * Return an object to access the database for read/write access
@@ -28,7 +29,7 @@ public interface MiddleFactory
    * @throws StockException if issue
    */
   public StockReadWriter makeStockReadWriter() throws StockException;
-
+  public StockReadWriter makeStockReadWriter2() throws StockException;
   
   /**
    * Return an object to access the order processing system
@@ -36,6 +37,7 @@ public interface MiddleFactory
    * @throws OrderException if issue
    */
   public OrderProcessing makeOrderProcessing() throws OrderException;
+  public OrderProcessing makeOrderProcessing2() throws OrderException;
 
 }
 

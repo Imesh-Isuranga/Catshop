@@ -16,7 +16,7 @@ class LinuxAccess extends DBAccess
   public String urlOfDatabase()
   {
 //    return "jdbc:mysql://localhost/cshop?user=root";
-    return "jdbc:mysql://localhost:3306/cshop";
+    return "jdbc:mysql://192.168.100.203:3306/cshop";
   }
   public String username()
   {

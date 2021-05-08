@@ -6,8 +6,8 @@ import clients.cashier.CashierView;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 
@@ -41,6 +41,7 @@ public class CollectClient extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Collection Client (MVC RMI)");
+        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
         CollectModel      model = new CollectModel(mrf);
         CollectView       view  = new CollectView( primaryStage, mrf, 0, 0 );
@@ -48,5 +49,6 @@ public class CollectClient extends Application
         view.setController( cont );
 
         model.addObserver( view );       // Add observer to the model
-    }
+        primaryStage.show();
+   }
 }

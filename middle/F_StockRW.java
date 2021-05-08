@@ -55,6 +55,7 @@ public class F_StockRW extends F_StockR
    */
 
  
+  @Override
   public synchronized boolean buyStock( String number, int amount )
          throws StockException
   {
@@ -77,6 +78,7 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
+  @Override
   public synchronized void addStock( String number, int amount )
          throws StockException
   {
@@ -99,6 +101,7 @@ public class F_StockRW extends F_StockR
    * @throws StockException if remote exception
    */
 
+  @Override
   	public synchronized void modifyStock( Product detail )
               throws StockException
   	{
@@ -114,6 +117,7 @@ public class F_StockRW extends F_StockR
   		}
   	}
 
+  @Override
 	public synchronized int addReservation(String name) 
 			throws StockException
     {
@@ -129,6 +133,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 	
+  @Override
 	public synchronized void addReservedProduct(int rNum, String pNum, int amount)
 			throws StockException {
 	    DEBUG.trace("F_StockRW:addReservedProduct()" );
@@ -143,6 +148,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 
+  @Override
 	public synchronized void removeReservation(int rNum) 
 			throws StockException 
 	{
@@ -158,6 +164,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 	
+  @Override
 	public synchronized void addReviewAndRating(String pNum, String review, double rating)
 			throws StockException
 	{
@@ -173,6 +180,7 @@ public class F_StockRW extends F_StockR
 	    }
 	}
 	
+  @Override
 	public synchronized void updateRecommendLevel(String pNum1, String pNum2)
 			throws StockException
 	{

@@ -4,6 +4,7 @@ import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -25,6 +26,7 @@ public class CatalogueClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Catalogue Client (MVC RMI)");
+        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
         CatalogueModel model = new CatalogueModel(mrf);
         CatalogueView view = new CatalogueView(primaryStage, mrf, 0, 0);

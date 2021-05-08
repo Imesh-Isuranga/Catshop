@@ -354,6 +354,7 @@ public class StockR implements StockReader
     		if(res)
     			rNum = rs.getInt("reservationNo");
     		DEBUG.trace( "DB StockR: getExpiredReservationNum()" );
+    		rs.close();
     		return rNum;
 	    } catch ( SQLException e )
 	    {

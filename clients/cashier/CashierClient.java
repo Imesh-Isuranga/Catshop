@@ -7,8 +7,8 @@ import clients.backDoor.BackDoorView;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -40,6 +40,7 @@ public class CashierClient extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Cashier Client (MVC RMI)");
+        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
         CashierModel      model = new CashierBetterBasketModel(mrf);
         CashierView       view  = new CashierView( primaryStage, mrf, 0, 0 );

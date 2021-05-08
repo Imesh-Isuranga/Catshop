@@ -6,8 +6,8 @@ import clients.customer.CustomerView;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
-
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -36,6 +36,7 @@ public class PickClient extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Pick Client (RMI MVC)");
+        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
         PickModel      model = new PickModel(mrf);
         PickView       view  = new PickView( primaryStage, mrf, 0, 0 );

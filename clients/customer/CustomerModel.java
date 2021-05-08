@@ -31,7 +31,7 @@ public class CustomerModel extends Observable
   private String      pn = "";                    // Product being processed
 
   private StockReadWriter     theStock     = null;
-  private OrderProcessing theOrder     = null;
+  private StockReadWriter     theStock2     = null;
   private Image           thePic       = null;
   /*
    * Construct the model of the Customer
@@ -42,6 +42,7 @@ public class CustomerModel extends Observable
     try                                          //
     {  
       theStock = mf.makeStockReadWriter();           // Database access
+      theStock2 = mf.makeStockReadWriter2(); // store 2
     } catch ( Exception e )
     {
       DEBUG.error("CustomerModel.constructor\n" +
@@ -77,21 +78,43 @@ public class CustomerModel extends Observable
         if ( pr.getQuantity() >= amount )       //  In stock?
         { 
           theAction =                           //   Display 
-            String.format( "%s : %7.2f (%2d) ", //
+            String.format( "Stock 1 : %s : %7.2f (%2d) ", //
               pr.getDescription(),              //    description
               pr.getPrice(),                    //    price
               pr.getQuantity() );               //    quantity
           pr.setQuantity( amount );             //   Require 1
-          thePic = theStock.getImage( pn );     //    product
+          // TODO java RMI not support image transfer
+          //thePic = theStock.getImage( pn );     //    product
           theState = State.checked;
         } else {                                //  F
           theAction =                           //   Inform
             pr.getDescription() +               //    product not
-            " not in stock" ;                   //    in stock
+            " not in Stock 1" ;                   //    in stock
         }
       } else {                                  // F
         theAction =                             //  Inform Unknown
-          "Unknown product number " + pn;       //  product number
+          "Stock 1 : Unknown product number " + pn;       //  product number
+      }
+      if ( theStock2.exists( pn ) )              // Stock Exists?
+      {                                         // T
+        Product pr = theStock2.getDetails( pn ); //  Product
+        if ( pr.getQuantity() >= amount )       //  In stock?
+        { 
+          theAction +=                           //   Display 
+            String.format( " Stock 2 : %s : %7.2f (%2d) ", //
+              pr.getDescription(),              //    description
+              pr.getPrice(),                    //    price
+              pr.getQuantity() );               //    quantity
+          pr.setQuantity( amount );             //   Require 1
+          // TODO java RMI not support image transfer
+          //thePic = theStock.getImage( pn );     //    product
+        } else {                                //  F
+          theAction +=                           
+            (" " + pr.getDescription() +               
+            " not in Stock 2" );                  
+        }
+      } else {                                  // F
+        theAction += (" Stock 2 : Unknown product number " + pn);       //  product number
       }
     } catch( StockException e )
     {
@@ -127,7 +150,6 @@ public class CustomerModel extends Observable
 	          theAction =                           //   Display 
 	            String.format( "Product #%s is reserved for you!", pn);
 	          pr.setQuantity( amount );             //   Require 1
-	          thePic = theStock.getImage( pn );     //    product
 	          theBasket.add(pr);
 	        } else {                                //  F
 	          theAction =                           //   Inform

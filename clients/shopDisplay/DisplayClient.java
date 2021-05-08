@@ -4,6 +4,7 @@ import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -32,6 +33,7 @@ public class DisplayClient  extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 	    primaryStage.setTitle("Shop Display Client (MVC RMI)");
+        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
 
 	    DisplayModel model = new DisplayModel(mrf);
 	    DisplayView  view  = new DisplayView( primaryStage, mrf, 0, 0 );
