@@ -4,6 +4,8 @@ import catalogue.*;
 import clients.backDoor.BackDoorController;
 import clients.backDoor.BackDoorModel;
 import clients.backDoor.BackDoorView;
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -40,8 +42,13 @@ public class CashierClient extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Cashier Client (MVC RMI)");
-        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
-
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
         CashierModel      model = new CashierBetterBasketModel(mrf);
         CashierView       view  = new CashierView( primaryStage, mrf, 0, 0 );
         CashierController cont  = new CashierController( model, view );

@@ -1,5 +1,7 @@
 package clients.shopDisplay;
 
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -33,7 +35,13 @@ public class DisplayClient  extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 	    primaryStage.setTitle("Shop Display Client (MVC RMI)");
-        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+				Platform.exit();
+				System.exit(0);
+			}
+		});
 
 	    DisplayModel model = new DisplayModel(mrf);
 	    DisplayView  view  = new DisplayView( primaryStage, mrf, 0, 0 );

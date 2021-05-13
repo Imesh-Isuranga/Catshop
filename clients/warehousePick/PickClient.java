@@ -3,6 +3,8 @@ package clients.warehousePick;
 import clients.customer.CustomerController;
 import clients.customer.CustomerModel;
 import clients.customer.CustomerView;
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -36,7 +38,13 @@ public class PickClient extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Pick Client (RMI MVC)");
-        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
         PickModel      model = new PickModel(mrf);
         PickView       view  = new PickView( primaryStage, mrf, 0, 0 );

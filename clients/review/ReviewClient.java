@@ -4,7 +4,9 @@ import clients.review.ReviewModel;
 import clients.review.ReviewView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -27,7 +29,13 @@ public class ReviewClient extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     primaryStage.setTitle("Customer Review (MVC RMI)");
-    primaryStage.setOnCloseRequest(event -> {Platform.exit();});
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      @Override
+      public void handle(WindowEvent t) {
+        Platform.exit();
+        System.exit(0);
+      }
+    });
 
     ReviewModel model = new ReviewModel(mrf);
     ReviewView  view  = new ReviewView( primaryStage, mrf, 0, 0 );

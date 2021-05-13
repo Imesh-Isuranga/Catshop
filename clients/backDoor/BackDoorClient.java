@@ -1,5 +1,7 @@
 package clients.backDoor;
 
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import middle.Names;
 import middle.RemoteMiddleFactory;
 import javafx.application.Application;
@@ -37,7 +39,13 @@ public class BackDoorClient extends Application
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("BackDoor Client (MVC RMI)");
-        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
         BackDoorModel      model = new BackDoorModel(mrf);
         BackDoorView       view  = new BackDoorView( primaryStage, mrf, 0, 0 );

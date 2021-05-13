@@ -3,6 +3,8 @@ package clients.collection;
 import clients.cashier.CashierController;
 import clients.cashier.CashierModel;
 import clients.cashier.CashierView;
+import javafx.event.EventHandler;
+import javafx.stage.WindowEvent;
 import middle.MiddleFactory;
 import middle.Names;
 import middle.RemoteMiddleFactory;
@@ -41,7 +43,13 @@ public class CollectClient extends Application
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Collection Client (MVC RMI)");
-        primaryStage.setOnCloseRequest(event -> {Platform.exit();});
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
         CollectModel      model = new CollectModel(mrf);
         CollectView       view  = new CollectView( primaryStage, mrf, 0, 0 );
