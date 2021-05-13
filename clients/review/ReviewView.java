@@ -55,7 +55,8 @@ public class ReviewView implements Observer
   private final Label theLabelReview = new Label();
   private final TextArea   theAreaReview  = new TextArea();
   private final Button     theBtSubmit = new Button( Name.SUBMIT );
-  private Rating theRating = new Rating();
+  private final Label theLabelMyRating = new Label();
+  private TextField theRating = new TextField();
   private StockReader theStock   = null;
   private ReviewController cont= null;
 
@@ -121,9 +122,10 @@ public class ReviewView implements Observer
     theAreaReview.setPrefSize(350, 40);
     theAreaReview.setText("");
     theRating.setPrefSize(100, 40);
-    theRating.setMax(5);
+    theLabelMyRating.setPrefSize(60, 40);//    theRating.setMax(5);
+    theLabelMyRating.setText("Rating: ");//    theRating.setMax(5);
     theBtSubmit.setPrefSize( 100, 40 ); // Submit Button Size
-    theBtSubmit.setOnAction(event -> cont.doReview(theAreaReview.getText(), theRating.getRating()));
+    theBtSubmit.setOnAction(event -> cont.doReview(theAreaReview.getText(), theRating.getText()));
 
     // TODO change layout and add rating control
 
@@ -145,15 +147,15 @@ public class ReviewView implements Observer
     
     GridPane pane1 = new GridPane();
     pane1.addRow(0, theLabelReview, theAreaReview);
-    reviewPane.setHgap(10);
+    pane1.setHgap(10);
 
     GridPane pane2 = new GridPane();
-    pane2.addRow(0, theRating, theBtSubmit);
-    reviewPane.setHgap(10);
+    pane2.addRow(0, theLabelMyRating, theRating, theBtSubmit);
+    pane2.setHgap(10);
 
     GridPane pane = new GridPane();
     pane.addRow(0, pane1, pane2);
-    reviewPane.setHgap(40);
+    pane.setHgap(10);
 
     VBox root = new VBox();
     root.setSpacing(10);   //Setting the space between the nodes of a root pane
@@ -185,7 +187,9 @@ public class ReviewView implements Observer
     theLabelReview.setStyle(labelStyle);
     theLabelRating.setStyle(labelStyle);
     theLabelDesc.setStyle(labelStyle);
-    
+    theRating.setStyle(inputStyle);
+    theLabelMyRating.setStyle(labelStyle);
+
     Scene scene = new Scene(root);  // Create the Scene
     stage.setScene(scene); // Add the scene to the Stage
 
@@ -225,7 +229,7 @@ public class ReviewView implements Observer
    	theLabelDesc.setText(model.getDescription());
    	theLabelRating.setText( String.format("Rating of the Product : %.2f", model.getRating()) );
    	if(model.getState() == State.process) {
-   		theRating.setRating(0);
+   		theRating.setText("0");
    		theAreaReview.setText("");
    	}
   }

@@ -95,7 +95,7 @@ public class CustomerModel extends Observable
         theAction =                             //  Inform Unknown
           "Stock 1 : Unknown product number " + pn;       //  product number
       }
-      if ( theStock2.exists( pn ) )              // Stock Exists?
+      if ( theStock2 != null && theStock2.exists( pn ) )              // Stock Exists?
       {                                         // T
         Product pr = theStock2.getDetails( pn ); //  Product
         if ( pr.getQuantity() >= amount )       //  In stock?

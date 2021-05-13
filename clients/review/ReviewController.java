@@ -25,12 +25,18 @@ public class ReviewController {
   }
 
   /**
-   * reserve product
-   * @param pn The product number to be reserved
+   * reivew product
+   * @param rating The rating string to be reviewed
    */
-  public void doReview( String review, double rating )
+  public void doReview( String review, String rating )
   {
-	  model.doReview(review, rating);
+	double fRating = 0.0;
+	try {
+      fRating = Double.parseDouble(rating);
+    } catch(Exception e) {
+	  fRating = 0.0;
+    }
+    model.doReview(review, fRating);
   }
 }
 
