@@ -24,6 +24,6 @@ class LinuxAccess extends DBAccess
   }
   public String password()
   {
-    return "admin@123";
+    return "";
   }
 }
